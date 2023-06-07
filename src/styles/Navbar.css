@@ -1,0 +1,13 @@
+.login_button {
+  padding: 14px 16px;
+  gap: 8px;
+  width: 105px;
+  height: 48px;
+  background: #7126b5;
+  border-radius: 12px;
+  border: none;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
