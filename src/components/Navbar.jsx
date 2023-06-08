@@ -9,7 +9,7 @@ function Navbarr() {
   return (
     <Navbar expand="lg">
       <Container>
-        <Navbar.Brand href="#home" className="text-dark">
+        <Navbar.Brand href="/" className="text-dark">
           <img src={logo} alt="logo" fluid width="80" height="80" />
         </Navbar.Brand>
         <Form className="d-flex w-50">
@@ -17,7 +17,7 @@ function Navbarr() {
         </Form>
         <Nav className="">
           <button className="login_button" as={Link} to={"/login"}>
-            <img src={login} alt="login-logo" />
+            <img src={login} alt="login-logo" /> Masuk
           </button>
         </Nav>
       </Container>
