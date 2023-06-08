@@ -1,0 +1,11 @@
+.bg-color {
+  background: linear-gradient(180deg, #83acfc 59.55%, rgba(255, 233, 202, 0) 100%);
+}
+
+.regis-button {
+  border: none;
+  border-radius: 12px;
+  height: 45px;
+  background-color: #3f76e2;
+  color: white;
+}
