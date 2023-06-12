@@ -1,0 +1,29 @@
+.form-input {
+  height: 3.5rem;
+}
+
+.icon-switch {
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+  background-color: black;
+  border-radius: 14px;
+}
+
+.icon-input {
+  width: 23px;
+  height: 23px;
+}
+
+.font-input {
+  margin-left: 0.5rem;
+  align-content: center;
+  font-size: 14px;
+  color: gray;
+}
+
+.font-passenger {
+  align-content: center;
+  font-size: 14px;
+  color: gray;
+}
