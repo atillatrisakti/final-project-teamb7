@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Login.css";
-import logo from "../assets/logo.svg";
+import logo from "../assets/navbar/logo.svg";
 // import flower from "../assets/Group 10.svg";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";

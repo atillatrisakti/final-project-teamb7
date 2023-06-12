@@ -1,0 +1,38 @@
+/* .accordion {
+  max-width: 700px;
+} */
+
+/* .accordion-item {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 17px;
+  border: 1px solid violet;
+} */
+
+.accordion-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.accordion-item:hover {
+  border-color: violet;
+}
+
+.accordion-title,
+.accordion-content {
+}
+
+.accordion-content {
+  background-color: violet;
+}
+
+/* @media screen and (max-width: 700px) {
+  body {
+    font-size: 18px;
+  }
+
+  .accordion {
+    width: 90%;
+  }
+} */

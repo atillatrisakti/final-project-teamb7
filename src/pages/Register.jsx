@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Register.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import logo from "../assets/logo.svg";
+import logo from "../assets/navbar/logo.svg";
 import { Link } from "react-router-dom";
 // import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 // import { IconContext } from "react-icons";
