@@ -1,0 +1,19 @@
+.bg-color {
+  background: linear-gradient(180deg, #dec9ff 59.55%, rgba(255, 233, 202, 0) 100%);
+}
+.login-button {
+  border: none;
+  border-radius: 12px;
+  height: 45px;
+  background-color: #7126b5;
+  color: white;
+}
+
+.text-color {
+  text-decoration: none;
+  color: #6e76e2;
+}
+
+.text-color:hover {
+  text-decoration: underline;
+}
