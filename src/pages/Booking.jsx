@@ -174,7 +174,7 @@ function Booking() {
                     </Form.Group>
                     <Row>
                       <Col xs="auto">
-                        <Form.Label className="form-label">
+                        <Form.Label className="form-label-booking">
                           Punya Nama Keluarga
                         </Form.Label>
                       </Col>
@@ -282,7 +282,7 @@ function Booking() {
                     </Form.Group>
                     <Row>
                       <Col xs="auto">
-                        <Form.Label className="form-label">
+                        <Form.Label className="form-label-booking">
                           Punya Nama Keluarga
                         </Form.Label>
                       </Col>
@@ -434,7 +434,7 @@ function Booking() {
             </Card.Body>
           </Card> */}
           <button
-            className="button"
+            className="button-booking"
             size="lg"
             style={{
               backgroundColor: formSubmitted ? "#a3a3a3" : "#7126b5",
@@ -599,7 +599,7 @@ function Booking() {
               </Row>
               {formSubmitted && (
                 <button
-                  className="button"
+                  className="button-booking"
                   size="lg"
                   style={{
                     backgroundColor: "#7126b5",
