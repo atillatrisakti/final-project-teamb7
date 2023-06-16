@@ -28,7 +28,6 @@ function App() {
           <Route path="/booking" element={<Booking />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/history" element={<History />} />
-          <Route path="/nohistory" element={<NoHistory />} />
         </Routes>
       </BrowserRouter>
     </Provider>

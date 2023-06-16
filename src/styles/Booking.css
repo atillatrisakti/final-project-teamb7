@@ -111,7 +111,7 @@ input.form-control {
   align-self: stretch;
   flex-grow: 0;
 }
-.form-label {
+.form-label-booking {
   width: 160px;
   height: 20px;
   font-family: "Poppins";
@@ -127,7 +127,7 @@ input.form-control {
   flex-grow: 0;
 }
 
-.button {
+.button-booking {
   display: flex;
   flex-direction: row;
   justify-content: center;

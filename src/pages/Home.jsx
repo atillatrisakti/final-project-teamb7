@@ -7,13 +7,10 @@ import {
   Col,
   Container,
   Form,
-  InputGroup,
-  ListGroup,
-  ListGroupItem,
-  Modal,
   Row,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   RangeDatePicker,
   SingleDatePicker,
@@ -26,15 +23,14 @@ import Destination from "../assets/img-destination.svg";
 // import { format } from "date-fns";
 
 import { Icon } from "@iconify/react";
-import { FaSearch } from "react-icons/fa";
+import DepartureAirports from "../components/search-flights-home/DepartureAirports";
+import DestinationAirports from "../components/search-flights-home/DestinationAirports";
+import Passengers from "../components/search-flights-home/Passengers";
+import SeatClasses from "../components/search-flights-home/SeatClasses";
 
 function Home() {
   const [destination, setDestination] = useState([]);
-  const [show, setShow] = useState(false); // modal
-  const [showPassenger, setShowPassenger] = useState(false); // modal
-  const [showClass, setShowClass] = useState(false); // modal
 
-  // const [count, setCount] = useState("");
   const [date, setDate] = useState([
     {
       startDate: new Date(),
@@ -42,32 +38,6 @@ function Home() {
       key: "selection",
     },
   ]);
-  const [options, setOptions] = useState({
-    dewasa: 2,
-    anak: 0,
-    bayi: 1,
-  });
-
-  const handleClose = () => setShow(false); // modal
-  const handleShow = () => setShow(true);
-  const handleClosePassenger = () => setShowPassenger(false); // modal
-  const handleShowPassenger = () => setShowPassenger(true);
-  const handleCloseClass = () => setShowClass(false); // modal
-  const handleShowClass = () => setShowClass(true);
-
-  const handleOption = (passenger, operation) => {
-    setOptions((prev) => {
-      return {
-        ...prev,
-        [passenger]:
-          operation === "plus"
-            ? options[passenger] + 1
-            : options[passenger] - 1,
-      };
-    });
-  };
-
-  const count = options.dewasa + options.anak + options.bayi;
 
   useEffect(() => {
     axios
@@ -121,69 +91,7 @@ function Home() {
                         />
                         <Form.Label className="font-input">From</Form.Label>
                       </Col>
-                      <Col xs={7} md={5}>
-                        <Form.Group>
-                          <Form.Control
-                            placeholder="Kota Asal"
-                            className="form-input"
-                            onClick={handleShow}
-                          />
-                        </Form.Group>
-                        {/* ======================================================== */}
-                        <Modal
-                          size="lg"
-                          aria-labelledby="contained-modal-title-vcenter"
-                          centered
-                          show={show}
-                          onHide={handleClose}
-                        >
-                          <Modal.Body>
-                            <Form>
-                              <Row>
-                                <Col>
-                                  <InputGroup
-                                    className="mb-3 my-1"
-                                    controlId="exampleForm.ControlInput1"
-                                    style={{ width: "42.8rem" }}
-                                  >
-                                    <Form.Control
-                                      type="email"
-                                      placeholder="Hai, mau ke mana nih?"
-                                      autoFocus
-                                    />
-                                    <Button
-                                      variant="outline-secondary"
-                                      type="submit"
-                                      style={{ borderColor: "#DADADA" }}
-                                    >
-                                      <FaSearch
-                                        color="gray"
-                                        className="d-flex align-items-center"
-                                      />
-                                    </Button>
-                                  </InputGroup>
-                                </Col>
-                                <Col>
-                                  <Modal.Header
-                                    closeButton
-                                    style={{
-                                      border: "none",
-                                    }}
-                                    md="auto"
-                                  ></Modal.Header>
-                                </Col>
-                              </Row>
-
-                              <ListGroup className="mb-2">
-                                <h6>Pencarian terkini</h6>
-                                <ListGroupItem>Jakarta</ListGroupItem>
-                                <ListGroupItem>Surabaya</ListGroupItem>
-                                <ListGroupItem>Bandung</ListGroupItem>
-                              </ListGroup>
-                            </Form>
-                          </Modal.Body>
-                        </Modal>
-                      </Col>
+                      <DepartureAirports /> {/* Kota Asal */}
                       <Col
                         xs={2}
                         md={1}
@@ -203,16 +111,8 @@ function Home() {
                         />
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
-                      <Col xs={5} md={4}>
-                        <Form.Group>
-                          <Form.Control
-                            placeholder="Kota Tujuan"
-                            className="form-input"
-                          />
-                        </Form.Group>
-                      </Col>
+                      <DestinationAirports /> {/* Kota Tujuan */}
                     </Row>
-
                     <Row className="px-3 pt-2 my-3 d-flex align-items-center">
                       <Col xs={2} md={1}>
                         <Icon
@@ -266,264 +166,9 @@ function Home() {
                         />
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
-                      <Col xs={3} md={2}>
-                        <Form.Group>
-                          <Form.Label>Passengers</Form.Label>
-                          <Form.Control
-                            placeholder="Jumlah"
-                            value={`${count} Penumpang`}
-                            className="form-input"
-                            onClick={handleShowPassenger}
-                          />
-                        </Form.Group>
 
-                        <Modal
-                          aria-labelledby="contained-modal-title-vcenter"
-                          centered
-                          show={showPassenger}
-                          onHide={handleClosePassenger}
-                          style={{
-                            marginLeft: "61.5%",
-                            marginTop: "15%",
-                            width: "24.2%",
-                          }}
-                        >
-                          <Modal.Header closeButton></Modal.Header>
-                          <Modal.Body>
-                            <Container>
-                              <Row>
-                                <Col
-                                  xs={10}
-                                  md={6}
-                                  className="d-flex align-items-center"
-                                >
-                                  <Icon
-                                    icon="el:adult"
-                                    className="icon-input me-2"
-                                  />
-                                  <span>
-                                    <b className="mb-0">Dewasa</b> <br />{" "}
-                                    <p className="my-auto font-passenger">
-                                      (12 tahun ke atas)
-                                    </p>
-                                  </span>
-                                </Col>
-                                <Col
-                                  xs={8}
-                                  md={6}
-                                  className="d-flex align-items-center"
-                                >
-                                  <InputGroup className="ps-2">
-                                    <Button
-                                      variant="outline-secondary"
-                                      disabled={options.dewasa <= 1}
-                                      onClick={() =>
-                                        handleOption("dewasa", "min")
-                                      }
-                                      style={{ borderRadius: "5px" }}
-                                    >
-                                      <Icon
-                                        icon="fa6-solid:minus"
-                                        className="d-flex align-items-center"
-                                      />
-                                    </Button>
-                                    <Form.Control
-                                      placeholder="0"
-                                      value={options.dewasa}
-                                      aria-label="Jumlah Penumpang"
-                                      className="mx-1 text-center"
-                                      style={{ borderRadius: "5px" }}
-                                    />
-                                    <Button
-                                      variant="outline-secondary"
-                                      onClick={() =>
-                                        handleOption("dewasa", "plus")
-                                      }
-                                      style={{ borderRadius: "5px" }}
-                                    >
-                                      <Icon
-                                        icon="fa6-solid:plus"
-                                        className="d-flex align-items-center"
-                                      />
-                                    </Button>
-                                  </InputGroup>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col
-                                  xs={10}
-                                  md={6}
-                                  className="d-flex align-items-center my-2"
-                                >
-                                  <Icon
-                                    icon="fa-solid:child"
-                                    className="icon-input me-2"
-                                  />
-
-                                  <span>
-                                    <b className="mb-0">Anak</b> <br />{" "}
-                                    <p className="my-auto font-passenger">
-                                      (2 - 11 tahun)
-                                    </p>
-                                  </span>
-                                </Col>
-                                <Col
-                                  xs={8}
-                                  md={6}
-                                  className="d-flex align-items-center"
-                                >
-                                  <InputGroup className="ps-2">
-                                    <Button
-                                      variant="outline-secondary"
-                                      disabled={options.anak <= 1}
-                                      onClick={() =>
-                                        handleOption("anak", "min")
-                                      }
-                                      style={{ borderRadius: "5px" }}
-                                    >
-                                      <Icon
-                                        icon="fa6-solid:minus"
-                                        className="d-flex align-items-center"
-                                      />
-                                    </Button>
-                                    <Form.Control
-                                      placeholder="0"
-                                      value={options.anak}
-                                      aria-label="Jumlah Penumpang"
-                                      className="mx-1 text-center"
-                                      style={{ borderRadius: "5px" }}
-                                    />
-                                    <Button
-                                      variant="outline-secondary"
-                                      onClick={() =>
-                                        handleOption("anak", "plus")
-                                      }
-                                      style={{ borderRadius: "5px" }}
-                                    >
-                                      <Icon
-                                        icon="fa6-solid:plus"
-                                        className="d-flex align-items-center"
-                                      />
-                                    </Button>
-                                  </InputGroup>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col
-                                  xs={10}
-                                  md={6}
-                                  className="d-flex align-items-center"
-                                >
-                                  <Icon
-                                    icon="fa6-solid:baby"
-                                    className="icon-input me-2"
-                                  />
-
-                                  <span>
-                                    <b className="mb-0">Bayi</b> <br />{" "}
-                                    <p className="my-auto font-passenger">
-                                      (Di bawah 2 tahun)
-                                    </p>
-                                  </span>
-                                </Col>
-                                <Col
-                                  xs={8}
-                                  md={6}
-                                  className="d-flex align-items-center"
-                                >
-                                  <InputGroup className="ps-2">
-                                    <Button
-                                      variant="outline-secondary"
-                                      disabled={options.bayi <= 1}
-                                      onClick={() =>
-                                        handleOption("bayi", "min")
-                                      }
-                                      style={{ borderRadius: "5px" }}
-                                    >
-                                      <Icon
-                                        icon="fa6-solid:minus"
-                                        className="d-flex align-items-center"
-                                      />
-                                    </Button>
-                                    <Form.Control
-                                      placeholder="0"
-                                      value={options.bayi}
-                                      aria-label="Jumlah Penumpang"
-                                      className="mx-1 text-center"
-                                      style={{ borderRadius: "5px" }}
-                                    />
-                                    <Button
-                                      variant="outline-secondary"
-                                      onClick={() =>
-                                        handleOption("bayi", "plus")
-                                      }
-                                      style={{ borderRadius: "5px" }}
-                                    >
-                                      <Icon
-                                        icon="fa6-solid:plus"
-                                        className="d-flex align-items-center"
-                                      />
-                                    </Button>
-                                  </InputGroup>
-                                </Col>
-                              </Row>
-                            </Container>
-                          </Modal.Body>
-                          <Modal.Footer>
-                            <Button onClick={handleClosePassenger}>
-                              Simpan
-                            </Button>
-                          </Modal.Footer>
-                        </Modal>
-                      </Col>
-                      <Col xs={3} md={2}>
-                        <Form.Group>
-                          <Form.Label>Seat Class</Form.Label>
-                          <Form.Control
-                            placeholder="Kelas Kabin"
-                            // value={class}
-                            className="form-input"
-                            onClick={handleShowClass}
-                          />
-                        </Form.Group>
-
-                        <Modal
-                          aria-labelledby="contained-modal-title-vcenter"
-                          centered
-                          show={showClass}
-                          onHide={handleCloseClass}
-                          style={{
-                            marginLeft: "72.8%",
-                            marginTop: "15%",
-                            width: "24.2%",
-                          }}
-                        >
-                          <Modal.Header closeButton></Modal.Header>
-                          <Modal.Body>
-                            <Container>
-                              <Row>
-                                <Col className="d-flex align-items-center">
-                                  <Icon
-                                    icon="el:adult"
-                                    className="icon-input me-2"
-                                  />
-                                  <span>
-                                    <b className="mb-0">Dewasa</b> <br />{" "}
-                                    <p className="my-auto font-passenger">
-                                      (12 tahun ke atas)
-                                    </p>
-                                  </span>
-                                </Col>
-                              </Row>
-                            </Container>
-                          </Modal.Body>
-                          <Modal.Footer>
-                            <Button onClick={handleClosePassenger}>
-                              Simpan
-                            </Button>
-                          </Modal.Footer>
-                        </Modal>
-                      </Col>
+                      <Passengers />
+                      <SeatClasses />
                     </Row>
                   </Card.Body>
                   <div className="d-grid gap-2">
@@ -548,62 +193,58 @@ function Home() {
             </Col>
           </Row>
           <Row
+            md="auto"
             style={{
-              display: "flex",
-              gap: "40px",
-              marginLeft: "6.2%",
+              marginLeft: "5.4%",
               marginRight: "5.4%",
               marginTop: "0.5rem",
-              marginBottom: "1.5rem",
-              textDecoration: "none",
-              color: "black",
+              marginBottom: "1.3rem",
             }}
-            as={Link}
-            to="/"
           >
-            <Col
-              style={{
-                width: "10%",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                border: "1px solid black",
-                padding: "15px",
-                borderRadius: "25px",
-              }}
-              active
-            >
-              <Icon icon="iconamoon:search-bold" className="icon-input" />
-              <span>Category 1</span>
+            <Col className="mb-1">
+              <Button
+                variant="outline-dark"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "9px",
+                  padding: "15px",
+                  borderRadius: "25px",
+                }}
+              >
+                <Icon icon="iconamoon:search-bold" className="icon-input" />
+                Category 1
+              </Button>
             </Col>
-            <Col
-              style={{
-                width: "10%",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                border: "1px solid black",
-                padding: "15px",
-                borderRadius: "25px",
-              }}
-              active
-            >
-              <Icon icon="iconamoon:search-bold" className="icon-input" />
-              <span>Category 2</span>
+            <Col>
+              <Button
+                variant="outline-dark"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "9px",
+                  padding: "15px",
+                  borderRadius: "25px",
+                }}
+              >
+                <Icon icon="iconamoon:search-bold" className="icon-input" />
+                Category 2
+              </Button>
             </Col>
-            <Col
-              style={{
-                width: "10%",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                border: "1px solid black",
-                padding: "15px",
-                borderRadius: "25px",
-              }}
-            >
-              <Icon icon="iconamoon:search-bold" className="icon-input" />
-              <span>Category 3</span>
+            <Col>
+              <Button
+                variant="outline-dark"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "9px",
+                  padding: "15px",
+                  borderRadius: "25px",
+                }}
+              >
+                <Icon icon="iconamoon:search-bold" className="icon-input" />
+                Category 3
+              </Button>
             </Col>
           </Row>
           <Row
