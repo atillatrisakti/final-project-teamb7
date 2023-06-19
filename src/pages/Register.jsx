@@ -13,7 +13,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmpassword, setConfirmpassword] = useState("");
+  const [password_confirmation, setPassword_Confirmation] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
 
@@ -25,7 +25,7 @@ function Register() {
         email,
         phone,
         password,
-        confirmpassword,
+        password_confirmation,
       });
 
       let config = {
@@ -80,7 +80,7 @@ function Register() {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Buat Password</Form.Label>
-                <Form.Control type={showconfirm ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Form.Control type={showPassword ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} />
                 <span
                   className=" position-absolute  translate-middle-y"
                   style={{
@@ -91,9 +91,9 @@ function Register() {
                     right: "120px",
                     top: "564px",
                   }}
-                  onClick={() => setShowConfirm((showconfirm) => !showconfirm)}
+                  onClick={() => setShowPassword((showPassword) => !showPassword)}
                 >
-                  <IconContext.Provider value={{ size: "20px" }}>{showconfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
+                  <IconContext.Provider value={{ size: "20px" }}>{showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
                 </span>
                 <p className="text-muted" style={{ fontSize: "13px" }}>
                   Password Minimal 8 Karakter
@@ -101,7 +101,7 @@ function Register() {
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label>Konfirmasi Password</Form.Label>
-                <Form.Control type="password" placeholder="Konfirmasi Password" style={{ height: "50px" }} value={confirmpassword} onChange={(e) => setConfirmpassword(e.target.value)} />
+                <Form.Control type="password" placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} />
                 <span
                   className=" position-absolute  translate-middle-y"
                   style={{
@@ -112,11 +112,11 @@ function Register() {
                     right: "120px",
                     top: "448px",
                   }}
-                  onClick={() => setShowPassword((showPassword) => !showPassword)}
+                  onClick={() => setShowConfirm((showconfirm) => !showconfirm)}
                 >
-                  <IconContext.Provider value={{ size: "20px" }}>{showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
+                  <IconContext.Provider value={{ size: "20px" }}>{showconfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
                 </span>
-                <p className="text-warning mt-1">{confirmpassword !== password ? "Password tidak sama!" : null}</p>
+                <p className="text-warning mt-1">{password_confirmation !== password ? "Password tidak sama!" : null}</p>
               </Form.Group>
               <button type="submit" className="w-100 regis-button">
                 Daftar
