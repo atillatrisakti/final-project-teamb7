@@ -10,16 +10,13 @@ import {
   Row,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import {
-  RangeDatePicker,
-  SingleDatePicker,
-} from "react-google-flight-datepicker";
+import { RangeDatePicker } from "react-google-flight-datepicker";
 import "react-google-flight-datepicker/dist/main.css";
 import "../styles/Home.css";
 
-import Banner from "../assets/img-banner.svg";
-import Destination from "../assets/img-destination.svg";
+import Banner1 from "../assets/1.svg";
+
+import DestinationPromo from "../assets/img-destination.svg";
 // import { format } from "date-fns";
 
 import { Icon } from "@iconify/react";
@@ -49,10 +46,10 @@ function Home() {
   return (
     <>
       <Carousel
-        controls={false}
+        controls={true}
         style={{
           position: "absolute",
-          top: "6.5rem",
+          top: "4.8rem",
           left: 0,
           right: 0,
           bottom: 0,
@@ -63,9 +60,12 @@ function Home() {
         {/* {destination.slice(1, 3).map((dest) => ( */}
         <Carousel.Item key="">
           <img
-            src={Banner}
-            style={{ width: "100%" }}
-            className="mx-auto d-block"
+            src={Banner1}
+            style={{
+              width: "100%",
+              maxHeight: "590px",
+            }}
+            className="mx-auto"
             alt="banner"
           ></img>
         </Carousel.Item>
@@ -73,14 +73,14 @@ function Home() {
       </Carousel>
       <div>
         <Container>
-          <Row style={{ marginTop: "12rem" }}>
+          <Row style={{ marginTop: "14rem" }}>
             <Col>
               <Form>
                 <Card className="mx-auto mb-4" style={{ width: "75rem" }}>
                   <Card.Body>
                     <Card.Title className="px-3 pt-2 mb-3">
                       <b>Pilih Jadwal Penerbangan spesial di</b>{" "}
-                      <b style={{ color: "#3E6B00" }}>Tiketku!</b>
+                      <b style={{ color: "#4076E2" }}>SyuraTrip!</b>
                     </Card.Title>
                     <Row className="px-3 pt-2 d-flex align-items-center">
                       <Col xs={2} md={1}>
@@ -172,9 +172,15 @@ function Home() {
                     </Row>
                   </Card.Body>
                   <div className="d-grid gap-2">
-                    <span className="square bg-dark rounded-bottom">
+                    <span
+                      className="square rounded-bottom"
+                      style={{ backgroundColor: "#1B3260" }}
+                    >
                       <div className="d-grid gap-2">
-                        <Button variant="dark" style={{ height: "3rem" }}>
+                        <Button
+                          variant="primary"
+                          style={{ height: "3rem", backgroundColor: "#1B3260" }}
+                        >
                           <b>Cari Penerbangan</b>
                         </Button>
                       </div>
@@ -259,7 +265,7 @@ function Home() {
               >
                 <Card className="p-2 mb-5" style={{ borderRadius: "10px" }}>
                   <img
-                    src={Destination}
+                    src={DestinationPromo}
                     alt="destination"
                     style={{
                       width: "100%",
