@@ -85,10 +85,7 @@ function SeatClasses() {
                         }}
                       >
                         <span>
-                          <b className="mb-0">{seat?.name}</b> <br />{" "}
-                          <p className="my-auto font-seat">
-                            IDR 4.950.000 (???)
-                          </p>
+                          <b>{seat?.name}</b>
                         </span>
                       </ListGroup.Item>
                       // console.log(seat);
