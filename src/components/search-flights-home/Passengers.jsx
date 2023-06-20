@@ -13,9 +13,9 @@ import { Icon } from "@iconify/react";
 function Passengers() {
   const [showPassenger, setShowPassenger] = useState(false); // modal
   const [options, setOptions] = useState({
-    dewasa: 2,
+    dewasa: 1,
     anak: 0,
-    bayi: 1,
+    bayi: 0,
   });
 
   const handleClosePassenger = () => setShowPassenger(false); // modal
@@ -54,7 +54,7 @@ function Passengers() {
         style={{
           marginLeft: "61.5%",
           marginTop: "15%",
-          width: "24.2%",
+          width: "50%", //"25.2%",
         }}
       >
         <Modal.Header closeButton></Modal.Header>
