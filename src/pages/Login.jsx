@@ -82,8 +82,8 @@ function Login() {
                     border: "none",
                     backgroundColor: "transparent",
                     cursor: "pointer",
-                    right: "120px",
-                    top: "415px",
+                    right: "125px",
+                    top: "460px",
                   }}
                   onClick={() => setShowPassword((showPassword) => !showPassword)}
                 >

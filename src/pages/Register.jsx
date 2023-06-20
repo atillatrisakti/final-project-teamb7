@@ -57,7 +57,7 @@ function Register() {
       <Row className="h-100">
         <Col className="bg-color d-flex justify-content-center align-items-center">
           <Link to={"/"}>
-            <img src={logo} alt="logo" fluid style={{ width: "264px", height: "146px", top: "301px", left: "85px" }} />
+            <img src={logo} alt="logo" fluid style={{ width: "500px", height: "500px", top: "301px", left: "85px" }} />
             {/* <img src={flower} alt="flower" fluid style={{ bottom: "0px" }} /> */}
           </Link>
         </Col>
