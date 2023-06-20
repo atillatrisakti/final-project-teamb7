@@ -6,9 +6,47 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { IconContext } from "react-icons";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      let data = JSON.stringify({
+        email,
+        password,
+      });
+
+      let config = {
+        method: "post",
+        url: "https://flight-booking-api-development.up.railway.app/api/web/customer-auth/login",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+
+      const response = await axios.request(config);
+      const { token } = response.data.data;
+
+      localStorage.setItem("token", token);
+
+      window.location.href = "/";
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response.data.message);
+        return;
+      }
+      toast.error(error.message);
+    }
+  };
 
   return (
     <Container fluid className="vh-100">
@@ -22,10 +60,10 @@ function Login() {
         <Col className="d-flex justify-content-center align-items-center">
           <div className="w-75">
             <h3 className="fw-bold">Masuk</h3>
-            <Form className=" mt-4">
+            <Form className=" mt-4" onSubmit={onSubmit}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email/No Telepon</Form.Label>
-                <Form.Control type="email" placeholder="Contoh: johndoe@gmail.com" style={{ height: "50px" }} />
+                <Form.Control type="email" value={email} placeholder="Contoh: johndoe@gmail.com" style={{ height: "50px" }} onChange={(e) => setEmail(e.target.value)} />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -36,7 +74,7 @@ function Login() {
                   </Link>
                 </div>
 
-                <Form.Control type={showPassword ? "text" : "password"} placeholder="Masukkan password" style={{ height: "50px" }} />
+                <Form.Control type={showPassword ? "text" : "password"} value={password} placeholder="Masukkan password" style={{ height: "50px" }} onChange={(e) => setPassword(e.target.value)} />
                 <span
                   className=" position-absolute  translate-middle-y"
                   style={{

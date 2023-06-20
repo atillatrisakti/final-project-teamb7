@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
@@ -9,8 +9,7 @@ import dollar from "../assets/search/fi_dollar-sign.svg";
 import rightarrow from "../assets/search/fi_chevron-right.svg";
 import Accordion from "../components/Accordion";
 import "../styles/Accordion.css";
-// import { accordionData } from "../utils/content";
-import NoResult from "../components/NoResult";
+// import NoResult from "../components/NoResult";
 
 const dateList = [
   { id: 1, hari: "Senin" },

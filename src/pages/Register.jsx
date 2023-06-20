@@ -15,9 +15,9 @@ function Register() {
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_Confirmation] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showconfirm, setShowConfirm] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
-  const onSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       let data = JSON.stringify({
@@ -38,12 +38,11 @@ function Register() {
         data: data,
       };
 
-      const response = await axios.request(config);
-      const { token } = response.data.data;
+      await axios.request(config).then((response) => {
+        console.log(response.data);
+      });
 
-      localStorage.setItem("token", token);
-
-      window.location.href = "/";
+      window.location.href = "/login";
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response.data.message);
@@ -65,7 +64,7 @@ function Register() {
         <Col className="d-flex justify-content-center align-items-center">
           <div className="w-75">
             <h3 className="fw-bold">Daftar</h3>
-            <Form className="mt-4" onSubmit={onSubmit}>
+            <Form className="mt-4" onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
                 <Form.Label>Nama</Form.Label>
                 <Form.Control type="text" placeholder="Nama Lengkap" style={{ height: "50px" }} value={name} onChange={(e) => setName(e.target.value)} />
@@ -89,7 +88,7 @@ function Register() {
                     backgroundColor: "transparent",
                     cursor: "pointer",
                     right: "120px",
-                    top: "564px",
+                    top: " 448px",
                   }}
                   onClick={() => setShowPassword((showPassword) => !showPassword)}
                 >
@@ -110,11 +109,11 @@ function Register() {
                     backgroundColor: "transparent",
                     cursor: "pointer",
                     right: "120px",
-                    top: "448px",
+                    top: "564px",
                   }}
-                  onClick={() => setShowConfirm((showconfirm) => !showconfirm)}
+                  onClick={() => setShowConfirm((showConfirm) => !showConfirm)}
                 >
-                  <IconContext.Provider value={{ size: "20px" }}>{showconfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
+                  <IconContext.Provider value={{ size: "20px" }}>{showConfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
                 </span>
                 <p className="text-warning mt-1">{password_confirmation !== password ? "Password tidak sama!" : null}</p>
               </Form.Group>
