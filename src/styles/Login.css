@@ -1,11 +1,11 @@
 .bg-color {
-  background: linear-gradient(180deg, #dec9ff 59.55%, rgba(255, 233, 202, 0) 100%);
+  background: linear-gradient(180deg, #6291ec 59.55%, rgba(255, 233, 202, 0) 100%);
 }
 .login-button {
   border: none;
   border-radius: 12px;
   height: 45px;
-  background-color: #7126b5;
+  background-color: #1b3260;
   color: white;
 }
 

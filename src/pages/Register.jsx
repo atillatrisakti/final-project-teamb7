@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Register.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import logo from "../assets/navbar/logo.svg";
+import logo from "../assets/navbar/logo-name.svg";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
