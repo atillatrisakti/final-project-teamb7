@@ -121,7 +121,7 @@ input.form-control {
   line-height: 20px;
   display: flex;
   align-items: center;
-  color: #4b1979;
+  color: #1B3260;
   flex: none;
   order: 0;
   flex-grow: 0;
@@ -136,7 +136,7 @@ input.form-control {
   gap: 8px;
   width: 500px;
   height: 62px;
-  background: #7126b5;
+  background: #1B3260;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   flex: none;
@@ -187,35 +187,6 @@ input.form-control {
   flex-grow: 1;
 }
 
-.seat-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.seat-row {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.seat {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  background-color: #73ca5c;
-  color: #ffffff;
-  margin-right: 10px;
-  border-radius: 4px;
-}
-.seat.selected {
-  background-color: red; /* Change to desired color for selected seats */
-  pointer-events: none; /* Disable clicking on selected seats */
-}
-
-.seat-label-top,
-.seat-label-side {
-  background-color: white;
-  color: black;
+.custom-date {
+  width: 450px;
 }

@@ -10,8 +10,8 @@ import {
   Row,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { RangeDatePicker } from "react-google-flight-datepicker";
-import "react-google-flight-datepicker/dist/main.css";
+// import { RangeDatePicker } from "react-google-flight-datepicker";
+// import "react-google-flight-datepicker/dist/main.css";
 import "../styles/Home.css";
 
 import Banner1 from "../assets/1.svg";
@@ -147,13 +147,13 @@ function Home() {
                             </Col>
                           </Row>
 
-                          <RangeDatePicker
+                          {/* <RangeDatePicker
                             ranges={date}
                             onChange={(item) => setDate([item.selection])}
                             className="px-0 pt-2"
                             // minDate={new Date(2023, 0, 1)}
                             // maxDate={new Date(2023, 1, 5)}
-                          />
+                          /> */}
                         </Form.Group>
                       </Col>
                       {/* <Col xs={2} md={1}></Col> */}

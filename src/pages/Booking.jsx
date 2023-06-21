@@ -7,8 +7,8 @@ import { toast } from "react-toastify";
 import info from "../assets/booking/info.png";
 import ItemBooking from "../components/ItemBooking";
 import axios from "axios";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function Booking() {
   const navigate = useNavigate();
@@ -428,8 +428,8 @@ function Booking() {
                         Tanggal Lahir
                       </Form.Label>
                       <div style={{ position: "relative", width: "100%" }}>
-                        {/* <DatePicker
-                        required
+                        <DatePicker
+                          required
                           className="custom-date"
                           selected={
                             passenger_dob ? new Date(passenger_dob) : null
@@ -439,7 +439,7 @@ function Booking() {
                           }
                           dateFormat="yyyy-MM-dd"
                           placeholderText="yyyy-mm-dd"
-                        /> */}
+                        />
                         <div
                           style={{
                             position: "absolute",
@@ -523,8 +523,8 @@ function Booking() {
                         Berlaku Sampai
                       </Form.Label>
                       <div style={{ position: "relative", width: "100%" }}>
-                        {/* <DatePicker
-                        required
+                        <DatePicker
+                          required
                           className="custom-date"
                           selected={
                             passenger_identity_card_due_date
@@ -538,7 +538,7 @@ function Booking() {
                           }
                           dateFormat="yyyy-MM-dd"
                           placeholderText="yyyy-mm-dd"
-                        /> */}
+                        />
 
                         <div
                           style={{
@@ -591,7 +591,7 @@ function Booking() {
             className="button-booking"
             size="lg"
             style={{
-              backgroundColor: formSubmitted ? "#a3a3a3" : "#7126b5",
+              backgroundColor: formSubmitted ? "#a3a3a3" : "#1B3260",
               color: "#FFFFFF",
               borderRadius: "10px",
               border: "none",
