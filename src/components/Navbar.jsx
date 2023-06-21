@@ -9,16 +9,13 @@ import { Link } from "react-router-dom";
 import login from "../assets/navbar/fi_log-in.svg";
 import "../styles/Navbar.css";
 
-function Navbarr() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+function Navbarr(props) {
+  const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn ? props.isLoggedIn : false);
+  console.log("ini props", props);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      setIsLoggedIn(true);
-    }
-  }, []);
+    setIsLoggedIn(props.isLoggedIn);
+  }, [props]);
 
   return (
     <Navbar expand="lg" className="py-0 mb-0">

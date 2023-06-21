@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
@@ -14,11 +15,21 @@ import store from "./redux/store";
 import Account from "./pages/Account";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
     <Provider store={store}>
       <BrowserRouter>
         <NoNavbar>
-          <Navbarr />
+          <Navbarr isLoggedIn={isLoggedIn} />
         </NoNavbar>
 
         <Routes>
@@ -30,7 +41,7 @@ function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/history" element={<History />} />
           <Route path="/nohistory" element={<NoHistory />} />
-          <Route path="/account" element={<Account />} />
+          <Route path="/account" element={<Account isLoggedIn={setIsLoggedIn} />} />
         </Routes>
       </BrowserRouter>
     </Provider>
