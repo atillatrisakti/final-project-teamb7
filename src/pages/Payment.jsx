@@ -367,7 +367,7 @@ function Payment() {
             className="button-booking"
             size="lg"
             style={{
-              backgroundColor: "#7126b5",
+              backgroundColor: "#1B3260",
               borderRadius: "10px",
               // marginLeft: "60px",
               color: "#FFFFFF",
