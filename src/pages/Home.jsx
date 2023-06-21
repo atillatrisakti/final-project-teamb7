@@ -49,12 +49,13 @@ function Home() {
             }}
             className="mx-auto"
             alt="banner"
-          ></img>
+          ></img> */}
         </Carousel.Item>
         {/* ))} */}
       </Carousel>
       <div>
         <Container>
+          <Row style={{ marginTop: "14rem" }}>
           <Row style={{ marginTop: "14rem" }}>
             <Col>
               <Form>
@@ -66,11 +67,7 @@ function Home() {
                     </Card.Title>
                     <Row className="px-3 pt-2 d-flex align-items-center">
                       <Col xs={2} md={1}>
-                        <Icon
-                          icon="material-symbols:flight-takeoff"
-                          color="gray"
-                          className="icon-input"
-                        />
+                        <Icon icon="material-symbols:flight-takeoff" color="gray" className="icon-input" />
                         <Form.Label className="font-input">From</Form.Label>
                       </Col>
                       {/* ================Kota Asal================= */}
@@ -87,11 +84,7 @@ function Home() {
                         />
                       </Col>
                       <Col xs={2} md={1}>
-                        <Icon
-                          icon="material-symbols:flight-land"
-                          color="gray"
-                          className="icon-input"
-                        />
+                        <Icon icon="material-symbols:flight-land" color="gray" className="icon-input" />
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
                       {/* ================Kota Tujuan================= */}
@@ -99,11 +92,7 @@ function Home() {
                     </Row>
                     <Row className="px-3 pt-2 my-3 d-flex align-items-center">
                       <Col xs={2} md={1}>
-                        <Icon
-                          icon="material-symbols:date-range-outline"
-                          color="gray"
-                          className="icon-input"
-                        />
+                        <Icon icon="material-symbols:date-range-outline" color="gray" className="icon-input" />
                         <Form.Label className="font-input">Date</Form.Label>
                       </Col>
                       {/* ================DatePicker================= */}
@@ -112,11 +101,7 @@ function Home() {
                       </Col>
                       <Col xs={2} md={1}></Col>
                       <Col xs={2} md={1}>
-                        <Icon
-                          icon="material-symbols:airline-seat-recline-normal"
-                          color="gray"
-                          className="icon-input"
-                        />
+                        <Icon icon="material-symbols:airline-seat-recline-normal" color="gray" className="icon-input" />
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
                       {/* ==========Jumlah Passangers dan Seat Classes========== */}
@@ -207,16 +192,10 @@ function Home() {
               </Button>
             </Col>
           </Row>
-          <Row
-            className="mt-2"
-            style={{ marginLeft: "5.4%", marginRight: "5.4%" }}
-          >
+          <Row className="mt-2" style={{ marginLeft: "5.4%", marginRight: "5.4%" }}>
             {/* {destination.map((dest) => ( */}
             <Col sm={12} md={6} lg={3} key="">
-              <Link
-                to={`/details/...`}
-                style={{ textDecoration: "none", borderColor: "black" }}
-              >
+              <Link to={`/details/...`} style={{ textDecoration: "none", borderColor: "black" }}>
                 <Card className="p-2 mb-5" style={{ borderRadius: "10px" }}>
                   <img
                     src={DestinationPromo}
@@ -233,10 +212,7 @@ function Home() {
                       <h5 className="d-flex align-items-center">
                         <b>
                           Jakarta
-                          <Icon
-                            icon="heroicons:arrow-long-right"
-                            className="mx-1"
-                          />
+                          <Icon icon="heroicons:arrow-long-right" className="mx-1" />
                           Bangkok
                         </b>
                       </h5>
