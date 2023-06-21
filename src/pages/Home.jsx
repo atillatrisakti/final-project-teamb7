@@ -9,11 +9,6 @@ import {
   Row,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-// import { RangeDatePicker } from "react-google-flight-datepicker";
-// import "react-google-flight-datepicker/dist/main.css";
-=======
->>>>>>> a5b0437d979acbffa87d23dd45fdf2d32353a094
 import "../styles/Home.css";
 
 import Banner1 from "../assets/1.svg";
@@ -54,7 +49,7 @@ function Home() {
             }}
             className="mx-auto"
             alt="banner"
-          ></img> */}
+          ></img> */
         </Carousel.Item>
         {/* ))} */}
       </Carousel>
@@ -102,42 +97,7 @@ function Home() {
                       </Col>
                       {/* ================DatePicker================= */}
                       <Col xs={4} md={5}>
-<<<<<<< HEAD
-                        <Form.Group>
-                          <Row
-                            className="d-flex align-content-left"
-                            // style={{ width: "28.5rem" }}
-                          >
-                            <Col md={6}>
-                              <span>Departure</span>
-                            </Col>
-                            <Col md={5} className="ps-0">
-                              <span>Return</span>
-                            </Col>
-                            <Col md={1} className="ps-0">
-                              <Form.Check // prettier-ignore
-                                type="switch"
-                                id="custom-switch"
-                              />
-                              {/* <Form.Check // prettier-ignore
-                                disabled
-                                type="switch"
-                                id="disabled-custom-switch"
-                              /> */}
-                            </Col>
-                          </Row>
-
-                          {/* <RangeDatePicker
-                            ranges={date}
-                            onChange={(item) => setDate([item.selection])}
-                            className="px-0 pt-2"
-                            // minDate={new Date(2023, 0, 1)}
-                            // maxDate={new Date(2023, 1, 5)}
-                          /> */}
-                        </Form.Group>
-=======
                         <DatePicker />
->>>>>>> a5b0437d979acbffa87d23dd45fdf2d32353a094
                       </Col>
                       <Col xs={2} md={1}></Col>
                       <Col xs={2} md={1}>
@@ -269,6 +229,7 @@ function Home() {
               </Link>
             </Col>
             {/* ))} */}
+          </Row>
           </Row>
         </Container>
       </div>
