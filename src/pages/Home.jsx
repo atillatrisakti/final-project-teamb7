@@ -54,7 +54,7 @@ function Home() {
             }}
             className="mx-auto"
             alt="banner"
-          ></img> */}
+          ></img> */
         </Carousel.Item>
         {/* ))} */}
       </Carousel>
@@ -269,6 +269,7 @@ function Home() {
               </Link>
             </Col>
             {/* ))} */}
+          </Row>
           </Row>
         </Container>
       </div>
