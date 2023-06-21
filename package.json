@@ -13,10 +13,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-datepicker": "^4.14.1",
-<<<<<<< HEAD
-=======
     "react-day-picker": "^8.8.0",
->>>>>>> a5b0437d979acbffa87d23dd45fdf2d32353a094
     "react-dom": "^18.2.0",
     "react-icons": "^4.9.0",
     "react-redux": "^8.0.7",
