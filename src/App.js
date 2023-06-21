@@ -11,6 +11,7 @@ import History from "./pages/History";
 import NoHistory from "./components/NoHistory";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import Account from "./pages/Account";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
           <Route path="/booking" element={<Booking />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/history" element={<History />} />
+          <Route path="/nohistory" element={<NoHistory />} />
+          <Route path="/account" element={<Account />} />
         </Routes>
       </BrowserRouter>
     </Provider>
