@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import edit from "../assets/account/fi_edit-3.svg";
 import settings from "../assets/account/fi_settings.svg";
 import logout from "../assets/account/fi_log-out.svg";
@@ -8,6 +8,18 @@ import arrow from "../assets/account/fi_arrow-left.svg";
 import "../styles/Account.css";
 
 function Account() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
     <>
       <Container className="mt-4">
@@ -21,16 +33,28 @@ function Account() {
           </Link>
         </div>
       </Container>
-      <div style={{ border: "1px solid #D0D0D0", boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.15)" }} />
+      <div style={{ border: "1px solid #D0D0D0", boxShadow: "0px 0px 1px rgba(0, 0, 0, 0.10)" }} />
       <Container className="mt-4">
         <Row>
-          <Col md={6} className="d-flex justify-content-center">
-            <div>
-              <img src={edit} alt="edit" className="me-2 mb-3" />
-              <p>Ubah Profil</p>
+          <Col md={6} className="">
+            <div className="mb-3">
+              <img src={edit} alt="edit" className="me-2" />
+              <span>Ubah Profil</span>
             </div>
-            <div>
-              <img src={settings} alt="setting" />
+            <div className="mb-3">
+              <img src={settings} alt="setting" className="me-2" />
+              <span>Pengaturan</span>
+            </div>
+            <div
+              onClick={() => {
+                localStorage.removeItem("token");
+                setIsLoggedIn(false);
+                return navigate("/");
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <img src={logout} alt="logout" className="me-2" />
+              <span>Keluar</span>
             </div>
           </Col>
 

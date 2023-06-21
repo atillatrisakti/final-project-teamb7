@@ -1,7 +1,7 @@
 .list {
   display: flex;
   flex-direction: row;
-  background: #a06ece;
+  background: #1b3260;
   border-radius: 12px;
   padding: 10px 16px;
   color: white;
@@ -31,7 +31,7 @@
   height: 40px;
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
-  background: #a06ece;
+  background: #1b3260;
 }
 
 .btn-simpan {
@@ -40,7 +40,7 @@
   gap: 8px;
   width: 150px;
   height: 48px;
-  background: #4b1979;
+  background: #1b3260;
   border-radius: 12px;
   color: white;
 }

@@ -36,7 +36,9 @@ function Navbarr() {
               <img src={notif} alt="notif" />
             </button>
             <button style={{ border: "none", background: "none" }}>
-              <img src={user} alt="user" />
+              <Link to={"/account"}>
+                <img src={user} alt="user" />
+              </Link>
             </button>
           </Navbar.Collapse>
         ) : (
