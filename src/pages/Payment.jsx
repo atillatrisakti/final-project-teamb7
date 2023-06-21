@@ -364,7 +364,7 @@ function Payment() {
             </div>
           </Card>
           <button
-            className="button"
+            className="button-booking"
             size="lg"
             style={{
               backgroundColor: "#7126b5",

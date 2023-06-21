@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
@@ -9,9 +9,7 @@ import dollar from "../assets/search/fi_dollar-sign.svg";
 import rightarrow from "../assets/search/fi_chevron-right.svg";
 import Accordion from "../components/Accordion";
 import "../styles/Accordion.css";
-// import { accordionData } from "../utils/content";
-import NoResult from "../components/NoResult";
-import axios from "axios";
+// import NoResult from "../components/NoResult";
 
 const dateList = [
   { id: 1, hari: "Senin" },
@@ -24,20 +22,7 @@ const dateList = [
 ];
 function Search() {
   const [date, setDate] = useState("");
-  const [sort, setSort] = useState("Termurah");
-  const [flight, setFlight] = useState([]);
-
-  useEffect(() => {
-    async function getListFlight() {
-      try {
-        const response = await axios.get("https://flight-booking-api-development.up.railway.app/api/web/flights?departure_airport_id=1&destination_airport_id=2&departure_date=2023-06-13&number_passenger=1&class_id=1");
-        setFlight(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getListFlight();
-  }, []);
+  // const [sort, setSort] = useState("Termurah");
 
   return (
     <Container className="mt-3">
@@ -108,11 +93,11 @@ function Search() {
                       return b.price - a.price;
                     }
                   })
-                  .map((item) => <Accordion item={item} />)
+                  .map((item) => )
               ) : (
                 <NoResult />
               )} */}
-              <p>{flight[0].airplane_name}</p>
+              <Accordion />
             </div>
           </Col>
         </Row>

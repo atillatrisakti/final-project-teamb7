@@ -17,8 +17,6 @@ function Booking() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [hasFamilyName, setHasFamilyName] = useState(false);
-  const [flight_id, setFlight_id] = useState("");
-  const [seat_id, setSeat_id] = useState("");
   const [passenger_title_id, setPassenger_title_id] = useState("");
   const [passenger_name, setPassenger_name] = useState("");
   const [passenger_family_name, setPassenger_family_name] = useState("");
@@ -48,7 +46,7 @@ function Booking() {
     }
   };
 
-  //switch family name
+  //switch has family name
   const handleSwitch = () => {
     setHasFamilyName(!hasFamilyName);
     if (!hasFamilyName) {
@@ -134,7 +132,7 @@ function Booking() {
     try {
       let data = JSON.stringify({
         customer_identity: {
-          title_id: "",
+          title_id:"2",
           name,
           family_name,
           email,
@@ -142,9 +140,9 @@ function Booking() {
         },
         passenger_identity: [
           {
-            flight_id,
-            seat_id,
-            passenger_title_id,
+            flight_id:"1",
+            seat_id:"1",
+            passenger_title_id: Number(passenger_title_id),
             passenger_name,
             passenger_family_name,
             passenger_dob,
@@ -274,12 +272,16 @@ function Booking() {
                           Nama Keluarga
                         </Form.Label>
                         <Form.Control
+                          required
                           placeholder="Nama Keluarga"
                           name="familyName"
                           value={family_name}
                           onChange={(e) => setFamily_name(e.target.value)}
                           style={{ width: "454px", height: "40px" }}
                         />
+                        <Form.Control.Feedback type="invalid">
+                          Please enter a family name.
+                        </Form.Control.Feedback>
                       </Form.Group>
                     ) : null}
                     <Form.Group className="mb-3">
@@ -365,7 +367,7 @@ function Booking() {
                       >
                         <option value="">Select Title</option>
                         {titles.map((title) => (
-                          <option key={title.id} value={title.name}>
+                          <option key={title.id} value={title.id}>
                             {title.name}
                           </option>
                         ))}
@@ -451,6 +453,7 @@ function Booking() {
                           <FaCalendarAlt />
                         </div>
                       </div>
+                      
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label className="form-label-booking">
@@ -466,7 +469,7 @@ function Booking() {
                       >
                         <option value="">Select Countries</option>
                         {countries.map((country) => (
-                          <option key={country.id} value={country.name}>
+                          <option key={country.id} value={country.id}>
                             {country.name}
                           </option>
                         ))}
@@ -509,7 +512,7 @@ function Booking() {
                       >
                         <option value="">Select Countries</option>
                         {countries.map((country) => (
-                          <option key={country.id} value={country.name}>
+                          <option key={country.id} value={country.id}>
                             {country.name}
                           </option>
                         ))}
@@ -756,7 +759,7 @@ function Booking() {
                   className="button-booking"
                   size="lg"
                   style={{
-                    backgroundColor: "#7126b5",
+                    backgroundColor: "#FF0000",
                     color: "#FFFFFF",
                     borderRadius: "10px",
                     marginTop: "10px",
