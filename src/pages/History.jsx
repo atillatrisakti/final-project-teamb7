@@ -6,6 +6,8 @@ import thin from "../assets/booking/thin.svg";
 import right from "../assets/booking/right.svg";
 import "../styles/History.css";
 import NoHistory from "../components/NoHistory";
+import { Link } from "react-router-dom";
+import arrow from "../assets/account/fi_arrow-left.svg";
 
 function History() {
   const [showOrderDetails, setShowOrderDetails] = useState(false);
@@ -36,7 +38,15 @@ function History() {
     return null;
   };
   return (
-    <Container className="history">
+    <Container>
+      <div className="header">
+        <Link to={"/"} style={{ textDecoration: "none" }}>
+          <div className="list mx-4 mt-3">
+            <img src={arrow} alt="left-arrow" />
+            Beranda
+          </div>
+        </Link>
+      </div>
       {hasOrderHistory ? (
         <Row>
           <Col md={6}>
