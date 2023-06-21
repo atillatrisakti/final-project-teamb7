@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import {
   Button,
   Card,
@@ -10,38 +9,21 @@ import {
   Row,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { RangeDatePicker } from "react-google-flight-datepicker";
-import "react-google-flight-datepicker/dist/main.css";
 import "../styles/Home.css";
 
 import Banner1 from "../assets/1.svg";
 
 import DestinationPromo from "../assets/img-destination.svg";
-// import { format } from "date-fns";
 
 import { Icon } from "@iconify/react";
 import DepartureAirports from "../components/search-flights-home/DepartureAirports";
 import DestinationAirports from "../components/search-flights-home/DestinationAirports";
 import Passengers from "../components/search-flights-home/Passengers";
 import SeatClasses from "../components/search-flights-home/SeatClasses";
+import DatePicker from "../components/search-flights-home/DatePicker";
 
 function Home() {
-  const [destination, setDestination] = useState([]);
-
-  const [date, setDate] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
-
-  useEffect(() => {
-    axios
-      .get(``)
-      .then((response) => setDestination(response.data.results))
-      .catch((error) => console.log(error));
-  }, []);
+  // const [destination, setDestination] = useState([]);
 
   return (
     <>
@@ -91,7 +73,8 @@ function Home() {
                         />
                         <Form.Label className="font-input">From</Form.Label>
                       </Col>
-                      <DepartureAirports /> {/* Kota Asal */}
+                      {/* ================Kota Asal================= */}
+                      <DepartureAirports />
                       <Col
                         xs={2}
                         md={1}
@@ -111,7 +94,8 @@ function Home() {
                         />
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
-                      <DestinationAirports /> {/* Kota Tujuan */}
+                      {/* ================Kota Tujuan================= */}
+                      <DestinationAirports />
                     </Row>
                     <Row className="px-3 pt-2 my-3 d-flex align-items-center">
                       <Col xs={2} md={1}>
@@ -122,41 +106,10 @@ function Home() {
                         />
                         <Form.Label className="font-input">Date</Form.Label>
                       </Col>
+                      {/* ================DatePicker================= */}
                       <Col xs={4} md={5}>
-                        <Form.Group>
-                          <Row
-                            className="d-flex align-content-left"
-                            // style={{ width: "28.5rem" }}
-                          >
-                            <Col md={6}>
-                              <span>Departure</span>
-                            </Col>
-                            <Col md={5} className="ps-0">
-                              <span>Return</span>
-                            </Col>
-                            <Col md={1} className="ps-0">
-                              <Form.Check // prettier-ignore
-                                type="switch"
-                                id="custom-switch"
-                              />
-                              {/* <Form.Check // prettier-ignore
-                                disabled
-                                type="switch"
-                                id="disabled-custom-switch"
-                              /> */}
-                            </Col>
-                          </Row>
-
-                          <RangeDatePicker
-                            ranges={date}
-                            onChange={(item) => setDate([item.selection])}
-                            className="px-0 pt-2"
-                            // minDate={new Date(2023, 0, 1)}
-                            // maxDate={new Date(2023, 1, 5)}
-                          />
-                        </Form.Group>
+                        <DatePicker />
                       </Col>
-                      {/* <Col xs={2} md={1}></Col> */}
                       <Col xs={2} md={1}></Col>
                       <Col xs={2} md={1}>
                         <Icon
@@ -166,7 +119,7 @@ function Home() {
                         />
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
-
+                      {/* ==========Jumlah Passangers dan Seat Classes========== */}
                       <Passengers />
                       <SeatClasses />
                     </Row>
@@ -191,6 +144,7 @@ function Home() {
             </Col>
           </Row>
 
+          {/* ========== FLIGHT PROMO =========*/}
           <Row style={{ marginLeft: "5.4%", marginRight: "5.4%" }}>
             <Col sm={10} className="mt-1">
               <h5 className="text-dark text-popular mt-2">

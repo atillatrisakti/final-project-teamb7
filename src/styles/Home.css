@@ -1,5 +1,5 @@
 .form-input {
-  height: 3.5rem;
+  height: 3.1rem;
 }
 
 .icon-switch {
@@ -34,4 +34,8 @@
   gap: "10px";
   padding: "15px";
   border-radius: "25px";
+} */
+
+/* .modal {
+  --bs-modal-width: fit-content !important;
 } */
