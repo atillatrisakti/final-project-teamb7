@@ -3,7 +3,7 @@ import { Button, Card, Carousel, Col, Container, Form, Row } from "react-bootstr
 import { Link } from "react-router-dom";
 import "../styles/Home.css";
 
-// import Banner1 from "../assets/1.svg";
+import Banner1 from "../assets/1.svg";
 
 import DestinationPromo from "../assets/img-destination.svg";
 
@@ -33,7 +33,7 @@ function Home() {
       >
         {/* {destination.slice(1, 3).map((dest) => ( */}
         <Carousel.Item key="">
-          {/* <img
+          <img
             src={Banner1}
             style={{
               width: "100%",
@@ -41,7 +41,7 @@ function Home() {
             }}
             className="mx-auto"
             alt="banner"
-          ></img> */}
+          ></img>
         </Carousel.Item>
         {/* ))} */}
       </Carousel>
