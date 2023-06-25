@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Form, Container, Row, Col } from "react-bootstrap";
 import "../styles/Booking.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaCheckCircle, FaCalendarAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import info from "../assets/booking/info.png";
@@ -37,6 +37,9 @@ function Booking() {
   const [validated, setValidated] = useState(false);
   const [countries, setCountries] = useState([]);
   const [titles, setTitles] = useState([]);
+  const [detailFlight, setDetailFlight] = useState([]);
+  const [flight_id, setFlight_id] = useState();
+  const params = useParams();
 
   //switch passenger has family name
   const handleSwitchChange = () => {
@@ -132,7 +135,7 @@ function Booking() {
     try {
       let data = JSON.stringify({
         customer_identity: {
-          title_id:"2",
+          title_id: "2",
           name,
           family_name,
           email,
@@ -140,8 +143,8 @@ function Booking() {
         },
         passenger_identity: [
           {
-            flight_id:"1",
-            seat_id:"1",
+            flight_id: "1",
+            seat_id: "1",
             passenger_title_id: Number(passenger_title_id),
             passenger_name,
             passenger_family_name,
@@ -176,6 +179,20 @@ function Booking() {
       toast.error(error.message);
     }
   };
+
+   useEffect(() => {
+     async function getDetailFlight() {
+       try {
+         const response = await axios.get(
+           `https://flight-booking-api-development.up.railway.app/api/web/flights/1`
+         );
+         setDetailFlight(response.data.data);
+       } catch (error) {
+         console.log(error);
+       }
+     }
+     getDetailFlight();
+   }, []);
 
   const handlePaymentClick = () => {
     navigate("/payment");
@@ -453,7 +470,6 @@ function Booking() {
                           <FaCalendarAlt />
                         </div>
                       </div>
-                      
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label className="form-label-booking">
@@ -651,7 +667,7 @@ function Booking() {
                   borderBottom: "1px solid #D0D0D0",
                 }}
               >
-                Soekarno Hatta - Terminal 1A Domestik
+                {detailFlight[0]?.departure_airport} - Terminal 1A Domestik
               </div>
               <Container>
                 <div
@@ -670,9 +686,13 @@ function Booking() {
                       <img src={info} alt="info" fluid width="24" height="24" />
                     </div>
                     <div>
-                      <h5 style={{ margin: 0 }}>Jet Air - Economy</h5>
+                      <h5 style={{ margin: 0 }}>
+                        {detailFlight[0]?.airplane_name}
+                      </h5>
                       <div style={{ marginBottom: "10px" }}>
-                        <p style={{ margin: 0, fontSize: "14px" }}>JT - 203</p>
+                        <p style={{ margin: 0, fontSize: "14px" }}>
+                          {detailFlight[0]?.airplane_code}
+                        </p>
                       </div>
                       <p style={{ margin: 0 }}>Informasi:</p>
                       <p style={{ margin: 0, fontWeight: "normal" }}>
@@ -721,7 +741,7 @@ function Booking() {
                   borderBottom: "1px solid #D0D0D0",
                 }}
               >
-                Soekarno Hatta - Terminal 1A Domestik
+                {detailFlight[0]?.arrival_airport} - Terminal 1A Domestik
               </div>
               <Container
                 style={{
@@ -740,9 +760,9 @@ function Booking() {
                     <div>Tax</div>
                   </Col>
                   <Col>
-                    <div>IDR 9.550.000</div>
+                    <div>IDR {detailFlight[0]?.price}</div>
                     <div>IDR 0</div>
-                    <div>IDR 300.000</div>
+                    <div>IDR {detailFlight[0]?.tax}</div>
                   </Col>
                 </Row>
               </Container>
