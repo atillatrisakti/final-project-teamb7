@@ -44,12 +44,14 @@ function DatePicker() {
   const handleRangeSelect = (range) => {
     setSelectedRange(range);
     if (range?.from) {
-      setFromValue(format(range.from, "MMMM d, yyyy"));
+      // setFromValue(format(range.from, "MMMM d, yyyy"));
+      setFromValue(format(range.from, "y-MM-dd"));
     } else {
       setFromValue("");
     }
     if (range?.to) {
-      setToValue(format(range.to, "MMMM d, yyyy"));
+      // setToValue(format(range.to, "MMMM d, yyyy"));
+      setToValue(format(range.to, "y-MM-dd"));
       handleCloseDate();
     } else {
       setToValue("");
@@ -76,6 +78,7 @@ function DatePicker() {
             <Form.Control
               size={10}
               placeholder="From Date"
+              name="start_date"
               value={fromValue}
               onChange={handleFromChange}
               onClick={handleShowDate}
@@ -88,6 +91,7 @@ function DatePicker() {
           <Form.Control
             size={10}
             placeholder="To Date"
+            name="end_date"
             value={toValue}
             onChange={handleToChange}
             onClick={handleShowDate}
@@ -110,7 +114,6 @@ function DatePicker() {
         centered
         show={showDate}
         onHide={handleCloseDate}
-        // contentClassName="modal"
         style={{
           display: "block",
           marginLeft: "18.8%",
@@ -119,7 +122,7 @@ function DatePicker() {
         }}
         size="lg"
       >
-        <Modal.Body contentClassName="custom-modal-style">
+        <Modal.Body>
           <Container>
             <Row>
               <Col>

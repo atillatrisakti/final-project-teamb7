@@ -34,7 +34,10 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/search" element={<Search />} />
+          <Route
+            path="/search/:departure_airport_id/:destination_airport_id/:departure_date/:number_passenger/:class_id"
+            element={<Search />}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/booking" element={<Booking />} />
