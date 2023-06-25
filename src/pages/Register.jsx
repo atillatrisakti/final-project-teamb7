@@ -16,9 +16,17 @@ function Register() {
   const [password_confirmation, setPassword_Confirmation] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [validate, setValidate] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    setValidate(true);
+
     try {
       let data = JSON.stringify({
         name,
@@ -64,22 +72,25 @@ function Register() {
         <Col className="d-flex justify-content-center align-items-center">
           <div className="w-75">
             <h3 className="fw-bold">Daftar</h3>
-            <Form className="mt-4" onSubmit={handleSubmit}>
+            <Form className="mt-4" onSubmit={handleSubmit} noValidate validated={validate}>
               <Form.Group className="mb-3">
                 <Form.Label>Nama</Form.Label>
-                <Form.Control type="text" placeholder="Nama Lengkap" style={{ height: "50px" }} value={name} onChange={(e) => setName(e.target.value)} />
+                <Form.Control type="text" placeholder="Nama Lengkap" style={{ height: "50px" }} value={name} onChange={(e) => setName(e.target.value)} required />
+                <Form.Control.Feedback type="invalid">Silahkan Masukkan Nama Anda</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="email" placeholder="Contoh: johndee@gmail.com" style={{ height: "50px" }} value={email} onChange={(e) => setEmail(e.target.value)} />
+                <Form.Control type="email" placeholder="Contoh: johndee@gmail.com" style={{ height: "50px" }} value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <Form.Control.Feedback type="invalid">Silahkan Masukkan Email Anda</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Nomor Telepon</Form.Label>
-                <Form.Control type="text" placeholder="+62" style={{ height: "50px" }} value={phone} onChange={(e) => setPhone(e.target.value)} />
+                <Form.Control type="text" placeholder="+62" style={{ height: "50px" }} value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                <Form.Control.Feedback type="invalid">Silahkan Masukkan Nomor Telepon Anda</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Buat Password</Form.Label>
-                <Form.Control type={showPassword ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Form.Control type={showPassword ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <span
                   className=" position-absolute  translate-middle-y"
                   style={{
@@ -94,13 +105,10 @@ function Register() {
                 >
                   <IconContext.Provider value={{ size: "20px" }}>{showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
                 </span>
-                <p className="text-muted" style={{ fontSize: "13px" }}>
-                  Password Minimal 8 Karakter
-                </p>
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label>Konfirmasi Password</Form.Label>
-                <Form.Control type="password" placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} />
+                <Form.Control type="password" placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} required />
                 <span
                   className=" position-absolute  translate-middle-y"
                   style={{
