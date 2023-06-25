@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import {
   Button,
   Col,
@@ -18,6 +18,7 @@ function DestinationAirports() {
   const [selectedAirport, setSelectedAirport] = useState("");
   const [search, setSearch] = useState("");
   const [dataAirport, setDataAirport] = useState([]);
+  const [idDestAirport, setIdDestAirport] = useState(0);
 
   const handleClose = () => setShow(false); // modal
   const handleShow = () => setShow(true);
@@ -30,7 +31,7 @@ function DestinationAirports() {
       const data = response.data.data;
       setDestAirport(data);
       setDataAirport(data);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       toast.error(error?.message);
     }
@@ -54,8 +55,8 @@ function DestinationAirports() {
       : destAirport.filter((airp) =>
           airp.name.toLowerCase().includes(search.toLowerCase())
         );
-  console.log("Ini search", search);
-  console.log("filter", filteredAirport);
+  // console.log("Ini search", search);
+  // console.log("filter", filteredAirport);
 
   const InputValue = () => {
     if (search !== "") {
@@ -68,7 +69,9 @@ function DestinationAirports() {
     <Col xs={5} md={4}>
       <Form.Group>
         <Form.Control
+          data-id={idDestAirport}
           placeholder="Kota Tujuan"
+          name="destination_airport"
           className="form-input"
           onClick={handleShow}
           value={selectedAirport}
@@ -141,6 +144,7 @@ function DestinationAirports() {
                           e.preventDefault();
                           setDestAirport(item.airports);
                           setSelectedAirport(item?.name);
+                          setIdDestAirport(item?.id);
                           // console.log()
                           if (destAirport.length !== dataAirport.length) {
                             setDestAirport(dataAirport);

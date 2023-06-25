@@ -18,6 +18,7 @@ function DepartureAirports() {
   const [selectedAirport, setSelectedAirport] = useState("");
   const [search, setSearch] = useState("");
   const [dataAirport, setDataAirport] = useState([]);
+  const [idDeptAirport, setIdDeptAirport] = useState(0);
 
   const handleClose = () => setShow(false); // modal
   const handleShow = () => setShow(true);
@@ -30,7 +31,7 @@ function DepartureAirports() {
       const data = response.data.data;
       setAirport(data);
       setDataAirport(data);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       toast.error(error?.message);
     }
@@ -54,8 +55,8 @@ function DepartureAirports() {
       : airport.filter((airp) =>
           airp.name.toLowerCase().includes(search.toLowerCase())
         );
-  console.log("Ini search", search);
-  console.log("filter", filteredAirport);
+  // console.log("Ini search", search);
+  // console.log("filter", filteredAirport);
 
   const InputValue = () => {
     if (search !== "") {
@@ -68,7 +69,9 @@ function DepartureAirports() {
     <Col xs={7} md={5}>
       <Form.Group>
         <Form.Control
+          data-id={idDeptAirport}
           placeholder="Kota Asal"
+          name="departure_airport"
           className="form-input"
           onClick={handleShow}
           value={selectedAirport}
@@ -141,6 +144,8 @@ function DepartureAirports() {
                           e.preventDefault();
                           setAirport(item.airports);
                           setSelectedAirport(item?.name);
+                          setIdDeptAirport(item?.id);
+
                           // console.log()
                           if (airport.length !== dataAirport.length) {
                             setAirport(dataAirport);
