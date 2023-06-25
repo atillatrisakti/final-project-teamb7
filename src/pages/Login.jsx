@@ -63,7 +63,7 @@ function Login() {
             <Form className=" mt-4" onSubmit={onSubmit}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email/No Telepon</Form.Label>
-                <Form.Control type="email" value={email} placeholder="Contoh: johndoe@gmail.com" style={{ height: "50px" }} onChange={(e) => setEmail(e.target.value)} />
+                <Form.Control type="email" value={email} placeholder="Contoh: johndoe@gmail.com" style={{ height: "50px" }} onChange={(e) => setEmail(e.target.value)} required />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -74,7 +74,7 @@ function Login() {
                   </Link>
                 </div>
 
-                <Form.Control type={showPassword ? "text" : "password"} value={password} placeholder="Masukkan password" style={{ height: "50px" }} onChange={(e) => setPassword(e.target.value)} />
+                <Form.Control type={showPassword ? "text" : "password"} value={password} placeholder="Masukkan password" style={{ height: "50px" }} onChange={(e) => setPassword(e.target.value)} required />
                 <span
                   className=" position-absolute  translate-middle-y"
                   style={{

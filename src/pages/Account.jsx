@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import edit from "../assets/account/fi_edit-3.svg";
@@ -7,18 +7,8 @@ import logout from "../assets/account/fi_log-out.svg";
 import arrow from "../assets/account/fi_arrow-left.svg";
 import "../styles/Account.css";
 
-function Account() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+function Account(props) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      setIsLoggedIn(true);
-    }
-  }, []);
 
   return (
     <>
@@ -48,7 +38,7 @@ function Account() {
             <div
               onClick={() => {
                 localStorage.removeItem("token");
-                setIsLoggedIn(false);
+                props.isLoggedIn(false);
                 return navigate("/");
               }}
               style={{ cursor: "pointer" }}

@@ -9,16 +9,13 @@ import { Link } from "react-router-dom";
 import login from "../assets/navbar/fi_log-in.svg";
 import "../styles/Navbar.css";
 
-function Navbarr() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+function Navbarr(props) {
+  const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn ? props.isLoggedIn : false);
+  console.log("ini props", props);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      setIsLoggedIn(true);
-    }
-  }, []);
+    setIsLoggedIn(props.isLoggedIn);
+  }, [props]);
 
   return (
     <Navbar expand="lg" className="py-0 mb-0">
@@ -28,10 +25,7 @@ function Navbarr() {
         </Navbar.Brand>
 
         {isLoggedIn ? (
-          <Navbar.Collapse
-            id="navbarScroll"
-            className="d-flex justify-content-end gap-2"
-          >
+          <Navbar.Collapse id="navbarScroll" className="d-flex justify-content-end gap-2">
             <button style={{ border: "none", background: "none" }}>
               <img src={list} alt="list" />
             </button>
@@ -45,10 +39,7 @@ function Navbarr() {
             </button>
           </Navbar.Collapse>
         ) : (
-          <Navbar.Collapse
-            id="navbarScroll"
-            className="d-flex justify-content-end"
-          >
+          <Navbar.Collapse id="navbarScroll" className="d-flex justify-content-end">
             <Link to={"/login"} style={{ textDecoration: "none" }}>
               <button className="login_button">
                 <img src={login} alt="login-logo" /> Masuk

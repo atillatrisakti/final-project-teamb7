@@ -39,7 +39,7 @@ function Search() {
           </Col>
         </Row>
         <Row className="mt-4 ">
-          <Col>
+          <Col key={dateList}>
             <div className="date">
               {dateList.map((e) => (
                 <div
