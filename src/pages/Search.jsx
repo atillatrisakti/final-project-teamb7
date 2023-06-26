@@ -70,7 +70,8 @@ function Search() {
             >
               <img src={arrow} alt="left-arrow" className="mb-1" />{" "}
               <span>
-                {params.departure_airport_code} - MLB - 2 Penumpang - Economy
+                {params.departure_airport_code} - MLB -
+                {params.number_passenger} Penumpang - Economy
               </span>
             </div>
           </Col>

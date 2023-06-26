@@ -4,7 +4,7 @@ import { Row, Col, Container, Card } from "react-bootstrap";
 import arrowAccor from "../assets/accordion/Suffix.svg";
 import arrow from "../assets/search/Arrow.svg";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function Accordion1() {
   const params = useParams();
@@ -133,12 +133,17 @@ function Accordion1() {
                     <div className="d-flex justify-content-end fw-bold">
                       Rp.{item?.price}
                     </div>
-                    <button
-                      style={{ float: "right" }}
-                      className="mt-2 btn-pilih"
+                    <Link
+                      to={`/booking/${item.id}?number_passenger=${item.numberPassenger}`}
+                      style={{ textDecoration: "none" }}
                     >
-                      Pilih
-                    </button>
+                      <button
+                        style={{ float: "right" }}
+                        className="mt-2 btn-pilih"
+                      >
+                        Pilih
+                      </button>
+                    </Link>
                   </Col>
                 </Row>
               </Container>
