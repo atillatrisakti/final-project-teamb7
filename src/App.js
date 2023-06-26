@@ -39,10 +39,13 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/booking/:id" element={<Booking />} />
+          <Route path="/booking/:id/:number_passenger" element={<Booking />} />
           <Route path="/payment/:id" element={<Payment />} />
           <Route path="/history" element={<History />} />
-          <Route path="/account" element={<Account isLoggedIn={setIsLoggedIn} />} />
+          <Route
+            path="/account"
+            element={<Account isLoggedIn={setIsLoggedIn} />}
+          />
         </Routes>
       </BrowserRouter>
     </Provider>

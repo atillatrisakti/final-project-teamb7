@@ -4,12 +4,8 @@ import { Row, Col, Container, Card } from "react-bootstrap";
 import arrowAccor from "../assets/accordion/Suffix.svg";
 import arrow from "../assets/search/Arrow.svg";
 import { toast } from "react-toastify";
-<<<<<<< HEAD
 import { Link, useParams } from "react-router-dom";
-=======
-import { useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
->>>>>>> 2ccfdc23e256196235c465675ef791ed4004e5aa
 
 function Accordion1() {
   const params = useParams();
@@ -83,40 +79,6 @@ function Accordion1() {
                       </p>
                     </div>
                   </Col>
-<<<<<<< HEAD
-                  <Col md={2}>
-                    <div>
-                      <span></span>
-                      <img src={arrow} alt="arrow" />
-                    </div>
-                  </Col>
-                  <Col md={5} className="d-flex justify-content-end">
-                    <div className="fw-bold">
-                      {new Date(item?.arrival_date).toLocaleTimeString("id", {
-                        timeZone: item?.arrival_city_time_zone,
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                      <br />
-                      {item?.arrival_airport_code}
-                    </div>
-                  </Col>
-                  <Col>
-                    <div className="d-flex justify-content-end fw-bold">
-                      Rp.{item?.price}
-                    </div>
-                    <Link
-                      to={`/booking/${item.id}?number_passenger=${item.numberPassenger}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <button
-                        style={{ float: "right" }}
-                        className="mt-2 btn-pilih"
-                      >
-                        Pilih
-                      </button>
-                    </Link>
-=======
                   <Col md={6}>
                     <img
                       src={arrowAccor}
@@ -131,7 +93,6 @@ function Accordion1() {
                         setIsActive(!isActive);
                       }}
                     />
->>>>>>> 2ccfdc23e256196235c465675ef791ed4004e5aa
                   </Col>
                 </Row>
                 <Container>
@@ -215,12 +176,17 @@ function Accordion1() {
                           maximumFractionDigits: 0,
                         })}
                       </div>
-                      <button
-                        style={{ float: "right" }}
-                        className="mt-2 btn-pilih"
+                      <Link
+                        to={`/booking/${item.id}/${item.numberPassenger}`}
+                        style={{ textDecoration: "none" }}
                       >
-                        Pilih
-                      </button>
+                        <button
+                          style={{ float: "right" }}
+                          className="mt-2 btn-pilih"
+                        >
+                          Pilih
+                        </button>
+                      </Link>
                     </Col>
                   </Row>
                 </Container>
