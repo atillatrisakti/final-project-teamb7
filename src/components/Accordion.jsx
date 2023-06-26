@@ -47,6 +47,10 @@ function Accordion1() {
     // console.log(flightFacilities[0].name);
   }, []);
 
+  const activeButton = () => {
+    setIsActive(false);
+  };
+
   return (
     <div className="accordion-item2">
       {loading ? (
