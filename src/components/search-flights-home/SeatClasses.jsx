@@ -15,6 +15,7 @@ function SeatClasses() {
   const [showClass, setShowClass] = useState(false); // modal
   const [selectedClass, setSelectedClass] = useState("");
   const [seatClass, setSeatClass] = useState([]);
+  const [idSeatClass, setIdSeatClass] = useState(0);
 
   const handleCloseClass = () => setShowClass(false); // modal
   const handleShowClass = () => setShowClass(true);
@@ -26,12 +27,11 @@ function SeatClasses() {
       );
       const data = response.data.data;
       setSeatClass(data);
-      console.log(data);
     } catch (error) {
       toast.error(error?.message);
     }
   };
-  console.log("Ini seat", seatClass);
+  console.log("Ini seat", idSeatClass);
 
   useEffect(() => {
     getSeatClass();
@@ -48,8 +48,10 @@ function SeatClasses() {
       <Form.Group>
         <Form.Label>Seat Class</Form.Label>
         <Form.Control
+          data-id={idSeatClass}
           placeholder="Kelas Kabin"
           value={selectedClass}
+          name="seat_class"
           className="form-input"
           onClick={handleShowClass}
         />
@@ -81,6 +83,7 @@ function SeatClasses() {
                         onClick={(e) => {
                           e.preventDefault();
                           setSelectedClass(seat?.name);
+                          setIdSeatClass(seat?.id);
                           handleCloseSelectedClass();
                         }}
                       >

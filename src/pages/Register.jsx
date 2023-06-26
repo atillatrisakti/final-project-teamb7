@@ -17,6 +17,7 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [validate, setValidate] = useState(false);
+  const [validate, setValidate] = useState(false);
 
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
@@ -73,8 +74,11 @@ function Register() {
           <div className="w-75">
             <h3 className="fw-bold">Daftar</h3>
             <Form className="mt-4" onSubmit={handleSubmit} noValidate validated={validate}>
+            <Form className="mt-4" onSubmit={handleSubmit} noValidate validated={validate}>
               <Form.Group className="mb-3">
                 <Form.Label>Nama</Form.Label>
+                <Form.Control type="text" placeholder="Nama Lengkap" style={{ height: "50px" }} value={name} onChange={(e) => setName(e.target.value)} required />
+                <Form.Control.Feedback type="invalid">Silahkan Masukkan Nama Anda</Form.Control.Feedback>
                 <Form.Control type="text" placeholder="Nama Lengkap" style={{ height: "50px" }} value={name} onChange={(e) => setName(e.target.value)} required />
                 <Form.Control.Feedback type="invalid">Silahkan Masukkan Nama Anda</Form.Control.Feedback>
               </Form.Group>
@@ -82,14 +86,19 @@ function Register() {
                 <Form.Label>Email</Form.Label>
                 <Form.Control type="email" placeholder="Contoh: johndee@gmail.com" style={{ height: "50px" }} value={email} onChange={(e) => setEmail(e.target.value)} required />
                 <Form.Control.Feedback type="invalid">Silahkan Masukkan Email Anda</Form.Control.Feedback>
+                <Form.Control type="email" placeholder="Contoh: johndee@gmail.com" style={{ height: "50px" }} value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <Form.Control.Feedback type="invalid">Silahkan Masukkan Email Anda</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Nomor Telepon</Form.Label>
                 <Form.Control type="text" placeholder="+62" style={{ height: "50px" }} value={phone} onChange={(e) => setPhone(e.target.value)} required />
                 <Form.Control.Feedback type="invalid">Silahkan Masukkan Nomor Telepon Anda</Form.Control.Feedback>
+                <Form.Control type="text" placeholder="+62" style={{ height: "50px" }} value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                <Form.Control.Feedback type="invalid">Silahkan Masukkan Nomor Telepon Anda</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Buat Password</Form.Label>
+                <Form.Control type={showPassword ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <Form.Control type={showPassword ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <span
                   className=" position-absolute  translate-middle-y"
@@ -108,6 +117,7 @@ function Register() {
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label>Konfirmasi Password</Form.Label>
+                <Form.Control type="password" placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} required />
                 <Form.Control type="password" placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} required />
                 <span
                   className=" position-absolute  translate-middle-y"

@@ -39,8 +39,10 @@ function Passengers() {
       <Form.Group>
         <Form.Label>Passengers</Form.Label>
         <Form.Control
+          data-count={`${count}`}
           placeholder="Jumlah"
           value={`${count} Penumpang`}
+          name="number_passenger"
           className="form-input"
           onClick={handleShowPassenger}
         />
