@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
-function Accordion1() {
+function AccordionFlight() {
   const params = useParams();
 
   const [isActive, setIsActive] = useState(false);
@@ -20,7 +20,7 @@ function Accordion1() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
         );
         setFlight(response.data.data);
         setLoading(false);
@@ -36,7 +36,7 @@ function Accordion1() {
     async function getFlightFacilities() {
       try {
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/facilities`
+          `${process.env.REACT_APP_API}/web/facilities`
         );
         setFlightFacilities(response.data.data);
       } catch (error) {
@@ -47,12 +47,12 @@ function Accordion1() {
     // console.log(flightFacilities[0].name);
   }, []);
 
-  const activeButton = () => {
-    setIsActive(false);
-  };
+  // const activeButton = () => {
+  //   setIsActive(false);
+  // };
 
   return (
-    <div className="accordion-item2">
+    <div className="accordion-item2" eventKey="">
       {loading ? (
         <h1 className="text-center">Loading...</h1>
       ) : flight && flight.length > 0 ? (
@@ -88,8 +88,6 @@ function Accordion1() {
                       style={{ float: "right", cursor: "pointer" }}
                       className="me-2 mt-2"
                       onClick={(e) => {
-                        // e.preventDefault();
-                        // e.target.value();
                         setIsActive(!isActive);
                       }}
                     />
@@ -340,4 +338,4 @@ function Accordion1() {
   );
 }
 
-export default Accordion1;
+export default AccordionFlight;

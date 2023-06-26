@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, ListGroup, Row } from "react-bootstrap";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import "../styles/Search.css";
@@ -11,20 +11,11 @@ import box from "../assets/search/fi_box.svg";
 import love from "../assets/search/fi_heart.svg";
 import dollar from "../assets/search/fi_dollar-sign.svg";
 import rightarrow from "../assets/search/fi_chevron-right.svg";
-import Accordion from "../components/Accordion";
+import AccordionFlight from "../components/AccordionFlight";
 import "../styles/Accordion.css";
 import axios from "axios";
 // import NoResult from "../components/NoResult";
 
-const dateList = [
-  { id: 1, hari: "Senin" },
-  { id: 2, hari: "Selasa" },
-  { id: 3, hari: "Rabu" },
-  { id: 4, hari: "Kamis" },
-  { id: 5, hari: "Jumat" },
-  { id: 6, hari: "Sabtu" },
-  { id: 7, hari: "Minggu" },
-];
 function Search() {
   const [date, setDate] = useState("");
   // const [sort, setSort] = useState("Termurah");
@@ -39,7 +30,7 @@ function Search() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
         );
         setFlight(response.data.data);
         setLoading(false);
@@ -52,10 +43,6 @@ function Search() {
 
     fetchPost();
   }, [params]);
-
-  function getDuplicates(data) {
-    return data.filter((value, index) => data.indexOf(value !== index));
-  }
 
   return (
     <Container className="mt-3">
@@ -83,7 +70,6 @@ function Search() {
           {flight.map((item) => (
             <Col className="d-flex justify-content-center date-css">
               <Button
-                // className="text-dark"
                 onClick={() => {
                   setDate(
                     date === item?.departure_date ? "" : item?.departure_date
@@ -93,7 +79,7 @@ function Search() {
                   backgroundColor:
                     item?.departure_date === date ? "#1b3260" : "white",
                   color: item?.departure_date === date ? "white" : "black",
-                  border: "5px",
+                  border: "none",
                 }}
               >
                 <b>
@@ -111,24 +97,6 @@ function Search() {
               </Button>
             </Col>
           ))}
-
-          {/* <Col key={dateList}>
-            <div className="date">
-              {dateList.map((e) => (
-                <div
-                  onClick={() => {
-                    setDate(date === e.hari ? "" : e.hari);
-                  }}
-                  style={{
-                    backgroundColor: e.hari === date ? "green" : "white",
-                  }}
-                >
-                  {e.hari}
-                </div>
-              ))}
-            </div>
-            <hr />
-          </Col> */}
         </Row>
         <Row>
           <Col>
@@ -201,7 +169,7 @@ function Search() {
               ) : (
                 <NoResult />
               )} */}
-              <Accordion />
+              <AccordionFlight />
             </div>
           </Col>
         </Row>

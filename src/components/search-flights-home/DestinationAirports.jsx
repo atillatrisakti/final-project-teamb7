@@ -26,7 +26,7 @@ function DestinationAirports() {
   const getAirport = async () => {
     try {
       const response = await axios.get(
-        `https://flight-booking-api-development.up.railway.app/api/web/airports`
+        `${process.env.REACT_APP_API}/web/airports`
       );
       const data = response.data.data;
       setDestAirport(data);
