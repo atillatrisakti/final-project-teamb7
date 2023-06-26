@@ -158,28 +158,26 @@ function DepartureAirports() {
                           {item.name}
                         </div>
                         {/* {airport.airports.map((item) => {
-                                            return (
-                                              <div
-                                                onClick={(e) => {
-                                                  e.preventDefault();
-                                                  // setAirport(airport.airports);
-                                                  setSelectedAirport(
-                                                    item?.name
-                                                  );
-                                                  // console.log()
-                                                  // if (
-                                                  //   airport.length !==
-                                                  //   dataAirport.length
-                                                  // ) {
-                                                  //   setAirport(dataAirport);
-                                                  // }
-                                                  handleCloseAirport();
-                                                }}
-                                              >
-                                                {item.name}
-                                              </div>
-                                            );
-                                          })} */}
+                          return (
+                            <div
+                              onClick={(e) => {
+                                e.preventDefault();
+                                // setAirport(airport.airports);
+                                setSelectedAirport(item?.name);
+                                // console.log()
+                                // if (
+                                //   airport.length !==
+                                //   dataAirport.length
+                                // ) {
+                                //   setAirport(dataAirport);
+                                // }
+                                handleCloseAirport();
+                              }}
+                            >
+                              {item.name}
+                            </div>
+                          );
+                        })} */}
                       </ListGroup.Item>
                     </div>
                   ))
