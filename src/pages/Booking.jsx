@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Card, Form, Container, Row, Col } from "react-bootstrap";
 import "../styles/Booking.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { FaCheckCircle, FaCalendarAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
-import info from "../assets/booking/info.png";
 import ItemBooking from "../components/ItemBooking";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 function Booking() {
-  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [family_name, setFamily_name] = useState("");
   const [email, setEmail] = useState("");
@@ -37,6 +35,10 @@ function Booking() {
   const [validated, setValidated] = useState(false);
   const [countries, setCountries] = useState([]);
   const [titles, setTitles] = useState([]);
+  const [detailFlight, setDetailFlight] = useState([]);
+  // const [flight_id, setFlight_id] = useState();
+  const params = useParams();
+  const [facilities, setFacilities] = useState([]);
 
   //switch passenger has family name
   const handleSwitchChange = () => {
@@ -63,6 +65,8 @@ function Booking() {
     const day = date.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
+
+  const totalPrice = detailFlight[0]?.price + detailFlight[0]?.tax;
 
   //get countries
   useEffect(() => {
@@ -132,7 +136,7 @@ function Booking() {
     try {
       let data = JSON.stringify({
         customer_identity: {
-          title_id:"2",
+          title_id: "2",
           name,
           family_name,
           email,
@@ -140,8 +144,8 @@ function Booking() {
         },
         passenger_identity: [
           {
-            flight_id:"1",
-            seat_id:"1",
+            flight_id: "1",
+            seat_id: "1",
             passenger_title_id: Number(passenger_title_id),
             passenger_name,
             passenger_family_name,
@@ -176,10 +180,46 @@ function Booking() {
       toast.error(error.message);
     }
   };
+   const location = useLocation();
+   const searchParams = new URLSearchParams(location.search);
+   const numberPassenger = searchParams.get("number_passenger");
 
-  const handlePaymentClick = () => {
-    navigate("/payment");
-  };
+  //  useEffect(() => {
+  //    // Use the numberPassenger value in your logic here
+  //    console.log("Number of passengers:", numberPassenger);
+  //  }, [numberPassenger]);
+  // const numberPassenger = params.number_passenger;
+  console.log(numberPassenger);
+
+  //get detail flight
+  useEffect(() => {
+    async function getDetailFlight() {
+      try {
+        const response = await axios.get(
+          `https://flight-booking-api-development.up.railway.app/api/web/flights/${params.id}`
+        );
+        setDetailFlight(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getDetailFlight();
+  }, [params]);
+
+  useEffect(() => {
+    async function getFacilities() {
+      try {
+        const response = await axios.get(
+          `https://flight-booking-api-development.up.railway.app/api/web/facilities`
+        );
+        setFacilities(response.data.data);
+      } catch (error) {
+        toast.error(error?.message);
+      }
+    }
+    getFacilities();
+    // console.log(flightFacilities[0].name);
+  }, []);
 
   const titlestyle = {
     width: "178px",
@@ -341,7 +381,7 @@ function Booking() {
                     borderTopRightRadius: "12px",
                   }}
                 >
-                  Data Diri Penumpang 1 - Adult
+                  Data Diri Penumpang - Adult
                   {formSubmitted && (
                     <FaCheckCircle
                       className="ml-2"
@@ -453,7 +493,6 @@ function Booking() {
                           <FaCalendarAlt />
                         </div>
                       </div>
-                      
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label className="form-label-booking">
@@ -605,7 +644,7 @@ function Booking() {
             {formSubmitted ? "Submitted" : "Submit"}
           </button>
         </Col>
-
+        {/* ========== Detail Penerbangan ========== */}
         <Col md={6}>
           <Card
             className="booking"
@@ -623,20 +662,33 @@ function Booking() {
                   md={6}
                   style={{
                     color: "#151515",
-                    fontFamily: "Poppins",
-                    fontSize: "16px",
                   }}
                 >
-                  <div style={{ fontWeight: "bold" }}>07.00</div>
-                  <div>3 Maret 2023</div>
+                  <div style={{ fontWeight: "bold" }}>
+                    {new Date(
+                      detailFlight[0]?.departure_date
+                    ).toLocaleTimeString("id", {
+                      timeZone: detailFlight[0]?.departure_city_time_zone,
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </div>
+                  <div>
+                    {new Date(
+                      detailFlight[0]?.departure_date
+                    ).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </div>
                 </Col>
                 <Col md={6}>
                   <div
                     style={{
-                      color: "#A06ECE",
-                      fontFamily: "Poppins",
-                      fontSize: "12px",
+                      color: "#315bb0",
                       textAlign: "right",
+                      fontWeight: "bold",
                     }}
                   >
                     Keberangkatan
@@ -649,11 +701,12 @@ function Booking() {
                   borderLeft: "none",
                   borderRight: "none",
                   borderBottom: "1px solid #D0D0D0",
+                  fontWeight: "bold",
                 }}
               >
-                Soekarno Hatta - Terminal 1A Domestik
+                {detailFlight[0]?.departure_airport}
               </div>
-              <Container>
+              <Container className="mt-2">
                 <div
                   className="info"
                   style={{
@@ -661,28 +714,42 @@ function Booking() {
                     borderLeft: "none",
                     borderRight: "none",
                     borderBottom: "1px solid #D0D0D0",
-                    display: "flex",
                     alignItems: "center",
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <div style={{ marginRight: "8px" }}>
-                      <img src={info} alt="info" fluid width="24" height="24" />
+                    <div style={{ marginRight: "8px", marginBottom: "20px" }}>
+                      <img
+                        src={detailFlight[0]?.airplane_logo}
+                        alt="info"
+                        fluid
+                        width="24"
+                        height="24"
+                      />
                     </div>
-                    <div>
-                      <h5 style={{ margin: 0 }}>Jet Air - Economy</h5>
+                    <div >
+                      <h5
+                        style={{
+                          margin: 0,
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {detailFlight[0]?.airplane_name} -
+                        {detailFlight[0]?.airplane_class}
+                      </h5>
                       <div style={{ marginBottom: "10px" }}>
-                        <p style={{ margin: 0, fontSize: "14px" }}>JT - 203</p>
+                        <p style={{ margin: 0, fontSize: "14px" }}>
+                          {detailFlight[0]?.airplane_code}
+                        </p>
                       </div>
                       <p style={{ margin: 0 }}>Informasi:</p>
                       <p style={{ margin: 0, fontWeight: "normal" }}>
-                        Baggage 20 kg
-                      </p>
-                      <p style={{ margin: 0, fontWeight: "normal" }}>
-                        Cabin Baggage 7 kg
-                      </p>
-                      <p style={{ margin: 0, fontWeight: "normal" }}>
-                        In Flight Entertainment
+                        {facilities.map((facility) => (
+                          <p style={{ margin: 0, fontWeight: "normal" }}>
+                            {facility.name}
+                          </p>
+                        ))}
                       </p>
                     </div>
                   </div>
@@ -693,23 +760,38 @@ function Booking() {
                   md={6}
                   style={{
                     color: "#151515",
-                    fontFamily: "Poppins",
-                    fontSize: "16px",
                   }}
                 >
-                  <div style={{ fontWeight: "bold" }}>07.00</div>
-                  <div>3 Maret 2023</div>
+                  <div style={{ fontWeight: "bold" }}>
+                    {new Date(detailFlight[0]?.arrival_date).toLocaleTimeString(
+                      "id",
+                      {
+                        timeZone: detailFlight[0]?.arrival_city_time_zone,
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }
+                    )}
+                  </div>
+                  <div>
+                    {new Date(detailFlight[0]?.arrival_date).toLocaleDateString(
+                      "en-GB",
+                      {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      }
+                    )}
+                  </div>
                 </Col>
                 <Col md={6}>
                   <div
                     style={{
-                      color: "#A06ECE",
-                      fontFamily: "Poppins",
-                      fontSize: "12px",
+                      color: "#315bb0",
                       textAlign: "right",
+                      fontWeight: "bold",
                     }}
                   >
-                    Keberangkatan
+                    Kedatangan
                   </div>
                 </Col>
               </Row>
@@ -719,11 +801,13 @@ function Booking() {
                   borderLeft: "none",
                   borderRight: "none",
                   borderBottom: "1px solid #D0D0D0",
+                  fontWeight: "bold",
                 }}
               >
-                Soekarno Hatta - Terminal 1A Domestik
+                {detailFlight[0]?.arrival_airport}
               </div>
               <Container
+                className="my-2"
                 style={{
                   borderTop: "none",
                   borderLeft: "none",
@@ -740,9 +824,9 @@ function Booking() {
                     <div>Tax</div>
                   </Col>
                   <Col>
-                    <div>IDR 9.550.000</div>
+                    <div>IDR {detailFlight[0]?.price}</div>
                     <div>IDR 0</div>
-                    <div>IDR 300.000</div>
+                    <div>IDR {detailFlight[0]?.tax}</div>
                   </Col>
                 </Row>
               </Container>
@@ -750,25 +834,29 @@ function Booking() {
                 <Col md={6} style={{ fontWeight: "bold" }}>
                   Total
                 </Col>
-                <Col md={6} style={{ fontWeight: "bold", color: "#7126b5" }}>
-                  IDR 9.850.000
+                <Col md={6} style={{ fontWeight: "bold", color: "#315bb0" }}>
+                  IDR {totalPrice}
                 </Col>
               </Row>
-              {formSubmitted && (
-                <button
-                  className="button-booking"
-                  size="lg"
-                  style={{
-                    backgroundColor: "#FF0000",
-                    color: "#FFFFFF",
-                    borderRadius: "10px",
-                    marginTop: "10px",
-                    border: "none",
-                  }}
-                  onClick={handlePaymentClick}
+              {formSubmitted && detailFlight && (
+                <Link
+                  to={`/payment/${detailFlight[0]?.id}`}
+                  style={{ textDecoration: "none" }}
                 >
-                  Continue to Payment
-                </button>
+                  <button
+                    className="button-booking"
+                    size="lg"
+                    style={{
+                      backgroundColor: "#FF0000",
+                      color: "#FFFFFF",
+                      borderRadius: "10px",
+                      marginTop: "10px",
+                      border: "none",
+                    }}
+                  >
+                    Lanjut Bayar
+                  </button>
+                </Link>
               )}
             </Card.Body>
           </Card>

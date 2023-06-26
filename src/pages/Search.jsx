@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, ListGroup, Row } from "react-bootstrap";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
 // import filter from "../assets/search/Prefix icon.svg";
@@ -33,7 +32,9 @@ function Search() {
 
   const [flight, setFlight] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [departureAirportCode, setDepartureAirportCode] = useState("");
+  const [arrivalAirportCode, setArrivalAirportCode] = useState("");
+  const [airplaneClass, setAirplaneClass] = useState("");
   useEffect(() => {
     async function fetchPost() {
       try {
@@ -41,7 +42,11 @@ function Search() {
         const response = await axios.get(
           `https://flight-booking-api-development.up.railway.app/api/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
         );
+        // console.log(response.data);
         setFlight(response.data.data);
+        setDepartureAirportCode(response.data.data[0].departure_airport_code);
+        setArrivalAirportCode(response.data.data[0].arrival_airport_code);
+        setAirplaneClass(response.data.data[0].airplane_class);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -49,7 +54,6 @@ function Search() {
       }
     }
     // console.log("iniiiii", flight);
-
     fetchPost();
   }, [params]);
 
@@ -69,9 +73,10 @@ function Search() {
               onClick={() => {}}
               style={{ cursor: "pointer" }}
             >
-              <img src={arrow} alt="left-arrow" className="mb-1" />{" "}
+              <img src={arrow} alt="left-arrow" className="mb-1" />
               <span>
-                {params.departure_airport_code} - MLB - 2 Penumpang - Economy
+                {departureAirportCode} - {arrivalAirportCode} -{" "}
+                {params?.number_passenger} Penumpang - {airplaneClass}
               </span>
             </div>
           </Col>

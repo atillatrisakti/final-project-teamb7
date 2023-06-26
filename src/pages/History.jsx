@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import info from "../assets/booking/info.png";
 import loc from "../assets/booking/loc.svg";
@@ -8,6 +8,8 @@ import "../styles/History.css";
 import NoHistory from "../components/NoHistory";
 import { Link } from "react-router-dom";
 import arrow from "../assets/account/fi_arrow-left.svg";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function History() {
   const [showOrderDetails, setShowOrderDetails] = useState(false);
@@ -15,6 +17,32 @@ function History() {
   const [isCardActive, setIsCardActive] = useState(false);
   const [orderStatus, setOrderStatus] = useState("issued");
   const hasOrderHistory = true;
+  const [history, setHistory] = useState([])
+
+  useEffect(() => {
+    const getHistory = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `https://flight-booking-api-development.up.railway.app/api/customer/transactions`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = response.data.data;
+        setHistory(data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          toast.error(error.response.data.message);
+          return;
+        }
+        toast.error(error.message);
+      }
+    };
+    getHistory();
+  }, []);
 
   const handleCardClick = (index) => {
     setShowOrderDetails(true);
@@ -48,31 +76,242 @@ function History() {
         </Link>
       </div>
       {hasOrderHistory ? (
-        <Row>
-          <Col md={6}>
-            <Card
-              className="history-booking"
-              style={{ border: "none", boxShadow: "none" }}
-            >
-              <Card.Body>
+        history.map((transaction) => (
+          <Row key={transaction.id}>
+            <Col md={6}>
+              <Card
+                className="history-booking"
+                style={{ border: "none", boxShadow: "none" }}
+              >
+                <Card.Body>
+                  <Card
+                    className="by-month"
+                    style={{ border: "none", boxShadow: "none" }}
+                  >
+                    <Card.Body>
+                      <Card.Title
+                        style={{
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Maret 2023
+                      </Card.Title>
+                      <Card
+                        className={`history-month ${
+                          activeMonth === 0 && isCardActive ? "active" : ""
+                        }`}
+                        onClick={() => handleCardClick(0)}
+                      >
+                        <button
+                          className="btn-status"
+                          style={{
+                            backgroundColor: "#73CA5C",
+                            color: "#FFFFFF",
+                            borderRadius: "20px",
+                            border: "none",
+                          }}
+                        >
+                          {transaction.status}
+                        </button>
+                        <Container
+                          style={{
+                            borderTop: "none",
+                            borderLeft: "none",
+                            borderRight: "none",
+                            borderBottom: "1px solid #D0D0D0",
+                            marginRight: "8px",
+                          }}
+                        >
+                          <Row>
+                            <Col md={4}>
+                              <div
+                                style={{ display: "flex", alignItems: "top" }}
+                              >
+                                <div style={{ marginRight: "8px" }}>
+                                  <img
+                                    src={loc}
+                                    alt="loc"
+                                    fluid
+                                    width="24"
+                                    height="24"
+                                  />
+                                </div>
+                                <div>
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      fontWeight: "bold",
+                                      fontSize: "16px",
+                                    }}
+                                  >
+                                    Jakarta
+                                  </p>
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      fontWeight: "normal",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    1 Maret 2023
+                                  </p>
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      fontWeight: "normal",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    07.00
+                                  </p>
+                                </div>
+                              </div>
+                            </Col>
+                            <Col>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <div>
+                                  <img
+                                    src={thin}
+                                    alt="thin"
+                                    fluid
+                                    width="105"
+                                    height="24"
+                                  />
+                                  <img
+                                    src={right}
+                                    alt="right"
+                                    fluid
+                                    width="5"
+                                    height="10"
+                                  />
+                                </div>
+                              </div>
+                            </Col>
+                            <Col>
+                              <div
+                                style={{ display: "flex", alignItems: "top" }}
+                              >
+                                <div style={{ marginRight: "8px" }}>
+                                  <img
+                                    src={loc}
+                                    alt="loc"
+                                    fluid
+                                    width="24"
+                                    height="24"
+                                  />
+                                </div>
+                                <div>
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      fontWeight: "bold",
+                                      fontSize: "16px",
+                                    }}
+                                  >
+                                    Jakarta
+                                  </p>
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      fontWeight: "normal",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    1 Maret 2023
+                                  </p>
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      fontWeight: "normal",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    07.00
+                                  </p>
+                                </div>
+                              </div>
+                            </Col>
+                          </Row>
+                        </Container>
+                        <Container>
+                          <Row>
+                            <Col md={4} style={{ fontWeight: "bold" }}>
+                              <div>
+                                <p
+                                  style={{
+                                    margin: 0,
+                                    fontWeight: "bold",
+                                    fontSize: "16px",
+                                  }}
+                                >
+                                  Booking Code:
+                                </p>
+                                <p
+                                  style={{
+                                    margin: 0,
+                                    fontWeight: "normal",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  shar785TD
+                                </p>
+                              </div>
+                            </Col>
+                            <Col>
+                              <div>
+                                <p
+                                  style={{
+                                    margin: 0,
+                                    fontWeight: "bold",
+                                    fontSize: "16px",
+                                  }}
+                                >
+                                  Class:
+                                </p>
+                                <p
+                                  style={{
+                                    margin: 0,
+                                    fontWeight: "normal",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  Business
+                                </p>
+                              </div>
+                            </Col>
+                            <Col
+                              style={{ fontWeight: "bold", color: "#7126b5" }}
+                            >
+                              IDR 9.850.000
+                            </Col>
+                          </Row>
+                        </Container>
+                      </Card>
+                    </Card.Body>
+                  </Card>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={6}>
+              {showOrderDetails && (
                 <Card
-                  className="by-month"
+                  className="detail"
                   style={{ border: "none", boxShadow: "none" }}
                 >
                   <Card.Body>
                     <Card.Title
                       style={{
+                        border: "none",
+                        boxShadow: "none",
                         fontWeight: "bold",
                       }}
                     >
-                      Maret 2023
-                    </Card.Title>
-                    <Card
-                      className={`history-month ${
-                        activeMonth === 0 && isCardActive ? "active" : ""
-                      }`}
-                      onClick={() => handleCardClick(0)}
-                    >
+                      Detail Pesanan
                       <button
                         className="btn-status"
                         style={{
@@ -80,575 +319,187 @@ function History() {
                           color: "#FFFFFF",
                           borderRadius: "20px",
                           border: "none",
+                          fontSize: "16px",
                         }}
                       >
-                        Issued
+                        {orderStatus.charAt(0).toUpperCase() +
+                          orderStatus.slice(1)}
                       </button>
-                      <Container
+                    </Card.Title>
+                    <Row>
+                      <Col md={6}>
+                        <Card.Title
+                          style={{
+                            border: "none",
+                            boxShadow: "none",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Booking Code:
+                        </Card.Title>
+                      </Col>
+                      <Col>
+                        <div style={{ fontWeight: "bold", color: "#7126b5" }}>
+                          6799ggYKb
+                        </div>
+                      </Col>
+                    </Row>
+                    {/* <Card.Body> */}
+                    <Row>
+                      <Col
+                        md={6}
                         style={{
-                          borderTop: "none",
-                          borderLeft: "none",
-                          borderRight: "none",
-                          borderBottom: "1px solid #D0D0D0",
-                          marginRight: "8px",
-                        }}
-                      >
-                        <Row>
-                          <Col md={4}>
-                            <div style={{ display: "flex", alignItems: "top" }}>
-                              <div style={{ marginRight: "8px" }}>
-                                <img
-                                  src={loc}
-                                  alt="loc"
-                                  fluid
-                                  width="24"
-                                  height="24"
-                                />
-                              </div>
-                              <div>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "bold",
-                                    fontSize: "16px",
-                                  }}
-                                >
-                                  Jakarta
-                                </p>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "normal",
-                                    fontSize: "14px",
-                                  }}
-                                >
-                                  1 Maret 2023
-                                </p>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "normal",
-                                    fontSize: "14px",
-                                  }}
-                                >
-                                  07.00
-                                </p>
-                              </div>
-                            </div>
-                          </Col>
-                          <Col>
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <div>
-                                <img
-                                  src={thin}
-                                  alt="thin"
-                                  fluid
-                                  width="105"
-                                  height="24"
-                                />
-                                <img
-                                  src={right}
-                                  alt="right"
-                                  fluid
-                                  width="5"
-                                  height="10"
-                                />
-                              </div>
-                            </div>
-                          </Col>
-                          <Col>
-                            <div style={{ display: "flex", alignItems: "top" }}>
-                              <div style={{ marginRight: "8px" }}>
-                                <img
-                                  src={loc}
-                                  alt="loc"
-                                  fluid
-                                  width="24"
-                                  height="24"
-                                />
-                              </div>
-                              <div>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "bold",
-                                    fontSize: "16px",
-                                  }}
-                                >
-                                  Jakarta
-                                </p>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "normal",
-                                    fontSize: "14px",
-                                  }}
-                                >
-                                  1 Maret 2023
-                                </p>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "normal",
-                                    fontSize: "14px",
-                                  }}
-                                >
-                                  07.00
-                                </p>
-                              </div>
-                            </div>
-                          </Col>
-                        </Row>
-                      </Container>
-                      <Container>
-                        <Row>
-                          <Col md={4} style={{ fontWeight: "bold" }}>
-                            <div>
-                              <p
-                                style={{
-                                  margin: 0,
-                                  fontWeight: "bold",
-                                  fontSize: "16px",
-                                }}
-                              >
-                                Booking Code:
-                              </p>
-                              <p
-                                style={{
-                                  margin: 0,
-                                  fontWeight: "normal",
-                                  fontSize: "14px",
-                                }}
-                              >
-                                shar785TD
-                              </p>
-                            </div>
-                          </Col>
-                          <Col>
-                            <div>
-                              <p
-                                style={{
-                                  margin: 0,
-                                  fontWeight: "bold",
-                                  fontSize: "16px",
-                                }}
-                              >
-                                Class:
-                              </p>
-                              <p
-                                style={{
-                                  margin: 0,
-                                  fontWeight: "normal",
-                                  fontSize: "14px",
-                                }}
-                              >
-                                Business
-                              </p>
-                            </div>
-                          </Col>
-                          <Col style={{ fontWeight: "bold", color: "#7126b5" }}>
-                            IDR 9.850.000
-                          </Col>
-                        </Row>
-                      </Container>
-                    </Card>
-                    <Card
-                      className={`history-month ${
-                        activeMonth === 1 && isCardActive ? "active" : ""
-                      }`}
-                      onClick={() => handleCardClick(1)}
-                      style={{ marginTop: "10px" }}
-                    >
-                      <button
-                        className="btn-status"
-                        style={{
-                          backgroundColor: "#FF0000",
-                          color: "#FFFFFF",
-                          borderRadius: "20px",
-                          border: "none",
-                        }}
-                      >
-                        Unpaid
-                      </button>
-                      <Container
-                        style={{
-                          borderTop: "none",
-                          borderLeft: "none",
-                          borderRight: "none",
-                          borderBottom: "1px solid #D0D0D0",
-                          marginRight: "8px",
-                        }}
-                      >
-                        <Row>
-                          <Col md={4}>
-                            <div style={{ display: "flex", alignItems: "top" }}>
-                              <div style={{ marginRight: "8px" }}>
-                                <img
-                                  src={loc}
-                                  alt="loc"
-                                  fluid
-                                  width="24"
-                                  height="24"
-                                />
-                              </div>
-                              <div>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "bold",
-                                    fontSize: "16px",
-                                  }}
-                                >
-                                  Jakarta
-                                </p>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "normal",
-                                    fontSize: "14px",
-                                  }}
-                                >
-                                  1 Maret 2023
-                                </p>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "normal",
-                                    fontSize: "14px",
-                                  }}
-                                >
-                                  07.00
-                                </p>
-                              </div>
-                            </div>
-                          </Col>
-                          <Col>
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <div>
-                                <img
-                                  src={thin}
-                                  alt="thin"
-                                  fluid
-                                  width="105"
-                                  height="24"
-                                />
-                                <img
-                                  src={right}
-                                  alt="right"
-                                  fluid
-                                  width="5"
-                                  height="10"
-                                />
-                              </div>
-                            </div>
-                          </Col>
-                          <Col>
-                            <div style={{ display: "flex", alignItems: "top" }}>
-                              <div style={{ marginRight: "8px" }}>
-                                <img
-                                  src={loc}
-                                  alt="loc"
-                                  fluid
-                                  width="24"
-                                  height="24"
-                                />
-                              </div>
-                              <div>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "bold",
-                                    fontSize: "16px",
-                                  }}
-                                >
-                                  Jakarta
-                                </p>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "normal",
-                                    fontSize: "14px",
-                                  }}
-                                >
-                                  1 Maret 2023
-                                </p>
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    fontWeight: "normal",
-                                    fontSize: "14px",
-                                  }}
-                                >
-                                  07.00
-                                </p>
-                              </div>
-                            </div>
-                          </Col>
-                        </Row>
-                      </Container>
-                      <Container>
-                        <Row>
-                          <Col md={4} style={{ fontWeight: "bold" }}>
-                            <div>
-                              <p
-                                style={{
-                                  margin: 0,
-                                  fontWeight: "bold",
-                                  fontSize: "16px",
-                                }}
-                              >
-                                Booking Code:
-                              </p>
-                              <p
-                                style={{
-                                  margin: 0,
-                                  fontWeight: "normal",
-                                  fontSize: "14px",
-                                }}
-                              >
-                                shar785TD
-                              </p>
-                            </div>
-                          </Col>
-                          <Col>
-                            <div>
-                              <p
-                                style={{
-                                  margin: 0,
-                                  fontWeight: "bold",
-                                  fontSize: "16px",
-                                }}
-                              >
-                                Class:
-                              </p>
-                              <p
-                                style={{
-                                  margin: 0,
-                                  fontWeight: "normal",
-                                  fontSize: "14px",
-                                }}
-                              >
-                                Business
-                              </p>
-                            </div>
-                          </Col>
-                          <Col style={{ fontWeight: "bold", color: "#7126b5" }}>
-                            IDR 9.850.000
-                          </Col>
-                        </Row>
-                      </Container>
-                    </Card>
-                  </Card.Body>
-                </Card>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={6}>
-            {showOrderDetails && (
-              <Card
-                className="detail"
-                style={{ border: "none", boxShadow: "none" }}
-              >
-                <Card.Body>
-                  <Card.Title
-                    style={{
-                      border: "none",
-                      boxShadow: "none",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Detail Pesanan
-                    <button
-                      className="btn-status"
-                      style={{
-                        backgroundColor: "#73CA5C",
-                        color: "#FFFFFF",
-                        borderRadius: "20px",
-                        border: "none",
-                        fontSize: "16px",
-                      }}
-                    >
-                      {orderStatus.charAt(0).toUpperCase() +
-                        orderStatus.slice(1)}
-                    </button>
-                  </Card.Title>
-                  <Row>
-                    <Col md={6}>
-                      <Card.Title
-                        style={{
-                          border: "none",
-                          boxShadow: "none",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Booking Code:
-                      </Card.Title>
-                    </Col>
-                    <Col>
-                      <div style={{ fontWeight: "bold", color: "#7126b5" }}>
-                        6799ggYKb
-                      </div>
-                    </Col>
-                  </Row>
-                  {/* <Card.Body> */}
-                  <Row>
-                    <Col
-                      md={6}
-                      style={{
-                        color: "#151515",
-                        fontFamily: "Poppins",
-                        fontSize: "16px",
-                      }}
-                    >
-                      <div>07.00</div>
-                      <div>3 Maret 2023</div>
-                    </Col>
-                    <Col md={6}>
-                      <div
-                        style={{
-                          color: "#A06ECE",
+                          color: "#151515",
                           fontFamily: "Poppins",
-                          fontSize: "12px",
-                          textAlign: "right",
+                          fontSize: "16px",
                         }}
                       >
-                        Keberangkatan
-                      </div>
-                    </Col>
-                  </Row>
-                  <div
-                    style={{
-                      borderTop: "none",
-                      borderLeft: "none",
-                      borderRight: "none",
-                      borderBottom: "1px solid #D0D0D0",
-                    }}
-                  >
-                    Soekarno Hatta - Terminal 1A Domestik
-                  </div>
-                  <Container>
+                        <div>07.00</div>
+                        <div>3 Maret 2023</div>
+                      </Col>
+                      <Col md={6}>
+                        <div
+                          style={{
+                            color: "#A06ECE",
+                            fontFamily: "Poppins",
+                            fontSize: "12px",
+                            textAlign: "right",
+                          }}
+                        >
+                          Keberangkatan
+                        </div>
+                      </Col>
+                    </Row>
                     <div
-                      className="info"
                       style={{
                         borderTop: "none",
                         borderLeft: "none",
                         borderRight: "none",
                         borderBottom: "1px solid #D0D0D0",
-                        display: "flex",
-                        alignItems: "center",
                       }}
                     >
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <div style={{ marginRight: "8px" }}>
-                          <img
-                            src={info}
-                            alt="info"
-                            fluid
-                            width="24"
-                            height="24"
-                          />
-                        </div>
-                        <div>
-                          <h5 style={{ margin: 0 }}>Jet Air - Economy</h5>
-                          <div style={{ marginBottom: "10px" }}>
-                            <p style={{ margin: 0, fontSize: "14px" }}>
-                              JT - 203
-                            </p>
-                          </div>
-                          <p style={{ margin: 0 }}>Informasi:</p>
-                          <p style={{ margin: 0, fontWeight: "normal" }}>
-                            Baggage 20 kg
-                          </p>
-                          <p style={{ margin: 0, fontWeight: "normal" }}>
-                            Cabin Baggage 7 kg
-                          </p>
-                          <p style={{ margin: 0, fontWeight: "normal" }}>
-                            In Flight Entertainment
-                          </p>
-                        </div>
-                      </div>
+                      Soekarno Hatta - Terminal 1A Domestik
                     </div>
-                  </Container>
-                  <Row>
-                    <Col
-                      md={6}
-                      style={{
-                        color: "#151515",
-                        fontFamily: "Poppins",
-                        fontSize: "16px",
-                      }}
-                    >
-                      <div style={{ fontWeight: "bold" }}>07.00</div>
-                      <div>3 Maret 2023</div>
-                    </Col>
-                    <Col md={6}>
+                    <Container>
                       <div
+                        className="info"
                         style={{
-                          color: "#A06ECE",
-                          fontFamily: "Poppins",
-                          fontSize: "12px",
-                          textAlign: "right",
+                          borderTop: "none",
+                          borderLeft: "none",
+                          borderRight: "none",
+                          borderBottom: "1px solid #D0D0D0",
+                          display: "flex",
+                          alignItems: "center",
                         }}
                       >
-                        Keberangkatan
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <div style={{ marginRight: "8px" }}>
+                            <img
+                              src={info}
+                              alt="info"
+                              fluid
+                              width="24"
+                              height="24"
+                            />
+                          </div>
+                          <div>
+                            <h5 style={{ margin: 0 }}>Jet Air - Economy</h5>
+                            <div style={{ marginBottom: "10px" }}>
+                              <p style={{ margin: 0, fontSize: "14px" }}>
+                                JT - 203
+                              </p>
+                            </div>
+                            <p style={{ margin: 0 }}>Informasi:</p>
+                            <p style={{ margin: 0, fontWeight: "normal" }}>
+                              Baggage 20 kg
+                            </p>
+                            <p style={{ margin: 0, fontWeight: "normal" }}>
+                              Cabin Baggage 7 kg
+                            </p>
+                            <p style={{ margin: 0, fontWeight: "normal" }}>
+                              In Flight Entertainment
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    </Col>
-                  </Row>
-                  <div
-                    style={{
-                      borderTop: "none",
-                      borderLeft: "none",
-                      borderRight: "none",
-                      borderBottom: "1px solid #D0D0D0",
-                    }}
-                  >
-                    Soekarno Hatta - Terminal 1A Domestik
-                  </div>
-                  <Container
-                    style={{
-                      borderTop: "none",
-                      borderLeft: "none",
-                      borderRight: "none",
-                      borderBottom: "1px solid #D0D0D0",
-                      marginRight: "8px",
-                    }}
-                  >
-                    <div style={{ fontWeight: "bold" }}>Rincian Harga</div>
+                    </Container>
                     <Row>
-                      <Col md={6}>
-                        <div>2 Adult</div>
-                        <div>1 Baby</div>
-                        <div>Tax</div>
+                      <Col
+                        md={6}
+                        style={{
+                          color: "#151515",
+                          fontFamily: "Poppins",
+                          fontSize: "16px",
+                        }}
+                      >
+                        <div style={{ fontWeight: "bold" }}>07.00</div>
+                        <div>3 Maret 2023</div>
                       </Col>
-                      <Col>
-                        <div>IDR 9.550.000</div>
-                        <div>IDR 0</div>
-                        <div>IDR 300.000</div>
+                      <Col md={6}>
+                        <div
+                          style={{
+                            color: "#A06ECE",
+                            fontFamily: "Poppins",
+                            fontSize: "12px",
+                            textAlign: "right",
+                          }}
+                        >
+                          Keberangkatan
+                        </div>
                       </Col>
                     </Row>
-                  </Container>
-                  <Row>
-                    <Col md={6} style={{ fontWeight: "bold" }}>
-                      Total
-                    </Col>
-                    <Col
-                      md={6}
-                      style={{ fontWeight: "bold", color: "#7126b5" }}
+                    <div
+                      style={{
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none",
+                        borderBottom: "1px solid #D0D0D0",
+                      }}
                     >
-                      IDR 9.850.000
-                    </Col>
-                  </Row>
-                  {renderActionButton()}
-                  {/* </Card.Body> */}
-                </Card.Body>
-              </Card>
-            )}
-          </Col>
-        </Row>
+                      Soekarno Hatta - Terminal 1A Domestik
+                    </div>
+                    <Container
+                      style={{
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none",
+                        borderBottom: "1px solid #D0D0D0",
+                        marginRight: "8px",
+                      }}
+                    >
+                      <div style={{ fontWeight: "bold" }}>Rincian Harga</div>
+                      <Row>
+                        <Col md={6}>
+                          <div>2 Adult</div>
+                          <div>1 Baby</div>
+                          <div>Tax</div>
+                        </Col>
+                        <Col>
+                          <div>IDR 9.550.000</div>
+                          <div>IDR 0</div>
+                          <div>IDR 300.000</div>
+                        </Col>
+                      </Row>
+                    </Container>
+                    <Row>
+                      <Col md={6} style={{ fontWeight: "bold" }}>
+                        Total
+                      </Col>
+                      <Col
+                        md={6}
+                        style={{ fontWeight: "bold", color: "#7126b5" }}
+                      >
+                        IDR 9.850.000
+                      </Col>
+                    </Row>
+                    {renderActionButton()}
+                    {/* </Card.Body> */}
+                  </Card.Body>
+                </Card>
+              )}
+            </Col>
+          </Row>
+        ))
       ) : (
         <Container className="history">
           <NoHistory />
