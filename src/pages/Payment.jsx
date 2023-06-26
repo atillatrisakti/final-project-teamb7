@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import "../styles/Payment.css";
 import info from "../assets/booking/info.png";
@@ -10,9 +10,31 @@ import paypal from "../assets/booking/paypal.svg";
 import gopay from "../assets/booking/Gopay.svg";
 import { toast } from "react-toastify";
 import ItemBooking from "../components/ItemBooking";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function Payment() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [detailFlight, setDetailFlight] = useState([]);
+  const { id } = useParams();
+
+  //count price
+  const totalPrice = detailFlight[0]?.price + detailFlight[0]?.tax;
+
+  //get detail flight
+  useEffect(() => {
+    async function getDetailFlight() {
+      try {
+        const response = await axios.get(
+          `https://flight-booking-api-development.up.railway.app/api/web/flights/${id}`
+        );
+        setDetailFlight(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getDetailFlight();
+  }, [id]);
 
   const handlePaymentClick = () => {
     setPaymentSuccess(true);
@@ -72,6 +94,7 @@ function Payment() {
                 borderRadius: "10px",
                 marginTop: "30px",
                 border: "none",
+                width: "600px",
               }}
               // onClick={handlePaymentClick}
             >
@@ -87,6 +110,7 @@ function Payment() {
                   borderRadius: "10px",
                   marginTop: "10px",
                   border: "none",
+                  width: "600px",
                 }}
                 // onClick={handlePaymentClick}
               >
@@ -377,7 +401,7 @@ function Payment() {
             onClick={handlePaymentClick}
             disabled={paymentSuccess}
           >
-            Payment
+            Bayar
           </button>
         </Col>
         <Col md={6}>
@@ -413,8 +437,24 @@ function Payment() {
                     fontSize: "16px",
                   }}
                 >
-                  <div>07.00</div>
-                  <div>3 Maret 2023</div>
+                  <div>
+                    {new Date(
+                      detailFlight[0]?.departure_date
+                    ).toLocaleTimeString("id", {
+                      timeZone: detailFlight[0]?.departure_city_time_zone,
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </div>
+                  <div>
+                    {new Date(
+                      detailFlight[0]?.departure_date
+                    ).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </div>
                 </Col>
                 <Col md={6}>
                   <div
@@ -437,7 +477,7 @@ function Payment() {
                   borderBottom: "1px solid #D0D0D0",
                 }}
               >
-                Soekarno Hatta - Terminal 1A Domestik
+                {detailFlight[0]?.departure_airport}
               </div>
               <Container>
                 <div
@@ -456,19 +496,18 @@ function Payment() {
                       <img src={info} alt="info" fluid width="24" height="24" />
                     </div>
                     <div>
-                      <h5 style={{ margin: 0 }}>Jet Air - Economy</h5>
+                      <h5 style={{ margin: 0 }}>
+                        {detailFlight[0]?.airplane_name} -
+                        {detailFlight[0]?.airplane_class}
+                      </h5>
                       <div style={{ marginBottom: "10px" }}>
-                        <p style={{ margin: 0, fontSize: "14px" }}>JT - 203</p>
+                        <p style={{ margin: 0, fontSize: "14px" }}>
+                          {detailFlight[0]?.airplane_code}
+                        </p>
                       </div>
                       <p style={{ margin: 0 }}>Informasi:</p>
                       <p style={{ margin: 0, fontWeight: "normal" }}>
-                        Baggage 20 kg
-                      </p>
-                      <p style={{ margin: 0, fontWeight: "normal" }}>
-                        Cabin Baggage 7 kg
-                      </p>
-                      <p style={{ margin: 0, fontWeight: "normal" }}>
-                        In Flight Entertainment
+                        {detailFlight[0]?.facilities}
                       </p>
                     </div>
                   </div>
@@ -483,8 +522,26 @@ function Payment() {
                     fontSize: "16px",
                   }}
                 >
-                  <div style={{ fontWeight: "bold" }}>07.00</div>
-                  <div>3 Maret 2023</div>
+                  <div style={{ fontWeight: "bold" }}>
+                    {new Date(detailFlight[0]?.arrival_date).toLocaleTimeString(
+                      "id",
+                      {
+                        timeZone: detailFlight[0]?.arrival_city_time_zone,
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }
+                    )}
+                  </div>
+                  <div>
+                    {new Date(detailFlight[0]?.arrival_date).toLocaleDateString(
+                      "en-GB",
+                      {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      }
+                    )}
+                  </div>
                 </Col>
                 <Col md={6}>
                   <div
@@ -495,7 +552,7 @@ function Payment() {
                       textAlign: "right",
                     }}
                   >
-                    Keberangkatan
+                    Kedatangan
                   </div>
                 </Col>
               </Row>
@@ -507,7 +564,7 @@ function Payment() {
                   borderBottom: "1px solid #D0D0D0",
                 }}
               >
-                Soekarno Hatta - Terminal 1A Domestik
+                {detailFlight[0]?.arrival_airport}
               </div>
               <Container
                 style={{
@@ -526,9 +583,9 @@ function Payment() {
                     <div>Tax</div>
                   </Col>
                   <Col>
-                    <div>IDR 9.550.000</div>
+                    <div>IDR {detailFlight[0]?.price}</div>
                     <div>IDR 0</div>
-                    <div>IDR 300.000</div>
+                    <div>IDR {detailFlight[0]?.tax}</div>
                   </Col>
                 </Row>
               </Container>
@@ -537,7 +594,7 @@ function Payment() {
                   Total
                 </Col>
                 <Col md={6} style={{ fontWeight: "bold", color: "#7126b5" }}>
-                  IDR 9.850.000
+                  IDR {totalPrice}
                 </Col>
               </Row>
             </Card.Body>

@@ -9,7 +9,6 @@ import Register from "./pages/Register";
 import Booking from "./pages/Booking";
 import Payment from "./pages/Payment";
 import History from "./pages/History";
-import NoHistory from "./components/NoHistory";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import Account from "./pages/Account";
@@ -40,11 +39,13 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/booking" element={<Booking />} />
-          <Route path="/payment" element={<Payment />} />
+          <Route path="/booking/:id/:number_passenger" element={<Booking />} />
+          <Route path="/payment/:id" element={<Payment />} />
           <Route path="/history" element={<History />} />
-          <Route path="/nohistory" element={<NoHistory />} />
-          <Route path="/account" element={<Account isLoggedIn={setIsLoggedIn} />} />
+          <Route
+            path="/account"
+            element={<Account isLoggedIn={setIsLoggedIn} />}
+          />
         </Routes>
       </BrowserRouter>
     </Provider>
