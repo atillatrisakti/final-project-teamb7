@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, ListGroup, Row } from "react-bootstrap";
+import { Button, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
-import filter from "../assets/search/Prefix icon.svg";
+// import filter from "../assets/search/Prefix icon.svg";
+import { Icon } from "@iconify/react";
 import box from "../assets/search/fi_box.svg";
 import love from "../assets/search/fi_heart.svg";
 import dollar from "../assets/search/fi_dollar-sign.svg";
@@ -79,8 +80,40 @@ function Search() {
             <button className="change-search">Ubah Pencarian</button>
           </Col>
         </Row>
-        <Row className="mt-4 ">
-          <Col key={dateList}>
+        <Row className="my-4 d-flex align-items-center">
+          {flight.map((item) => (
+            <Col className="d-flex justify-content-center date-css">
+              <Button
+                // className="text-dark"
+                onClick={() => {
+                  setDate(
+                    date === item?.departure_date ? "" : item?.departure_date
+                  );
+                }}
+                style={{
+                  backgroundColor:
+                    item?.departure_date === date ? "#1b3260" : "white",
+                  color: item?.departure_date === date ? "white" : "black",
+                  border: "5px",
+                }}
+              >
+                <b>
+                  {new Date(item?.departure_date).toLocaleDateString("id-ID", {
+                    weekday: "long",
+                  })}
+                </b>
+                <br />
+                {new Date(item?.departure_date).toLocaleDateString("id-ID", {
+                  day: "2-digit",
+                  month: "numeric",
+                  year: "numeric",
+                })}
+                {/* <hr /> */}
+              </Button>
+            </Col>
+          ))}
+
+          {/* <Col key={dateList}>
             <div className="date">
               {dateList.map((e) => (
                 <div
@@ -96,13 +129,18 @@ function Search() {
               ))}
             </div>
             <hr />
+          </Col> */}
+        </Row>
+        <Row>
+          <Col>
+            <button className="sort-btn">
+              <Icon icon="fluent:arrow-sort-16-filled" color="#1b3260" />
+              {/* <img src={filter} alt="filter" className="me-1 mb-1" /> */}
+              Termurah
+            </button>
           </Col>
         </Row>
-        <button className="sort-btn">
-          <img src={filter} alt="filter" className="me-1 mb-1" />
-          Termurah
-        </button>
-        <Row className="mt-5">
+        <Row className="mt-4">
           <Col md={4}>
             <div className="filter">
               <h5 className="mb-4">Filter</h5>
@@ -150,7 +188,7 @@ function Search() {
             </div>
           </Col>
           <Col md={6}>
-            <div className="accordion">
+            <div className="accordion mb-5">
               {/* {accordionData.length !== 0 ? (
                 accordionData
                   .sort((a, b) => {
