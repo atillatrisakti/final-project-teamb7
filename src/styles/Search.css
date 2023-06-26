@@ -3,8 +3,7 @@
 }
 
 .flight-desc {
-  /* border: 2px solid #a06ece; */
-  background-color: #a06ece;
+  background-color: #1b3260;
   padding: 10px 16px;
   border-radius: 12px;
   gap: 8px;
@@ -33,7 +32,7 @@
 
 .sort-btn {
   float: right;
-  border: 1px solid #7126b5;
+  border: 1px solid #1b3260;
   background: none;
   width: 108px;
   height: 40px;
@@ -41,7 +40,7 @@
 }
 
 .sort-btn:hover {
-  background: #a06ece;
+  background: #1b3260;
   color: white;
   transition: ease-in-out 0.2s;
   border: none;

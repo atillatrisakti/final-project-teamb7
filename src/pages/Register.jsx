@@ -22,8 +22,8 @@ function Register() {
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.stopPropagation();
-      e.preventDefault();
     }
+    e.preventDefault();
 
     setValidate(true);
 

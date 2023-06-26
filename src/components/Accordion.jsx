@@ -11,7 +11,7 @@ const Accordion = () => {
   useEffect(() => {
     async function getListFlight() {
       try {
-        const response = await axios.get("https://flight-booking-api-development.up.railway.app/api/web/flights?departure_airport_id=1&destination_airport_id=2&departure_date=2023-06-13&number_passenger=1&class_id=1");
+        const response = await axios.get("https://flight-booking-api-development.up.railway.app/api/web/flights?departure_airport_id=22&destination_airport_id=19&departure_date=2023-12-11&number_passenger=1&class_id=1");
         setFlight(response.data.data);
       } catch (error) {
         console.log(error);
@@ -19,6 +19,7 @@ const Accordion = () => {
     }
     getListFlight();
   }, []);
+  console.log(flight);
 
   return (
     <div className="accordion-item2">
@@ -41,7 +42,7 @@ const Accordion = () => {
             <Row>
               <Col md={2}>
                 <div className="ms-4 fw-bold">07.00</div>
-                <div className="ms-4 fw-bold">JKT</div>
+                <div className="ms-4 fw-bold">{flight[0]?.departure_airport_code}</div>
               </Col>
               <Col md={2}>
                 <div>
@@ -50,7 +51,7 @@ const Accordion = () => {
               </Col>
               <Col md={5} className="d-flex justify-content-end">
                 <div className="fw-bold">11.00</div>
-                <div className="fw-bold">Melbourne</div>
+                <div className="fw-bold">{flight[0]?.arrival_airport_code}</div>
               </Col>
               <Col>
                 <div className="d-flex justify-content-end fw-bold">Rp.{flight[0]?.price}</div>
