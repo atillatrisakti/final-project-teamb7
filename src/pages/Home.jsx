@@ -304,7 +304,6 @@ function Home() {
                     <span
                       style={{
                         position: "absolute",
-                        // width: "100%",
                         borderTopRightRadius: "50px",
                         borderBottomRightRadius: "50px",
                         padding: "8px",
