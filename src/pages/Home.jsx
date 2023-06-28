@@ -93,7 +93,7 @@ function Home() {
           alignItems: "center",
         }}
       >
-        {banner.slice(0, 4).map((item) => (
+        {banner.map((item) => (
           <Carousel.Item key={item.id}>
             <img
               src={`${item?.picture}`}
