@@ -26,7 +26,7 @@ function DepartureAirports() {
   const getAirport = async () => {
     try {
       const response = await axios.get(
-        `https://flight-booking-api-development.up.railway.app/api/web/airports`
+        `${process.env.REACT_APP_API}/web/airports`
       );
       const data = response.data.data;
       setAirport(data);
@@ -151,7 +151,7 @@ function DepartureAirports() {
                             setAirport(dataAirport);
                             handleCloseAirport();
                           }
-                          console.log("Ini airport", item);
+                          // console.log("Ini airport", item);
                         }}
                       >
                         <div className="d-flex align-items-center my-1">
