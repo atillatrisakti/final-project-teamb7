@@ -29,20 +29,26 @@ function Search() {
   const [airplaneClass, setAirplaneClass] = useState("");
   const [derpartureDate, setDerpartureDate] = useState("");
 
+  const [departureDate, setDepartureDate] = useState("");
+
   useEffect(() => {
     async function fetchPost() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
         );
-        // console.log(response.data);
+        console.log(response.data);
+        console.log(params.is_promo);
+
         setFlight(response.data.data);
         setDepartureAirportCode(response.data.data[0].departure_airport_code);
         setArrivalAirportCode(response.data.data[0].arrival_airport_code);
         setAirplaneClass(response.data.data[0].airplane_class);
         setDerpartureDate(response.data.data[0].derparture_date);
         console.log(derpartureDate);
+        setDepartureDate(response.data.data[0].departure_date);
+        // console.log(departureDate);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -74,23 +80,22 @@ function Search() {
         <Row className="my-4 d-flex align-items-center">
           <Col className="d-flex justify-content-center date-css">
             <Button
-              // className="text-dark"
               onClick={() => {
-                setDate(date === derpartureDate ? "" : derpartureDate);
+                setDate(date === departureDate ? "" : departureDate);
               }}
               style={{
-                backgroundColor: derpartureDate === date ? "#1b3260" : "white",
-                color: derpartureDate === date ? "white" : "black",
-                border: "5px",
+                backgroundColor: departureDate === date ? "#1b3260" : "white",
+                color: departureDate === date ? "white" : "black",
+                border: "none",
               }}
             >
               <b>
-                {new Date(derpartureDate).toLocaleDateString("id-ID", {
+                {new Date(departureDate).toLocaleDateString("id-ID", {
                   weekday: "long",
                 })}
               </b>
               <br />
-              {new Date(derpartureDate).toLocaleDateString("id-ID", {
+              {new Date(departureDate).toLocaleDateString("id-ID", {
                 day: "2-digit",
                 month: "numeric",
                 year: "numeric",

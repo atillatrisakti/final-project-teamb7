@@ -16,7 +16,7 @@ function Accordion({ sort }) {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
         );
         setFlight(response.data.data);
         setLoading(false);
@@ -28,7 +28,18 @@ function Accordion({ sort }) {
     getListFlight();
   }, [params]);
 
-  console.log(flight);
+  useEffect(() => {
+    async function getFlightFacilities() {
+      try {
+        const response = await axios.get(`https://flight-booking-api-development.up.railway.app/api/web/facilities`);
+        setFlightFacilities(response.data.data);
+      } catch (error) {
+        toast.error(error?.message);
+      }
+    }
+    getFlightFacilities();
+    // console.log(flightFacilities[0].name);
+  }, []);
 
   // const renderData = () => {
   //   if (flight && flight.length > 0) {

@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Carousel, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 
 import Banner1 from "../assets/1.svg";
-
 import DestinationPromo from "../assets/img-destination.svg";
 
 import { Icon } from "@iconify/react";
@@ -17,8 +16,37 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 function Home() {
-  // const [destination, setDestination] = useState([]);
   const navigate = useNavigate();
+
+  const [destinationPromos, setDestinationPromos] = useState([]);
+  const [banner, setBanner] = useState([]);
+  const [isPromo, setIsPromo] = useState(false);
+
+  useEffect(() => {
+    async function getBanners() {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API}/web/banners`);
+        setBanner(response.data.data);
+        // console.log(banner[1].picture);
+      } catch (error) {
+        toast.error(error?.message);
+      }
+    }
+    getBanners();
+  }, []);
+
+  useEffect(() => {
+    async function getDestinationPromos() {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API}/web/promos`);
+        setDestinationPromos(response.data.data);
+        // console.log(destinationPromos);
+      } catch (error) {
+        toast.error(error?.message);
+      }
+    }
+    getDestinationPromos();
+  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -30,11 +58,8 @@ function Home() {
     const numberPassenger = form.number_passenger.attributes.getNamedItem("data-count").value;
     const seatClass = form.seat_class.attributes.getNamedItem("data-id").value;
 
-    navigate(`/search/${departure}/${destination}/${startDate}/${numberPassenger}/${seatClass}`);
-    // console.log(
-    //   "searchhhhhhhhhhhh",
-    //   form.seat_class.attributes.getNamedItem("data-id")
-    // );
+    navigate(`/search/${departure}/${destination}/${startDate}/${numberPassenger}/${seatClass}/${isPromo}`);
+    // console.log("searchhh", form.seat_class.attributes.getNamedItem("data-id"));
   };
 
   return (
@@ -51,19 +76,20 @@ function Home() {
           alignItems: "center",
         }}
       >
-        {/* {destination.slice(1, 3).map((dest) => ( */}
-        <Carousel.Item key="">
-          <img
-            src={Banner1}
-            style={{
-              width: "100%",
-              maxHeight: "590px",
-            }}
-            className="mx-auto"
-            alt="banner"
-          ></img>
-        </Carousel.Item>
-        {/* ))} */}
+        {banner &&
+          banner.map((item) => (
+            <Carousel.Item key={item.id}>
+              <img
+                src={`${item?.picture}`}
+                alt="banner"
+                style={{
+                  width: "100%",
+                  maxHeight: "590px",
+                }}
+                className="mx-auto"
+              ></img>
+            </Carousel.Item>
+          ))}
       </Carousel>
       <div>
         <Container>
@@ -72,7 +98,7 @@ function Home() {
               <Form onSubmit={onSubmit}>
                 <Card className="mx-auto mb-4" style={{ width: "75rem" }}>
                   <Card.Body>
-                    <Card.Title className="px-3 pt-2 mb-3">
+                    <Card.Title className="px-3 pt-2 mb-3" style={{ textShadow: "2px 2px 8px #e3ecff" }}>
                       <b>Pilih Jadwal Penerbangan spesial di</b> <b style={{ color: "#4076E2" }}>SyuraTrip!</b>
                     </Card.Title>
                     <Row className="px-3 pt-2 d-flex align-items-center">
@@ -83,7 +109,15 @@ function Home() {
                       {/* ================Kota Asal================= */}
                       <DepartureAirports />
                       <Col xs={2} md={1} className="d-flex justify-content-center">
-                        <Icon icon="icon-park-outline:play-cycle" color="white" className="icon-switch" />
+                        <Icon
+                          icon="icon-park-outline:play-cycle"
+                          color="white"
+                          className="icon-switch"
+                          onClick={(e) => {
+                            // e.target.departure_airport.value();
+                            console.log(e.target.departure_airport);
+                          }}
+                        />
                       </Col>
                       <Col xs={2} md={1}>
                         <Icon icon="material-symbols:flight-land" color="gray" className="icon-input" />
@@ -128,8 +162,8 @@ function Home() {
           {/* ========== FLIGHT PROMO =========*/}
           <Row style={{ marginLeft: "5.4%", marginRight: "5.4%" }}>
             <Col sm={10} className="mt-1">
-              <h5 className="text-dark text-popular mt-2">
-                <b>Destinasi Favorit</b>
+              <h5 className="text-dark text-popular mt-2" style={{ textShadow: "2px 2px 8px #e3ecff" }}>
+                <b>Pengen ke Luar Negeri? Nih promo buat kamu!</b>
               </h5>
             </Col>
           </Row>
@@ -142,89 +176,129 @@ function Home() {
               marginBottom: "1.3rem",
             }}
           >
-            <Col className="mb-1">
-              <Button
-                variant="outline-dark"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "9px",
-                  padding: "15px",
-                  borderRadius: "25px",
-                }}
-              >
-                <Icon icon="iconamoon:search-bold" className="icon-input" />
-                Category 1
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                variant="outline-dark"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "9px",
-                  padding: "15px",
-                  borderRadius: "25px",
-                }}
-              >
-                <Icon icon="iconamoon:search-bold" className="icon-input" />
-                Category 2
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                variant="outline-dark"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "9px",
-                  padding: "15px",
-                  borderRadius: "25px",
-                }}
-              >
-                <Icon icon="iconamoon:search-bold" className="icon-input" />
-                Category 3
-              </Button>
-            </Col>
-          </Row>
-          <Row className="mt-2" style={{ marginLeft: "5.4%", marginRight: "5.4%" }}>
-            {/* {destination.map((dest) => ( */}
-            <Col sm={12} md={6} lg={3} key="">
-              <Link to={`/details/...`} style={{ textDecoration: "none", borderColor: "black" }}>
-                <Card className="p-2 mb-5" style={{ borderRadius: "10px" }}>
-                  <img
-                    src={DestinationPromo}
-                    alt="destination"
+            {destinationPromos &&
+              destinationPromos.slice(0, 6).map((promo) => (
+                <Col className="mb-1 me-0">
+                  <Button
+                    variant="outline-dark"
                     style={{
-                      width: "100%",
-                      height: "auto",
-                      borderRadius: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "9px",
+                      padding: "15px",
+                      borderRadius: "25px",
                     }}
-                  />
+                  >
+                    <Icon icon="iconamoon:search-bold" className="icon-input" />
+                    {promo?.arrival_city}
+                  </Button>
+                </Col>
+              ))}
+          </Row>
 
-                  <Card.Body className="px-2 pt-3 pb-2">
-                    <Card.Title>
-                      <h5 className="d-flex align-items-center">
-                        <b>
-                          Jakarta
-                          <Icon icon="heroicons:arrow-long-right" className="mx-1" />
-                          Bangkok
-                        </b>
-                      </h5>
-                      <h6>
-                        <b style={{ color: "#3E6B00" }}>AirAsia</b>
-                      </h6>
-                      <h6>20 - 30 Maret 2023</h6>
-                      <h5>
-                        Mulai dari <b style={{ color: "red" }}>IDR 950.000</b>
-                      </h5>
-                    </Card.Title>
-                  </Card.Body>
-                </Card>
-              </Link>
-            </Col>
-            {/* ))} */}
+          <Row className="mt-2" style={{ marginLeft: "5.4%", marginRight: "5.4%" }}>
+            {destinationPromos &&
+              destinationPromos.map((promo) => (
+                <Col sm={12} md={6} lg={3} key={promo?.id}>
+                  <Link
+                    to={`/search/${promo?.departure_airport_id}/${promo?.arrival_airport_id}/${new Date(promo?.departure_date).toLocaleDateString("en-CA", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}/1/1/${!isPromo}`}
+                    style={{ textDecoration: "none", borderColor: "black" }}
+                  >
+                    <Card className="p-2 mb-5 shadow" style={{ borderRadius: "10px" }}>
+                      <img
+                        src={promo?.arrival_city_image}
+                        alt="destination"
+                        style={{
+                          objectFit: "cover",
+                          width: "100%",
+                          height: "190px",
+                          borderRadius: "10px",
+                        }}
+                      />
+                      <span
+                        style={{
+                          position: "absolute",
+                          borderTopRightRadius: "50px",
+                          borderBottomRightRadius: "50px",
+                          padding: "8px",
+                          fontWeight: "bold",
+                          background: "red",
+                        }}
+                        className="d-flex justify-content-end text-light"
+                      >
+                        {promo?.discount}% OFF
+                      </span>
+
+                      <Card.Body className="px-2 pt-3 pb-2">
+                        <Card.Title>
+                          <h5 className="d-flex align-items-center">
+                            <b>
+                              {promo?.departure_city}
+                              <Icon icon="heroicons:arrow-long-right" className="mx-1" />
+                              {promo?.arrival_city}
+                            </b>
+                          </h5>
+                          <h6>
+                            <b style={{ color: "#315bb0" }}>{promo?.airplane_name}</b>
+                          </h6>
+                          <h6>
+                            <b>
+                              {new Date(promo?.departure_date).toLocaleDateString("id-ID", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </b>
+                          </h6>
+                          {/* <Row> */}
+                          {/* <br /> */}
+
+                          <Row>
+                            {/* <h5>Mulai dari</h5> */}
+                            <Col md={8} className="pe-0 d-flex align-content-end">
+                              <h5 className="d-flex align-content-end pe-1">
+                                {/* Mulai dari
+                              <br /> */}
+                                <b style={{ color: "red" }}>
+                                  {(promo?.price - (promo?.discount / 100) * promo?.price).toLocaleString("en-ID", {
+                                    style: "currency",
+                                    currency: "IDR",
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0,
+                                  })}
+                                </b>
+                              </h5>
+                            </Col>
+                            <Col md={4} className="ps-0 d-flex justify-content-end align-items-end">
+                              <span
+                                className="d-flex justify-content-end pe-1"
+                                style={{
+                                  textDecoration: "line-through",
+                                  fontSize: "15px",
+                                  color: "gray",
+                                }}
+                              >
+                                {(promo?.price).toLocaleString("en-ID", {
+                                  style: "currency",
+                                  currency: "IDR",
+                                  minimumFractionDigits: 0,
+                                  maximumFractionDigits: 0,
+                                })}
+                              </span>
+                            </Col>
+                          </Row>
+
+                          {/* </Row> */}
+                        </Card.Title>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </Col>
+              ))}
           </Row>
         </Container>
       </div>

@@ -14,14 +14,14 @@ function SeatClasses() {
 
   const getSeatClass = async () => {
     try {
-      const response = await axios.get(`https://flight-booking-api-development.up.railway.app/api/web/classes`);
+      const response = await axios.get(`${process.env.REACT_APP_API}/web/classes`);
       const data = response.data.data;
       setSeatClass(data);
     } catch (error) {
       toast.error(error?.message);
     }
   };
-  console.log("Ini seat", idSeatClass);
+  // console.log("Ini seat", idSeatClass);
 
   useEffect(() => {
     getSeatClass();
