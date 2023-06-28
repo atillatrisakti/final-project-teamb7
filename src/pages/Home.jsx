@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Carousel,
-  Col,
-  Container,
-  Form,
-  Row,
-} from "react-bootstrap";
+import { Button, Card, Carousel, Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 
@@ -33,9 +25,7 @@ function Home() {
   useEffect(() => {
     async function getBanners() {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/banners`
-        );
+        const response = await axios.get(`${process.env.REACT_APP_API}/web/banners`);
         setBanner(response.data.data);
         // console.log(banner[1].picture);
       } catch (error) {
@@ -48,9 +38,7 @@ function Home() {
   useEffect(() => {
     async function getDestinationPromos() {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/promos`
-        );
+        const response = await axios.get(`${process.env.REACT_APP_API}/web/promos`);
         setDestinationPromos(response.data.data);
         // console.log(destinationPromos);
       } catch (error) {
@@ -63,19 +51,14 @@ function Home() {
   const onSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
-    const departure =
-      form.departure_airport.attributes.getNamedItem("data-id").value;
-    const destination =
-      form.destination_airport.attributes.getNamedItem("data-id").value;
+    const departure = form.departure_airport.attributes.getNamedItem("data-id").value;
+    const destination = form.destination_airport.attributes.getNamedItem("data-id").value;
     const startDate = form.start_date.value;
     const endDate = form.end_date.value;
-    const numberPassenger =
-      form.number_passenger.attributes.getNamedItem("data-count").value;
+    const numberPassenger = form.number_passenger.attributes.getNamedItem("data-count").value;
     const seatClass = form.seat_class.attributes.getNamedItem("data-id").value;
 
-    navigate(
-      `/search/${departure}/${destination}/${startDate}/${numberPassenger}/${seatClass}/${isPromo}`
-    );
+    navigate(`/search/${departure}/${destination}/${startDate}/${numberPassenger}/${seatClass}/${isPromo}`);
     // console.log("searchhh", form.seat_class.attributes.getNamedItem("data-id"));
   };
 
@@ -115,29 +98,17 @@ function Home() {
               <Form onSubmit={onSubmit}>
                 <Card className="mx-auto mb-4" style={{ width: "75rem" }}>
                   <Card.Body>
-                    <Card.Title
-                      className="px-3 pt-2 mb-3"
-                      style={{ textShadow: "2px 2px 8px #e3ecff" }}
-                    >
-                      <b>Pilih Jadwal Penerbangan spesial di</b>{" "}
-                      <b style={{ color: "#4076E2" }}>SyuraTrip!</b>
+                    <Card.Title className="px-3 pt-2 mb-3" style={{ textShadow: "2px 2px 8px #e3ecff" }}>
+                      <b>Pilih Jadwal Penerbangan spesial di</b> <b style={{ color: "#4076E2" }}>SyuraTrip!</b>
                     </Card.Title>
                     <Row className="px-3 pt-2 d-flex align-items-center">
                       <Col xs={2} md={1}>
-                        <Icon
-                          icon="material-symbols:flight-takeoff"
-                          color="gray"
-                          className="icon-input"
-                        />
+                        <Icon icon="material-symbols:flight-takeoff" color="gray" className="icon-input" />
                         <Form.Label className="font-input">From</Form.Label>
                       </Col>
                       {/* ================Kota Asal================= */}
                       <DepartureAirports />
-                      <Col
-                        xs={2}
-                        md={1}
-                        className="d-flex justify-content-center"
-                      >
+                      <Col xs={2} md={1} className="d-flex justify-content-center">
                         <Icon
                           icon="icon-park-outline:play-cycle"
                           color="white"
@@ -149,11 +120,7 @@ function Home() {
                         />
                       </Col>
                       <Col xs={2} md={1}>
-                        <Icon
-                          icon="material-symbols:flight-land"
-                          color="gray"
-                          className="icon-input"
-                        />
+                        <Icon icon="material-symbols:flight-land" color="gray" className="icon-input" />
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
                       {/* ================Kota Tujuan================= */}
@@ -161,11 +128,7 @@ function Home() {
                     </Row>
                     <Row className="px-3 pt-2 my-3 d-flex align-items-center">
                       <Col xs={2} md={1}>
-                        <Icon
-                          icon="material-symbols:date-range-outline"
-                          color="gray"
-                          className="icon-input"
-                        />
+                        <Icon icon="material-symbols:date-range-outline" color="gray" className="icon-input" />
                         <Form.Label className="font-input">Date</Form.Label>
                       </Col>
                       {/* ================DatePicker================= */}
@@ -174,11 +137,7 @@ function Home() {
                       </Col>
                       <Col xs={2} md={1}></Col>
                       <Col xs={2} md={1}>
-                        <Icon
-                          icon="material-symbols:airline-seat-recline-normal"
-                          color="gray"
-                          className="icon-input"
-                        />
+                        <Icon icon="material-symbols:airline-seat-recline-normal" color="gray" className="icon-input" />
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
                       {/* ==========Jumlah Passangers dan Seat Classes========== */}
@@ -187,16 +146,9 @@ function Home() {
                     </Row>
                   </Card.Body>
                   <div className="d-grid gap-2">
-                    <span
-                      className="square rounded-bottom"
-                      style={{ backgroundColor: "#1B3260" }}
-                    >
+                    <span className="square rounded-bottom" style={{ backgroundColor: "#1B3260" }}>
                       <div className="d-grid gap-2">
-                        <Button
-                          type="submit"
-                          variant="primary"
-                          style={{ height: "3rem", backgroundColor: "#1B3260" }}
-                        >
+                        <Button type="submit" variant="primary" style={{ height: "3rem", backgroundColor: "#1B3260" }}>
                           <b>Cari Penerbangan</b>
                         </Button>
                       </div>
@@ -210,10 +162,7 @@ function Home() {
           {/* ========== FLIGHT PROMO =========*/}
           <Row style={{ marginLeft: "5.4%", marginRight: "5.4%" }}>
             <Col sm={10} className="mt-1">
-              <h5
-                className="text-dark text-popular mt-2"
-                style={{ textShadow: "2px 2px 8px #e3ecff" }}
-              >
+              <h5 className="text-dark text-popular mt-2" style={{ textShadow: "2px 2px 8px #e3ecff" }}>
                 <b>Pengen ke Luar Negeri? Nih promo buat kamu!</b>
               </h5>
             </Col>
@@ -247,30 +196,19 @@ function Home() {
               ))}
           </Row>
 
-          <Row
-            className="mt-2"
-            style={{ marginLeft: "5.4%", marginRight: "5.4%" }}
-          >
+          <Row className="mt-2" style={{ marginLeft: "5.4%", marginRight: "5.4%" }}>
             {destinationPromos &&
               destinationPromos.map((promo) => (
                 <Col sm={12} md={6} lg={3} key={promo?.id}>
                   <Link
-                    to={`/search/${promo?.departure_airport_id}/${
-                      promo?.arrival_airport_id
-                    }/${new Date(promo?.departure_date).toLocaleDateString(
-                      "en-CA",
-                      {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      }
-                    )}/1/1/${!isPromo}`}
+                    to={`/search/${promo?.departure_airport_id}/${promo?.arrival_airport_id}/${new Date(promo?.departure_date).toLocaleDateString("en-CA", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}/1/1/${!isPromo}`}
                     style={{ textDecoration: "none", borderColor: "black" }}
                   >
-                    <Card
-                      className="p-2 mb-5 shadow"
-                      style={{ borderRadius: "10px" }}
-                    >
+                    <Card className="p-2 mb-5 shadow" style={{ borderRadius: "10px" }}>
                       <img
                         src={promo?.arrival_city_image}
                         alt="destination"
@@ -300,23 +238,16 @@ function Home() {
                           <h5 className="d-flex align-items-center">
                             <b>
                               {promo?.departure_city}
-                              <Icon
-                                icon="heroicons:arrow-long-right"
-                                className="mx-1"
-                              />
+                              <Icon icon="heroicons:arrow-long-right" className="mx-1" />
                               {promo?.arrival_city}
                             </b>
                           </h5>
                           <h6>
-                            <b style={{ color: "#315bb0" }}>
-                              {promo?.airplane_name}
-                            </b>
+                            <b style={{ color: "#315bb0" }}>{promo?.airplane_name}</b>
                           </h6>
                           <h6>
                             <b>
-                              {new Date(
-                                promo?.departure_date
-                              ).toLocaleDateString("id-ID", {
+                              {new Date(promo?.departure_date).toLocaleDateString("id-ID", {
                                 day: "2-digit",
                                 month: "long",
                                 year: "numeric",
@@ -328,18 +259,12 @@ function Home() {
 
                           <Row>
                             {/* <h5>Mulai dari</h5> */}
-                            <Col
-                              md={8}
-                              className="pe-0 d-flex align-content-end"
-                            >
+                            <Col md={8} className="pe-0 d-flex align-content-end">
                               <h5 className="d-flex align-content-end pe-1">
                                 {/* Mulai dari
                               <br /> */}
                                 <b style={{ color: "red" }}>
-                                  {(
-                                    promo?.price -
-                                    (promo?.discount / 100) * promo?.price
-                                  ).toLocaleString("en-ID", {
+                                  {(promo?.price - (promo?.discount / 100) * promo?.price).toLocaleString("en-ID", {
                                     style: "currency",
                                     currency: "IDR",
                                     minimumFractionDigits: 0,
@@ -348,10 +273,7 @@ function Home() {
                                 </b>
                               </h5>
                             </Col>
-                            <Col
-                              md={4}
-                              className="ps-0 d-flex justify-content-end align-items-end"
-                            >
+                            <Col md={4} className="ps-0 d-flex justify-content-end align-items-end">
                               <span
                                 className="d-flex justify-content-end pe-1"
                                 style={{

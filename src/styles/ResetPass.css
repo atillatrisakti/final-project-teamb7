@@ -1,0 +1,11 @@
+.bg-reset {
+  background: linear-gradient(180deg, #6291ec 59.55%, rgba(255, 233, 202, 0) 100%);
+}
+
+.btn-send {
+  border: none;
+  height: 50px;
+  background: #1b3260;
+  color: white;
+  border-radius: 10px;
+}

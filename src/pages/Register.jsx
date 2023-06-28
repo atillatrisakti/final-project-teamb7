@@ -22,8 +22,8 @@ function Register() {
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.stopPropagation();
-      e.preventDefault();
     }
+    e.preventDefault();
 
     setValidate(true);
 
@@ -66,7 +66,6 @@ function Register() {
         <Col className="bg-color d-flex justify-content-center align-items-center">
           <Link to={"/"}>
             <img src={logo} alt="logo" fluid style={{ width: "500px", height: "500px", top: "301px", left: "85px" }} />
-            {/* <img src={flower} alt="flower" fluid style={{ bottom: "0px" }} /> */}
           </Link>
         </Col>
         <Col className="d-flex justify-content-center align-items-center">

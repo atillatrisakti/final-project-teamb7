@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Login.css";
 import logo from "../assets/navbar/logo-name.svg";
-// import flower from "../assets/Group 10.svg";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
@@ -40,11 +39,7 @@ function Login() {
 
       window.location.href = "/";
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response.data.message);
-        return;
-      }
-      toast.error(error.message);
+      toast.error(error?.message);
     }
   };
 
@@ -54,7 +49,6 @@ function Login() {
         <Col className="bg-color d-flex justify-content-center align-items-center">
           <Link to={"/"}>
             <img src={logo} alt="logo" fluid style={{ width: "500px", height: "500px", top: "301px", left: "85px" }} />
-            {/* <img src={flower} alt="flower" fluid style={{ bottom: "0px" }} /> */}
           </Link>
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
