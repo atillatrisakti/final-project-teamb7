@@ -141,6 +141,10 @@ function Home() {
                           icon="icon-park-outline:play-cycle"
                           color="white"
                           className="icon-switch"
+                          onClick={(e) => {
+                            // e.target.departure_airport.value();
+                            console.log(e.target.departure_airport);
+                          }}
                         />
                       </Col>
                       <Col xs={2} md={1}>
