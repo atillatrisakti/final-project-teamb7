@@ -4,10 +4,10 @@ import { Row, Col, Container, Card } from "react-bootstrap";
 import arrowAccor from "../assets/accordion/Suffix.svg";
 import arrow from "../assets/search/Arrow.svg";
 import { toast } from "react-toastify";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
-function Accordion1() {
+function AccordionFlight() {
   const params = useParams();
 
   const [isActive, setIsActive] = useState(false);
@@ -20,7 +20,7 @@ function Accordion1() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
         );
         setFlight(response.data.data);
         setLoading(false);
@@ -36,7 +36,7 @@ function Accordion1() {
     async function getFlightFacilities() {
       try {
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/facilities`
+          `${process.env.REACT_APP_API}/web/facilities`
         );
         setFlightFacilities(response.data.data);
       } catch (error) {
@@ -46,10 +46,6 @@ function Accordion1() {
     getFlightFacilities();
     // console.log(flightFacilities[0].name);
   }, []);
-
-  const activeButton = () => {
-    setIsActive(false);
-  };
 
   return (
     <div className="accordion-item2">
@@ -79,7 +75,28 @@ function Accordion1() {
                       </p>
                     </div>
                   </Col>
-                  <Col md={6}>
+                  <Col
+                    md={5}
+                    className="d-flex justify-content-end align-items-center pe-0 text-light"
+                  >
+                    {item?.discount > 0 ? (
+                      <span
+                        style={{
+                          borderRadius: "30px",
+                          padding: "4px",
+                          paddingRight: "8px",
+                          paddingLeft: "8px",
+                          fontWeight: "bold",
+                          background: "red",
+                        }}
+                      >
+                        <b>{item?.discount + "% OFF"}</b>
+                      </span>
+                    ) : (
+                      <div></div>
+                    )}
+                  </Col>
+                  <Col md={1}>
                     <img
                       src={arrowAccor}
                       alt="arrowaccor"
@@ -88,8 +105,6 @@ function Accordion1() {
                       style={{ float: "right", cursor: "pointer" }}
                       className="me-2 mt-2"
                       onClick={(e) => {
-                        // e.preventDefault();
-                        // e.target.value();
                         setIsActive(!isActive);
                       }}
                     />
@@ -169,24 +184,22 @@ function Accordion1() {
                     </Col>
                     <Col md={3} className="ms-1 pe-0">
                       <div className="d-flex justify-content-end fw-bold">
-                        {(item?.price).toLocaleString("en-ID", {
+                        {(
+                          item?.price -
+                          (item?.discount / 100) * item?.price
+                        ).toLocaleString("en-ID", {
                           style: "currency",
                           currency: "IDR",
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0,
                         })}
                       </div>
-                      <Link
-                        to={`/booking/${item.id}/${item.numberPassenger}`}
-                        style={{ textDecoration: "none" }}
+                      <button
+                        style={{ float: "right" }}
+                        className="mt-2 btn-pilih"
                       >
-                        <button
-                          style={{ float: "right" }}
-                          className="mt-2 btn-pilih"
-                        >
-                          Pilih
-                        </button>
-                      </Link>
+                        Pilih
+                      </button>
                     </Col>
                   </Row>
                 </Container>
@@ -345,4 +358,4 @@ function Accordion1() {
   );
 }
 
-export default Accordion1;
+export default AccordionFlight;

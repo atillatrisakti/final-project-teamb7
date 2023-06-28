@@ -34,7 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
-            path="/search/:departure_airport_id/:destination_airport_id/:departure_date/:number_passenger/:class_id"
+            path="/search/:departure_airport_id/:destination_airport_id/:departure_date/:number_passenger/:class_id/:is_promo"
             element={<Search />}
           />
           <Route path="/login" element={<Login />} />
