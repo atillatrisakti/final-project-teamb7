@@ -93,19 +93,20 @@ function Home() {
           alignItems: "center",
         }}
       >
-        {banner.map((item) => (
-          <Carousel.Item key={item.id}>
-            <img
-              src={`${item?.picture}`}
-              alt="banner"
-              style={{
-                width: "100%",
-                maxHeight: "590px",
-              }}
-              className="mx-auto"
-            ></img>
-          </Carousel.Item>
-        ))}
+        {banner &&
+          banner.map((item) => (
+            <Carousel.Item key={item.id}>
+              <img
+                src={`${item?.picture}`}
+                alt="banner"
+                style={{
+                  width: "100%",
+                  maxHeight: "590px",
+                }}
+                className="mx-auto"
+              ></img>
+            </Carousel.Item>
+          ))}
       </Carousel>
       <div>
         <Container>
