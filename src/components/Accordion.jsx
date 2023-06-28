@@ -28,19 +28,6 @@ function Accordion({ sort }) {
     getListFlight();
   }, [params]);
 
-  useEffect(() => {
-    async function getFlightFacilities() {
-      try {
-        const response = await axios.get(`https://flight-booking-api-development.up.railway.app/api/web/facilities`);
-        setFlightFacilities(response.data.data);
-      } catch (error) {
-        toast.error(error?.message);
-      }
-    }
-    getFlightFacilities();
-    // console.log(flightFacilities[0].name);
-  }, []);
-
   // const renderData = () => {
   //   if (flight && flight.length > 0) {
   //     if (sort == "termurah") {

@@ -27,7 +27,6 @@ function Search() {
   const [departureAirportCode, setDepartureAirportCode] = useState("");
   const [arrivalAirportCode, setArrivalAirportCode] = useState("");
   const [airplaneClass, setAirplaneClass] = useState("");
-  const [derpartureDate, setDerpartureDate] = useState("");
 
   const [departureDate, setDepartureDate] = useState("");
 
@@ -45,10 +44,8 @@ function Search() {
         setDepartureAirportCode(response.data.data[0].departure_airport_code);
         setArrivalAirportCode(response.data.data[0].arrival_airport_code);
         setAirplaneClass(response.data.data[0].airplane_class);
-        setDerpartureDate(response.data.data[0].derparture_date);
-        console.log(derpartureDate);
         setDepartureDate(response.data.data[0].departure_date);
-        // console.log(departureDate);
+        console.log(departureDate);
         setLoading(false);
       } catch (error) {
         setLoading(false);
