@@ -12,6 +12,8 @@ import History from "./pages/History";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import Account from "./pages/Account";
+import SendEmailReset from "./pages/SendEmailReset";
+import ResetPass from "./pages/ResetPass";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,6 +42,8 @@ function App() {
           <Route path="/payment/:id" element={<Payment />} />
           <Route path="/history" element={<History />} />
           <Route path="/account" element={<Account isLoggedIn={setIsLoggedIn} />} />
+          <Route path="/email-reset" element={<SendEmailReset />} />
+          <Route path="/reset-password" element={<ResetPass />} />
         </Routes>
       </BrowserRouter>
     </Provider>

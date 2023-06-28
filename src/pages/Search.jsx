@@ -5,36 +5,30 @@ import { toast } from "react-toastify";
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
 // import filter from "../assets/search/Prefix icon.svg";
-import { Icon } from "@iconify/react";
+
 import box from "../assets/search/fi_box.svg";
 import love from "../assets/search/fi_heart.svg";
 import dollar from "../assets/search/fi_dollar-sign.svg";
 import rightarrow from "../assets/search/fi_chevron-right.svg";
 import Accordion from "../components/Accordion";
+import ModalSort from "../components/ModalSort";
 import "../styles/Accordion.css";
 import axios from "axios";
-// import NoResult from "../components/NoResult";
 
-const dateList = [
-  { id: 1, hari: "Senin" },
-  { id: 2, hari: "Selasa" },
-  { id: 3, hari: "Rabu" },
-  { id: 4, hari: "Kamis" },
-  { id: 5, hari: "Jumat" },
-  { id: 6, hari: "Sabtu" },
-  { id: 7, hari: "Minggu" },
-];
 function Search() {
   const [date, setDate] = useState("");
-  // const [sort, setSort] = useState("Termurah");
+
   const params = useParams();
   // console.log(params.departure_date);
+  const [sort, setSort] = useState("Termurah");
 
   const [flight, setFlight] = useState([]);
   const [loading, setLoading] = useState(true);
   const [departureAirportCode, setDepartureAirportCode] = useState("");
   const [arrivalAirportCode, setArrivalAirportCode] = useState("");
   const [airplaneClass, setAirplaneClass] = useState("");
+  const [derpartureDate, setDerpartureDate] = useState("");
+
   useEffect(() => {
     async function fetchPost() {
       try {
@@ -47,19 +41,17 @@ function Search() {
         setDepartureAirportCode(response.data.data[0].departure_airport_code);
         setArrivalAirportCode(response.data.data[0].arrival_airport_code);
         setAirplaneClass(response.data.data[0].airplane_class);
+        setDerpartureDate(response.data.data[0].derparture_date);
+        console.log(derpartureDate);
         setLoading(false);
       } catch (error) {
         setLoading(false);
         toast.error(error?.message);
       }
     }
-    // console.log("iniiiii", flight);
+
     fetchPost();
   }, [params]);
-
-  function getDuplicates(data) {
-    return data.filter((value, index) => data.indexOf(value !== index));
-  }
 
   return (
     <Container className="mt-3">
@@ -80,60 +72,36 @@ function Search() {
           </Col>
         </Row>
         <Row className="my-4 d-flex align-items-center">
-          {flight.map((item) => (
-            <Col className="d-flex justify-content-center date-css">
-              <Button
-                // className="text-dark"
-                onClick={() => {
-                  setDate(date === item?.departure_date ? "" : item?.departure_date);
-                }}
-                style={{
-                  backgroundColor: item?.departure_date === date ? "#1b3260" : "white",
-                  color: item?.departure_date === date ? "white" : "black",
-                  border: "5px",
-                }}
-              >
-                <b>
-                  {new Date(item?.departure_date).toLocaleDateString("id-ID", {
-                    weekday: "long",
-                  })}
-                </b>
-                <br />
-                {new Date(item?.departure_date).toLocaleDateString("id-ID", {
-                  day: "2-digit",
-                  month: "numeric",
-                  year: "numeric",
+          <Col className="d-flex justify-content-center date-css">
+            <Button
+              // className="text-dark"
+              onClick={() => {
+                setDate(date === derpartureDate ? "" : derpartureDate);
+              }}
+              style={{
+                backgroundColor: derpartureDate === date ? "#1b3260" : "white",
+                color: derpartureDate === date ? "white" : "black",
+                border: "5px",
+              }}
+            >
+              <b>
+                {new Date(derpartureDate).toLocaleDateString("id-ID", {
+                  weekday: "long",
                 })}
-                {/* <hr /> */}
-              </Button>
-            </Col>
-          ))}
-
-          {/* <Col key={dateList}>
-            <div className="date">
-              {dateList.map((e) => (
-                <div
-                  onClick={() => {
-                    setDate(date === e.hari ? "" : e.hari);
-                  }}
-                  style={{
-                    backgroundColor: e.hari === date ? "green" : "white",
-                  }}
-                >
-                  {e.hari}
-                </div>
-              ))}
-            </div>
-            <hr />
-          </Col> */}
+              </b>
+              <br />
+              {new Date(derpartureDate).toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "numeric",
+                year: "numeric",
+              })}
+              {/* <hr /> */}
+            </Button>
+          </Col>
         </Row>
         <Row>
           <Col>
-            <button className="sort-btn">
-              <Icon icon="fluent:arrow-sort-16-filled" color="#1b3260" />
-              {/* <img src={filter} alt="filter" className="me-1 mb-1" /> */}
-              Termurah
-            </button>
+            <ModalSort sort={sort} setSort={setSort} />
           </Col>
         </Row>
         <Row className="mt-4">
@@ -161,20 +129,7 @@ function Search() {
           </Col>
           <Col md={6}>
             <div className="accordion mb-5">
-              {/* {accordionData.length !== 0 ? (
-                accordionData
-                  .sort((a, b) => {
-                    if (sort === "Termurah") {
-                      return a.price - b.price;
-                    } else if (sort === "Termahal") {
-                      return b.price - a.price;
-                    }
-                  })
-                  .map((item) => )
-              ) : (
-                <NoResult />
-              )} */}
-              <Accordion />
+              <Accordion sort={sort} />
             </div>
           </Col>
         </Row>
