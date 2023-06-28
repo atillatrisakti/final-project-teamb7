@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import "../styles/Payment.css";
-import info from "../assets/booking/info.png";
 import img from "../assets/booking/img.svg";
 import mastercard from "../assets/booking/mastercard.svg";
 import visa from "../assets/booking/visa.svg";
@@ -17,9 +16,11 @@ function Payment() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [detailFlight, setDetailFlight] = useState([]);
   const { id } = useParams();
+  const [facilities, setFacilities] = useState([]);
 
   //count price
-  const totalPrice = detailFlight[0]?.price + detailFlight[0]?.tax;
+  const totalPrice =
+    detailFlight[0]?.price + detailFlight[0]?.price * detailFlight[0]?.tax;
 
   //get detail flight
   useEffect(() => {
@@ -35,6 +36,22 @@ function Payment() {
     }
     getDetailFlight();
   }, [id]);
+
+  //get facilities
+  useEffect(() => {
+    async function getFacilities() {
+      try {
+        const response = await axios.get(
+          `https://flight-booking-api-development.up.railway.app/api/web/facilities`
+        );
+        setFacilities(response.data.data);
+      } catch (error) {
+        toast.error(error?.message);
+      }
+    }
+    getFacilities();
+    // console.log(flightFacilities[0].name);
+  }, []);
 
   const handlePaymentClick = () => {
     setPaymentSuccess(true);
@@ -57,7 +74,7 @@ function Payment() {
 
   const getCardBorderStyle = (account) => {
     return selectedAccounts.includes(account)
-      ? "2px solid rgba(113, 38, 181, 0.75)"
+      ? "2px solid rgba(27, 50, 90)"
       : "2px solid #ccc";
   };
 
@@ -80,16 +97,16 @@ function Payment() {
               style={{ marginTop: "100px" }}
             />
             <div className="payment-success">
-              <p style={{ margin: 0, color: "#7126b5" }}>Selamat!!</p>
+              <p style={{ margin: 0, color: "#1B3260" }}>Selamat!!</p>
               <p>Transaksi Pembayaran Tiket Sukses</p>
             </div>
           </Col>
           <Col className="payment-success">
             <button
-              className="button"
+              className="button-booking"
               size="lg"
               style={{
-                backgroundColor: "#7126b5",
+                backgroundColor: "#1B3260",
                 color: "#FFFFFF",
                 borderRadius: "10px",
                 marginTop: "30px",
@@ -102,10 +119,10 @@ function Payment() {
             </button>
             <Col>
               <button
-                className="button"
+                className="button-booking"
                 size="lg"
                 style={{
-                  backgroundColor: "#D0B7E6",
+                  backgroundColor: "#5173b8",
                   color: "#FFFFFF",
                   borderRadius: "10px",
                   marginTop: "10px",
@@ -422,7 +439,7 @@ function Payment() {
                 </Card.Title>
               </Col>
               <Col>
-                <div style={{ fontWeight: "bold", color: "#7126b5" }}>
+                <div style={{ fontWeight: "bold", color: "#315bb0" }}>
                   6799ggYKb
                 </div>
               </Col>
@@ -433,11 +450,9 @@ function Payment() {
                   md={6}
                   style={{
                     color: "#151515",
-                    fontFamily: "Poppins",
-                    fontSize: "16px",
                   }}
                 >
-                  <div>
+                  <div style={{ fontWeight: "bold" }}>
                     {new Date(
                       detailFlight[0]?.departure_date
                     ).toLocaleTimeString("id", {
@@ -459,10 +474,9 @@ function Payment() {
                 <Col md={6}>
                   <div
                     style={{
-                      color: "#A06ECE",
-                      fontFamily: "Poppins",
-                      fontSize: "12px",
+                      color: "#315bb0",
                       textAlign: "right",
+                      fontWeight: "bold",
                     }}
                   >
                     Keberangkatan
@@ -475,6 +489,7 @@ function Payment() {
                   borderLeft: "none",
                   borderRight: "none",
                   borderBottom: "1px solid #D0D0D0",
+                  fontWeight: "bold",
                 }}
               >
                 {detailFlight[0]?.departure_airport}
@@ -492,11 +507,23 @@ function Payment() {
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <div style={{ marginRight: "8px" }}>
-                      <img src={info} alt="info" fluid width="24" height="24" />
+                    <div style={{ marginRight: "8px", marginBottom: "20px" }}>
+                      <img
+                        src={detailFlight[0]?.airplane_logo}
+                        alt="info"
+                        fluid
+                        width="24"
+                        height="24"
+                      />
                     </div>
                     <div>
-                      <h5 style={{ margin: 0 }}>
+                      <h5
+                        style={{
+                          margin: 0,
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                        }}
+                      >
                         {detailFlight[0]?.airplane_name} -
                         {detailFlight[0]?.airplane_class}
                       </h5>
@@ -507,7 +534,11 @@ function Payment() {
                       </div>
                       <p style={{ margin: 0 }}>Informasi:</p>
                       <p style={{ margin: 0, fontWeight: "normal" }}>
-                        {detailFlight[0]?.facilities}
+                        {facilities.map((facility) => (
+                          <p style={{ margin: 0, fontWeight: "normal" }}>
+                            {facility.name}
+                          </p>
+                        ))}
                       </p>
                     </div>
                   </div>
@@ -518,8 +549,6 @@ function Payment() {
                   md={6}
                   style={{
                     color: "#151515",
-                    fontFamily: "Poppins",
-                    fontSize: "16px",
                   }}
                 >
                   <div style={{ fontWeight: "bold" }}>
@@ -546,10 +575,9 @@ function Payment() {
                 <Col md={6}>
                   <div
                     style={{
-                      color: "#A06ECE",
-                      fontFamily: "Poppins",
-                      fontSize: "12px",
+                      color: "#315bb0",
                       textAlign: "right",
+                      fontWeight: "bold",
                     }}
                   >
                     Kedatangan
@@ -562,6 +590,7 @@ function Payment() {
                   borderLeft: "none",
                   borderRight: "none",
                   borderBottom: "1px solid #D0D0D0",
+                  fontWeight: "bold",
                 }}
               >
                 {detailFlight[0]?.arrival_airport}
@@ -593,7 +622,7 @@ function Payment() {
                 <Col md={6} style={{ fontWeight: "bold" }}>
                   Total
                 </Col>
-                <Col md={6} style={{ fontWeight: "bold", color: "#7126b5" }}>
+                <Col md={6} style={{ fontWeight: "bold", color: "#315bb0" }}>
                   IDR {totalPrice}
                 </Col>
               </Row>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Form, Container, Row, Col } from "react-bootstrap";
 import "../styles/Booking.css";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FaCheckCircle, FaCalendarAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import ItemBooking from "../components/ItemBooking";
@@ -36,7 +36,7 @@ function Booking() {
   const [countries, setCountries] = useState([]);
   const [titles, setTitles] = useState([]);
   const [detailFlight, setDetailFlight] = useState([]);
-  // const [flight_id, setFlight_id] = useState();
+  const [flightId, setFlightId] = useState();
   const params = useParams();
   const [facilities, setFacilities] = useState([]);
 
@@ -66,7 +66,9 @@ function Booking() {
     return `${year}-${month}-${day}`;
   };
 
-  const totalPrice = detailFlight[0]?.price + detailFlight[0]?.tax;
+  //count price
+  const totalPrice =
+    detailFlight[0]?.price + detailFlight[0]?.price * detailFlight[0]?.tax;
 
   //get countries
   useEffect(() => {
@@ -121,7 +123,7 @@ function Booking() {
   }, []);
 
   //post data
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e, flightId) => {
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -144,7 +146,7 @@ function Booking() {
         },
         passenger_identity: [
           {
-            flight_id: "1",
+            flight_id: flightId,
             seat_id: "1",
             passenger_title_id: Number(passenger_title_id),
             passenger_name,
@@ -180,16 +182,16 @@ function Booking() {
       toast.error(error.message);
     }
   };
-   const location = useLocation();
-   const searchParams = new URLSearchParams(location.search);
-   const numberPassenger = searchParams.get("number_passenger");
+  
+  // const location = useLocation();
+  // const searchParams = new URLSearchParams(location.search);
+  // const numberPassenger = searchParams.get("number_passenger");
 
   //  useEffect(() => {
-  //    // Use the numberPassenger value in your logic here
   //    console.log("Number of passengers:", numberPassenger);
   //  }, [numberPassenger]);
   // const numberPassenger = params.number_passenger;
-  console.log(numberPassenger);
+  // console.log(numberPassenger);
 
   //get detail flight
   useEffect(() => {
@@ -199,6 +201,8 @@ function Booking() {
           `https://flight-booking-api-development.up.railway.app/api/web/flights/${params.id}`
         );
         setDetailFlight(response.data.data);
+        // setFlightId(response.data.data.id);
+        
       } catch (error) {
         console.log(error);
       }
@@ -206,6 +210,7 @@ function Booking() {
     getDetailFlight();
   }, [params]);
 
+  //get facilities
   useEffect(() => {
     async function getFacilities() {
       try {
@@ -226,7 +231,6 @@ function Booking() {
     height: "30px",
     left: "16px",
     top: "16px",
-    fontFamily: "Poppins",
     fontStyle: "normal",
     fontWeight: "700",
     fontSize: "20px",
@@ -242,6 +246,7 @@ function Booking() {
             <ItemBooking />
           </Col>
         </Row>
+        {/* ========== Data Pemesan ========== */}
         <Col md={6}>
           <Card className="card-1" style={{ borderRadius: "0" }}>
             <Card.Body>
@@ -365,6 +370,7 @@ function Booking() {
               </Card>
             </Card.Body>
           </Card>
+          {/* ========== Data Penumpang ========== */}
           <Card className="card-2" style={{ borderRadius: "0" }}>
             <Card.Body>
               <Card.Title style={titlestyle}>Isi Data Penumpang</Card.Title>
@@ -638,7 +644,7 @@ function Booking() {
               borderRadius: "10px",
               border: "none",
             }}
-            onClick={handleFormSubmit}
+            onClick={(e) => handleFormSubmit(e, flightId)}
             disabled={formSubmitted}
           >
             {formSubmitted ? "Submitted" : "Submit"}
@@ -727,7 +733,7 @@ function Booking() {
                         height="24"
                       />
                     </div>
-                    <div >
+                    <div>
                       <h5
                         style={{
                           margin: 0,
@@ -844,7 +850,7 @@ function Booking() {
                   style={{ textDecoration: "none" }}
                 >
                   <button
-                    className="button-booking"
+                    className="btn-tiket"
                     size="lg"
                     style={{
                       backgroundColor: "#FF0000",
