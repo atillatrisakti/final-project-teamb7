@@ -31,7 +31,7 @@ function SeatClasses() {
       toast.error(error?.message);
     }
   };
-  console.log("Ini seat", idSeatClass);
+  // console.log("Ini seat", idSeatClass);
 
   useEffect(() => {
     getSeatClass();

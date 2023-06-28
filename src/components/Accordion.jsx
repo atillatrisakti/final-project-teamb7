@@ -20,7 +20,7 @@ function AccordionFlight() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
         );
         setFlight(response.data.data);
         setLoading(false);
@@ -47,12 +47,8 @@ function AccordionFlight() {
     // console.log(flightFacilities[0].name);
   }, []);
 
-  // const activeButton = () => {
-  //   setIsActive(false);
-  // };
-
   return (
-    <div className="accordion-item2" eventKey="">
+    <div className="accordion-item2">
       {loading ? (
         <h1 className="text-center">Loading...</h1>
       ) : flight && flight.length > 0 ? (
@@ -79,7 +75,28 @@ function AccordionFlight() {
                       </p>
                     </div>
                   </Col>
-                  <Col md={6}>
+                  <Col
+                    md={5}
+                    className="d-flex justify-content-end align-items-center pe-0 text-light"
+                  >
+                    {item?.discount > 0 ? (
+                      <span
+                        style={{
+                          borderRadius: "30px",
+                          padding: "4px",
+                          paddingRight: "8px",
+                          paddingLeft: "8px",
+                          fontWeight: "bold",
+                          background: "red",
+                        }}
+                      >
+                        <b>{item?.discount + "% OFF"}</b>
+                      </span>
+                    ) : (
+                      <div></div>
+                    )}
+                  </Col>
+                  <Col md={1}>
                     <img
                       src={arrowAccor}
                       alt="arrowaccor"
@@ -167,7 +184,10 @@ function AccordionFlight() {
                     </Col>
                     <Col md={3} className="ms-1 pe-0">
                       <div className="d-flex justify-content-end fw-bold">
-                        {(item?.price).toLocaleString("en-ID", {
+                        {(
+                          item?.price -
+                          (item?.discount / 100) * item?.price
+                        ).toLocaleString("en-ID", {
                           style: "currency",
                           currency: "IDR",
                           minimumFractionDigits: 0,

@@ -5,14 +5,27 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
 function DatePicker() {
-  const [selectedRange, setSelectedRange] = useState();
+  const [selectedSingleDate, setSelectedSingleDate] = useState(new Date()); // only start date
+
+  const [selectedRange, setSelectedRange] = useState(new Date()); // start date and end date
   const [fromValue, setFromValue] = useState("");
   const [toValue, setToValue] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [showDate, setShowDate] = useState(false); // modal
 
   const handleCloseDate = () => setShowDate(false); // modal
   const handleShowDate = () => setShowDate(true);
+
+  const handleDaySelect = (date) => {
+    setSelectedSingleDate(date);
+    if (date) {
+      setFromValue(format(date, "y-MM-dd"));
+      handleCloseDate();
+    } else {
+      setFromValue("");
+    }
+  };
 
   const handleFromChange = (e) => {
     setFromValue(e.target.value);
@@ -49,7 +62,7 @@ function DatePicker() {
     } else {
       setFromValue("");
     }
-    if (range?.to) {
+    if (range?.to && isDisabled) {
       // setToValue(format(range.to, "MMMM d, yyyy"));
       setToValue(format(range.to, "y-MM-dd"));
       handleCloseDate();
@@ -57,14 +70,6 @@ function DatePicker() {
       setToValue("");
     }
   };
-
-  // const [date, setDate] = useState([
-  //   {
-  //     startDate: new Date(),
-  //     endDate: new Date(),
-  //     key: "selection",
-  //   },
-  // ]);
 
   return (
     <Form.Group>
@@ -89,6 +94,7 @@ function DatePicker() {
         <Col className="ps-0">
           <Form.Label>Return</Form.Label>
           <Form.Control
+            disabled={!isDisabled}
             size={10}
             placeholder="To Date"
             name="end_date"
@@ -102,12 +108,12 @@ function DatePicker() {
           <Form.Check // prettier-ignore
             type="switch"
             id="custom-switch"
+            onClick={() => {
+              setIsDisabled(!isDisabled);
+              setFromValue("");
+              setToValue("");
+            }}
           />
-          {/* <Form.Check // prettier-ignore
-            disabled
-            type="switch"
-            id="disabled-custom-switch"
-          /> */}
         </Col>
       </Row>
       <Modal
@@ -126,16 +132,29 @@ function DatePicker() {
           <Container>
             <Row>
               <Col>
-                <DayPicker
-                  id="day-picker"
-                  mode="range"
-                  selected={selectedRange}
-                  onSelect={handleRangeSelect}
-                  numberOfMonths={2}
-                  pagedNavigation
-                  showOutsideDays
-                  fixedWeeks
-                />
+                {!isDisabled ? (
+                  <DayPicker
+                    id="day-picker-single"
+                    mode="single"
+                    selected={selectedSingleDate}
+                    onSelect={handleDaySelect}
+                    numberOfMonths={2}
+                    pagedNavigation
+                    showOutsideDays
+                    fixedWeeks
+                  />
+                ) : (
+                  <DayPicker
+                    id="day-picker-range"
+                    mode="range"
+                    selected={selectedRange}
+                    onSelect={handleRangeSelect}
+                    numberOfMonths={2}
+                    pagedNavigation
+                    showOutsideDays
+                    fixedWeeks
+                  />
+                )}
               </Col>
             </Row>
           </Container>

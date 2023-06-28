@@ -56,7 +56,7 @@ function Passengers() {
         style={{
           marginLeft: "61.5%",
           marginTop: "15%",
-          width: "50%", //"25.2%",
+          width: "25%", //"25.2%",
         }}
       >
         <Modal.Header closeButton></Modal.Header>
@@ -74,7 +74,7 @@ function Passengers() {
                 <InputGroup className="ps-2">
                   <Button
                     variant="outline-secondary"
-                    disabled={options.dewasa <= 1}
+                    disabled={options.dewasa <= 0}
                     onClick={() => handleOption("dewasa", "min")}
                     style={{ borderRadius: "5px" }}
                   >
@@ -116,7 +116,7 @@ function Passengers() {
                 <InputGroup className="ps-2">
                   <Button
                     variant="outline-secondary"
-                    disabled={options.anak <= 1}
+                    disabled={options.anak <= 0}
                     onClick={() => handleOption("anak", "min")}
                     style={{ borderRadius: "5px" }}
                   >
@@ -158,7 +158,7 @@ function Passengers() {
                 <InputGroup className="ps-2">
                   <Button
                     variant="outline-secondary"
-                    disabled={options.bayi <= 1}
+                    disabled={options.bayi <= 0}
                     onClick={() => handleOption("bayi", "min")}
                     style={{ borderRadius: "5px" }}
                   >

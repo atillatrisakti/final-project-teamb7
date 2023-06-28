@@ -10,7 +10,7 @@ import box from "../assets/search/fi_box.svg";
 import love from "../assets/search/fi_heart.svg";
 import dollar from "../assets/search/fi_dollar-sign.svg";
 import rightarrow from "../assets/search/fi_chevron-right.svg";
-import AccordionFlight from "../components/AccordionFlight";
+import Accordion from "../components/Accordion";
 import "../styles/Accordion.css";
 import axios from "axios";
 // import NoResult from "../components/NoResult";
@@ -26,18 +26,24 @@ function Search() {
   const [departureAirportCode, setDepartureAirportCode] = useState("");
   const [arrivalAirportCode, setArrivalAirportCode] = useState("");
   const [airplaneClass, setAirplaneClass] = useState("");
+  const [departureDate, setDepartureDate] = useState("");
+
   useEffect(() => {
     async function fetchPost() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
         );
-        // console.log(response.data);
+        console.log(response.data);
+        console.log(params.is_promo);
+
         setFlight(response.data.data);
         setDepartureAirportCode(response.data.data[0].departure_airport_code);
         setArrivalAirportCode(response.data.data[0].arrival_airport_code);
         setAirplaneClass(response.data.data[0].airplane_class);
+        setDepartureDate(response.data.data[0].departure_date);
+        // console.log(departureDate);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -72,36 +78,31 @@ function Search() {
           </Col>
         </Row>
         <Row className="my-4 d-flex align-items-center">
-          {flight.map((item) => (
-            <Col className="d-flex justify-content-center date-css">
-              <Button
-                onClick={() => {
-                  setDate(
-                    date === item?.departure_date ? "" : item?.departure_date
-                  );
-                }}
-                style={{
-                  backgroundColor:
-                    item?.departure_date === date ? "#1b3260" : "white",
-                  color: item?.departure_date === date ? "white" : "black",
-                  border: "none",
-                }}
-              >
-                <b>
-                  {new Date(item?.departure_date).toLocaleDateString("id-ID", {
-                    weekday: "long",
-                  })}
-                </b>
-                <br />
-                {new Date(item?.departure_date).toLocaleDateString("id-ID", {
-                  day: "2-digit",
-                  month: "numeric",
-                  year: "numeric",
+          <Col className="d-flex justify-content-center date-css">
+            <Button
+              onClick={() => {
+                setDate(date === departureDate ? "" : departureDate);
+              }}
+              style={{
+                backgroundColor: departureDate === date ? "#1b3260" : "white",
+                color: departureDate === date ? "white" : "black",
+                border: "none",
+              }}
+            >
+              <b>
+                {new Date(departureDate).toLocaleDateString("id-ID", {
+                  weekday: "long",
                 })}
-                {/* <hr /> */}
-              </Button>
-            </Col>
-          ))}
+              </b>
+              <br />
+              {new Date(departureDate).toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "numeric",
+                year: "numeric",
+              })}
+              {/* <hr /> */}
+            </Button>
+          </Col>
         </Row>
         <Row>
           <Col>
@@ -174,7 +175,7 @@ function Search() {
               ) : (
                 <NoResult />
               )} */}
-              <AccordionFlight />
+              <Accordion />
             </div>
           </Col>
         </Row>
