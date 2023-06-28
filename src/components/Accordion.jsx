@@ -136,19 +136,42 @@ function AccordionFlight() {
                             (new Date(item?.arrival_date).getTime() -
                               new Date(item?.departure_date).getTime()) /
                               (1000 * 60 * 60 * 24)
-                          ) + "d "}
-                          {Math.floor(
-                            ((new Date(item?.arrival_date).getTime() -
-                              new Date(item?.departure_date).getTime()) /
-                              (1000 * 60 * 60)) %
-                              24
-                          ) + "h "}
-                          {Math.floor(
-                            ((new Date(item?.arrival_date).getTime() -
-                              new Date(item?.departure_date).getTime()) /
-                              (1000 * 60)) %
-                              60
-                          ) + "m"}
+                          ) > 0 ? (
+                            <span>
+                              {Math.floor(
+                                (new Date(item?.arrival_date).getTime() -
+                                  new Date(item?.departure_date).getTime()) /
+                                  (1000 * 60 * 60 * 24)
+                              ) + "d "}
+                              {Math.floor(
+                                ((new Date(item?.arrival_date).getTime() -
+                                  new Date(item?.departure_date).getTime()) /
+                                  (1000 * 60 * 60)) %
+                                  24
+                              ) + "h "}
+                              {Math.floor(
+                                ((new Date(item?.arrival_date).getTime() -
+                                  new Date(item?.departure_date).getTime()) /
+                                  (1000 * 60)) %
+                                  60
+                              ) + "m"}
+                            </span>
+                          ) : (
+                            <span>
+                              {Math.floor(
+                                ((new Date(item?.arrival_date).getTime() -
+                                  new Date(item?.departure_date).getTime()) /
+                                  (1000 * 60 * 60)) %
+                                  24
+                              ) + "h "}
+                              {Math.floor(
+                                ((new Date(item?.arrival_date).getTime() -
+                                  new Date(item?.departure_date).getTime()) /
+                                  (1000 * 60)) %
+                                  60
+                              ) + "m"}
+                            </span>
+                          )}
                         </span>
                         <img
                           src={arrow}

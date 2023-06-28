@@ -93,7 +93,7 @@ function Home() {
           alignItems: "center",
         }}
       >
-        {banner.slice(0, 4).map((item) => (
+        {banner.map((item) => (
           <Carousel.Item key={item.id}>
             <img
               src={`${item?.picture}`}
@@ -141,6 +141,10 @@ function Home() {
                           icon="icon-park-outline:play-cycle"
                           color="white"
                           className="icon-switch"
+                          onClick={(e) => {
+                            // e.target.departure_airport.value();
+                            console.log(e.target.departure_airport);
+                          }}
                         />
                       </Col>
                       <Col xs={2} md={1}>
@@ -304,7 +308,6 @@ function Home() {
                     <span
                       style={{
                         position: "absolute",
-                        // width: "100%",
                         borderTopRightRadius: "50px",
                         borderBottomRightRadius: "50px",
                         padding: "8px",
