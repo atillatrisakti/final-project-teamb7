@@ -27,7 +27,7 @@ function Payment() {
     async function getDetailFlight() {
       try {
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/flights/${id}`
+          `${process.env.REACT_APP_API}/web/flights/${id}`
         );
         setDetailFlight(response.data.data);
       } catch (error) {
@@ -42,7 +42,7 @@ function Payment() {
     async function getFacilities() {
       try {
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/facilities`
+          `${process.env.REACT_APP_API}/web/facilities`
         );
         setFacilities(response.data.data);
       } catch (error) {

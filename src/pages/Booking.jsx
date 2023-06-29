@@ -14,6 +14,7 @@ function Booking() {
   const [family_name, setFamily_name] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [title_id, setTitle_id] = useState("");
   const [hasFamilyName, setHasFamilyName] = useState(false);
   const [passenger_title_id, setPassenger_title_id] = useState("");
   const [passenger_name, setPassenger_name] = useState("");
@@ -36,7 +37,8 @@ function Booking() {
   const [countries, setCountries] = useState([]);
   const [titles, setTitles] = useState([]);
   const [detailFlight, setDetailFlight] = useState([]);
-  const [flightId, setFlightId] = useState();
+  const [flight_id, setFlight_id] = useState();
+  const [seats_id, setSeats_id] = useState();
   const params = useParams();
   const [facilities, setFacilities] = useState([]);
 
@@ -66,9 +68,11 @@ function Booking() {
     return `${year}-${month}-${day}`;
   };
 
-  //count price
-  const totalPrice =
-    detailFlight[0]?.price + detailFlight[0]?.price * detailFlight[0]?.tax;
+  //count discount & price
+  const discountPrice =
+    detailFlight[0]?.price -
+    detailFlight[0]?.price * (detailFlight[0]?.discount / 100);
+  const totalPrice = discountPrice + discountPrice * detailFlight[0]?.tax;
 
   //get countries
   useEffect(() => {
@@ -76,7 +80,7 @@ function Booking() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/customer/countries`,
+          `${process.env.REACT_APP_API}/customer/countries`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -102,15 +106,19 @@ function Booking() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/customer/titles`,
+          `${process.env.REACT_APP_API}/customer/titles`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
+        console.log(response.data.data);
         const data = response.data.data;
         setTitles(data);
+        if (data.length > 0) {
+          setTitle_id(data[0].id); // Assuming the title ID is available in the API response
+        }
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error.response.data.message);
@@ -123,7 +131,7 @@ function Booking() {
   }, []);
 
   //post data
-  const handleFormSubmit = async (e, flightId) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -138,7 +146,7 @@ function Booking() {
     try {
       let data = JSON.stringify({
         customer_identity: {
-          title_id: "2",
+          title_id,
           name,
           family_name,
           email,
@@ -146,8 +154,8 @@ function Booking() {
         },
         passenger_identity: [
           {
-            flight_id: flightId,
-            seat_id: "1",
+            flight_id,
+            seat_id: seats_id,
             passenger_title_id: Number(passenger_title_id),
             passenger_name,
             passenger_family_name,
@@ -164,7 +172,7 @@ function Booking() {
       const token = localStorage.getItem("token");
       let config = {
         method: "post",
-        url: "https://flight-booking-api-development.up.railway.app/api/customer/transactions",
+        url: `${process.env.REACT_APP_API}/customer/transactions`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -182,7 +190,7 @@ function Booking() {
       toast.error(error.message);
     }
   };
-  
+
   // const location = useLocation();
   // const searchParams = new URLSearchParams(location.search);
   // const numberPassenger = searchParams.get("number_passenger");
@@ -198,11 +206,12 @@ function Booking() {
     async function getDetailFlight() {
       try {
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/flights/${params.id}`
+          `${process.env.REACT_APP_API}/web/flights/${params.id}`
         );
+        // console.log(response.data.data);
         setDetailFlight(response.data.data);
-        // setFlightId(response.data.data.id);
-        
+        setFlight_id(response.data.data[0].id);
+        setSeats_id(response.data.data[0].seats[0].id);
       } catch (error) {
         console.log(error);
       }
@@ -215,7 +224,7 @@ function Booking() {
     async function getFacilities() {
       try {
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/facilities`
+          `${process.env.REACT_APP_API}/web/facilities`
         );
         setFacilities(response.data.data);
       } catch (error) {
@@ -644,7 +653,7 @@ function Booking() {
               borderRadius: "10px",
               border: "none",
             }}
-            onClick={(e) => handleFormSubmit(e, flightId)}
+            onClick={handleFormSubmit}
             disabled={formSubmitted}
           >
             {formSubmitted ? "Submitted" : "Submit"}
@@ -830,7 +839,18 @@ function Booking() {
                     <div>Tax</div>
                   </Col>
                   <Col>
-                    <div>IDR {detailFlight[0]?.price}</div>
+                    <div>
+                      {(
+                        detailFlight[0]?.price -
+                        detailFlight[0]?.price *
+                          (detailFlight[0]?.discount / 100)
+                      ).toLocaleString("en-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      })}
+                    </div>
                     <div>IDR 0</div>
                     <div>IDR {detailFlight[0]?.tax}</div>
                   </Col>
@@ -841,7 +861,12 @@ function Booking() {
                   Total
                 </Col>
                 <Col md={6} style={{ fontWeight: "bold", color: "#315bb0" }}>
-                  IDR {totalPrice}
+                  {totalPrice.toLocaleString("en-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}
                 </Col>
               </Row>
               {formSubmitted && detailFlight && (

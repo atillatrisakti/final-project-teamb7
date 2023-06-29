@@ -25,7 +25,7 @@ function History() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/customer/transactions`,
+          `${process.env.REACT_APP_API}/customer/transactions`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ function History() {
 
         const detailPromises = transaction.map(async (flight) => {
           const detailResponse = await axios.get(
-            `https://flight-booking-api-development.up.railway.app/api/customer/transactions/${flight.id}`,
+            `${process.env.REACT_APP_API}/customer/transactions/${flight.id}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -65,9 +65,13 @@ function History() {
   }, []);
 
   //count price
+  const discountPrice =
+    detailTransaction[0]?.flight.price -
+    detailTransaction[0]?.flight.price *
+      (detailTransaction[0]?.flight.discount / 100);
+
   const totalPrice =
-    detailTransaction[0]?.flight.price +
-    detailTransaction[0]?.flight.price * detailTransaction[0]?.flight.tax;
+    discountPrice + discountPrice * (detailTransaction[0]?.flight.tax);
 
   const handleCardClick = (transactionId, index) => {
     const newIsCardActive = Array(transaction.length).fill(false);
