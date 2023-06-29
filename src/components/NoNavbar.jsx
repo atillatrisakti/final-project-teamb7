@@ -7,7 +7,7 @@ function NoNavbar({ children }) {
   const [showNavbar, setShowNavbar] = useState(false);
 
   useEffect(() => {
-    if (location.pathname === "/login" || location.pathname === "/register") {
+    if (location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/reset-password" || location.pathname === "/email-reset") {
       setShowNavbar(false);
     } else {
       setShowNavbar(true);
