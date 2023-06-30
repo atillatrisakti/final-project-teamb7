@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import "../styles/Payment.css";
-import info from "../assets/booking/info.png";
 import img from "../assets/booking/img.svg";
 import mastercard from "../assets/booking/mastercard.svg";
 import visa from "../assets/booking/visa.svg";
@@ -9,31 +8,11 @@ import amex from "../assets/booking/amex.svg";
 import paypal from "../assets/booking/paypal.svg";
 import gopay from "../assets/booking/Gopay.svg";
 import { toast } from "react-toastify";
-import ItemBooking from "../components/ItemBooking";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import ItemBooking from "../components/booking-payment-history/ItemBooking";
+import DetailPayment from "../components/booking-payment-history/DetailPayment";
 
 function Payment() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [detailFlight, setDetailFlight] = useState([]);
-  const { id } = useParams();
-
-  //count price
-  const totalPrice = detailFlight[0]?.price + detailFlight[0]?.tax;
-
-  //get detail flight
-  useEffect(() => {
-    async function getDetailFlight() {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_API}/web/flights/${id}`);
-        setDetailFlight(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getDetailFlight();
-  }, [id]);
-
   const handlePaymentClick = () => {
     setPaymentSuccess(true);
     toast.success("Terimakasih atas pembayaran transaksi", {
@@ -54,7 +33,9 @@ function Payment() {
   };
 
   const getCardBorderStyle = (account) => {
-    return selectedAccounts.includes(account) ? "2px solid rgba(113, 38, 181, 0.75)" : "2px solid #ccc";
+    return selectedAccounts.includes(account)
+      ? "2px solid rgba(27, 50, 90)"
+      : "2px solid #ccc";
   };
 
   if (paymentSuccess) {
@@ -69,16 +50,16 @@ function Payment() {
           <Col md={12} className="payment-success">
             <img src={img} alt="img" fluid width="204" height="204" style={{ marginTop: "100px" }} />
             <div className="payment-success">
-              <p style={{ margin: 0, color: "#7126b5" }}>Selamat!!</p>
+              <p style={{ margin: 0, color: "#1B3260" }}>Selamat!!</p>
               <p>Transaksi Pembayaran Tiket Sukses</p>
             </div>
           </Col>
           <Col className="payment-success">
             <button
-              className="button"
+              className="button-booking"
               size="lg"
               style={{
-                backgroundColor: "#7126b5",
+                backgroundColor: "#1B3260",
                 color: "#FFFFFF",
                 borderRadius: "10px",
                 marginTop: "30px",
@@ -91,10 +72,10 @@ function Payment() {
             </button>
             <Col>
               <button
-                className="button"
+                className="button-booking"
                 size="lg"
                 style={{
-                  backgroundColor: "#D0B7E6",
+                  backgroundColor: "#5173b8",
                   color: "#FFFFFF",
                   borderRadius: "10px",
                   marginTop: "10px",
@@ -310,180 +291,7 @@ function Payment() {
           </button>
         </Col>
         <Col md={6}>
-          <Card className="detail" style={{ border: "none", boxShadow: "none" }}>
-            <Row>
-              <Col md={6}>
-                <Card.Title
-                  style={{
-                    border: "none",
-                    boxShadow: "none",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Booking Code:
-                </Card.Title>
-              </Col>
-              <Col>
-                <div style={{ fontWeight: "bold", color: "#7126b5" }}>6799ggYKb</div>
-              </Col>
-            </Row>
-            <Card.Body>
-              <Row>
-                <Col
-                  md={6}
-                  style={{
-                    color: "#151515",
-                    fontFamily: "Poppins",
-                    fontSize: "16px",
-                  }}
-                >
-                  <div>
-                    {new Date(detailFlight[0]?.departure_date).toLocaleTimeString("id", {
-                      timeZone: detailFlight[0]?.departure_city_time_zone,
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </div>
-                  <div>
-                    {new Date(detailFlight[0]?.departure_date).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </div>
-                </Col>
-                <Col md={6}>
-                  <div
-                    style={{
-                      color: "#A06ECE",
-                      fontFamily: "Poppins",
-                      fontSize: "12px",
-                      textAlign: "right",
-                    }}
-                  >
-                    Keberangkatan
-                  </div>
-                </Col>
-              </Row>
-              <div
-                style={{
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom: "1px solid #D0D0D0",
-                }}
-              >
-                {detailFlight[0]?.departure_airport}
-              </div>
-              <Container>
-                <div
-                  className="info"
-                  style={{
-                    borderTop: "none",
-                    borderLeft: "none",
-                    borderRight: "none",
-                    borderBottom: "1px solid #D0D0D0",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <div style={{ marginRight: "8px" }}>
-                      <img src={info} alt="info" fluid width="24" height="24" />
-                    </div>
-                    <div>
-                      <h5 style={{ margin: 0 }}>
-                        {detailFlight[0]?.airplane_name} -{detailFlight[0]?.airplane_class}
-                      </h5>
-                      <div style={{ marginBottom: "10px" }}>
-                        <p style={{ margin: 0, fontSize: "14px" }}>{detailFlight[0]?.airplane_code}</p>
-                      </div>
-                      <p style={{ margin: 0 }}>Informasi:</p>
-                      <p style={{ margin: 0, fontWeight: "normal" }}>{detailFlight[0]?.facilities}</p>
-                    </div>
-                  </div>
-                </div>
-              </Container>
-              <Row>
-                <Col
-                  md={6}
-                  style={{
-                    color: "#151515",
-                    fontFamily: "Poppins",
-                    fontSize: "16px",
-                  }}
-                >
-                  <div style={{ fontWeight: "bold" }}>
-                    {new Date(detailFlight[0]?.arrival_date).toLocaleTimeString("id", {
-                      timeZone: detailFlight[0]?.arrival_city_time_zone,
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </div>
-                  <div>
-                    {new Date(detailFlight[0]?.arrival_date).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </div>
-                </Col>
-                <Col md={6}>
-                  <div
-                    style={{
-                      color: "#A06ECE",
-                      fontFamily: "Poppins",
-                      fontSize: "12px",
-                      textAlign: "right",
-                    }}
-                  >
-                    Kedatangan
-                  </div>
-                </Col>
-              </Row>
-              <div
-                style={{
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom: "1px solid #D0D0D0",
-                }}
-              >
-                {detailFlight[0]?.arrival_airport}
-              </div>
-              <Container
-                style={{
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom: "1px solid #D0D0D0",
-                  marginRight: "8px",
-                }}
-              >
-                <div style={{ fontWeight: "bold" }}>Rincian Harga</div>
-                <Row>
-                  <Col md={6}>
-                    <div>2 Adult</div>
-                    <div>1 Baby</div>
-                    <div>Tax</div>
-                  </Col>
-                  <Col>
-                    <div>IDR {detailFlight[0]?.price}</div>
-                    <div>IDR 0</div>
-                    <div>IDR {detailFlight[0]?.tax}</div>
-                  </Col>
-                </Row>
-              </Container>
-              <Row>
-                <Col md={6} style={{ fontWeight: "bold" }}>
-                  Total
-                </Col>
-                <Col md={6} style={{ fontWeight: "bold", color: "#7126b5" }}>
-                  IDR {totalPrice}
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
+          <DetailPayment />
         </Col>
       </Row>
     </Container>
