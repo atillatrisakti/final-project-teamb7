@@ -37,15 +37,14 @@ function Search() {
         const response = await axios.get(
           `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
         );
-        console.log(response.data);
-        console.log(params.is_promo);
+        // console.log(response.data);
+        // console.log(params.is_promo);
 
         setFlight(response.data.data);
         setDepartureAirportCode(response.data.data[0].departure_airport_code);
         setArrivalAirportCode(response.data.data[0].arrival_airport_code);
         setAirplaneClass(response.data.data[0].airplane_class);
         setDepartureDate(response.data.data[0].departure_date);
-        console.log(departureDate);
         setLoading(false);
       } catch (error) {
         setLoading(false);

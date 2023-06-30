@@ -27,7 +27,6 @@ function Home() {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API}/web/banners`);
         setBanner(response.data.data);
-        // console.log(banner[1].picture);
       } catch (error) {
         toast.error(error?.message);
       }
@@ -59,13 +58,17 @@ function Home() {
     const seatClass = form.seat_class.attributes.getNamedItem("data-id").value;
 
     navigate(`/search/${departure}/${destination}/${startDate}/${numberPassenger}/${seatClass}/${isPromo}`);
+    navigate(`/search/${departure}/${destination}/${endDate}/${numberPassenger}/${seatClass}/${isPromo}`);
     // console.log("searchhh", form.seat_class.attributes.getNamedItem("data-id"));
   };
 
   return (
     <>
       <Carousel
-        controls={true}
+        controls={false}
+        indicators={false}
+        touch={true}
+        // interval={5000}
         style={{
           position: "absolute",
           top: "4.8rem",
@@ -76,6 +79,20 @@ function Home() {
           alignItems: "center",
         }}
       >
+        {banner &&
+          banner.map((item) => (
+            <Carousel.Item key={item.id}>
+              <img
+                src={`${item?.picture}`}
+                alt="banner"
+                style={{
+                  width: "100%",
+                  maxHeight: "590px",
+                }}
+                className="mx-auto"
+              ></img>
+            </Carousel.Item>
+          ))}
         {banner &&
           banner.map((item) => (
             <Carousel.Item key={item.id}>
@@ -178,7 +195,7 @@ function Home() {
           >
             {destinationPromos &&
               destinationPromos.slice(0, 6).map((promo) => (
-                <Col className="mb-1 me-0">
+                <Col className="mb-1 me-0" key={promo?.id}>
                   <Button
                     variant="outline-dark"
                     style={{
@@ -196,10 +213,14 @@ function Home() {
               ))}
           </Row>
 
-          <Row className="mt-2" style={{ marginLeft: "5.4%", marginRight: "5.4%" }}>
+          <Row
+            className="mt-2 d-flex justify-content-center"
+            // style={{ marginLeft: "5.4%", marginRight: "5.4%" }}
+            style={{ marginLeft: "2.7%", marginRight: "2.6%" }}
+          >
             {destinationPromos &&
               destinationPromos.map((promo) => (
-                <Col sm={12} md={6} lg={3} key={promo?.id}>
+                <Col sm="auto" md="auto" lg="auto" className="px-2" key={promo?.id}>
                   <Link
                     to={`/search/${promo?.departure_airport_id}/${promo?.arrival_airport_id}/${new Date(promo?.departure_date).toLocaleDateString("en-CA", {
                       day: "2-digit",
@@ -208,15 +229,15 @@ function Home() {
                     })}/1/1/${!isPromo}`}
                     style={{ textDecoration: "none", borderColor: "black" }}
                   >
-                    <Card className="p-2 mb-5 shadow" style={{ borderRadius: "10px" }}>
+                    <Card className="mb-3 shadow" style={{ borderRadius: "10px", width: "228px" }}>
                       <img
                         src={promo?.arrival_city_image}
                         alt="destination"
                         style={{
                           objectFit: "cover",
                           width: "100%",
-                          height: "190px",
-                          borderRadius: "10px",
+                          height: "150px",
+                          borderTopRightRadius: "10px",
                         }}
                       />
                       <span
@@ -225,6 +246,7 @@ function Home() {
                           borderTopRightRadius: "50px",
                           borderBottomRightRadius: "50px",
                           padding: "8px",
+                          fontSize: "15px",
                           fontWeight: "bold",
                           background: "red",
                         }}
@@ -233,66 +255,50 @@ function Home() {
                         {promo?.discount}% OFF
                       </span>
 
-                      <Card.Body className="px-2 pt-3 pb-2">
-                        <Card.Title>
-                          <h5 className="d-flex align-items-center">
-                            <b>
+                      <Card.Body className="px-2 pt-2 pb-2">
+                        <Card.Title className="pb-0 px-1">
+                          <b>
+                            <span className="d-flex align-items-center" style={{ fontSize: "16px" }}>
                               {promo?.departure_city}
                               <Icon icon="heroicons:arrow-long-right" className="mx-1" />
                               {promo?.arrival_city}
-                            </b>
-                          </h5>
-                          <h6>
-                            <b style={{ color: "#315bb0" }}>{promo?.airplane_name}</b>
+                            </span>
+                          </b>
+
+                          <h6 className="mb-0" style={{ color: "#315bb0", fontSize: "15px" }}>
+                            {promo?.airplane_name}
                           </h6>
-                          <h6>
-                            <b>
-                              {new Date(promo?.departure_date).toLocaleDateString("id-ID", {
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
+                          <h6 style={{ fontSize: "15px" }}>
+                            {new Date(promo?.departure_date).toLocaleDateString("id-ID", {
+                              day: "2-digit",
+                              month: "long",
+                              year: "numeric",
+                            })}
+                          </h6>
+                          <span
+                            style={{
+                              textDecoration: "line-through",
+                              fontSize: "14px",
+                              color: "gray",
+                            }}
+                          >
+                            {(promo?.price).toLocaleString("en-ID", {
+                              style: "currency",
+                              currency: "IDR",
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 0,
+                            })}
+                          </span>
+                          <h5 className="d-flex align-content-end pb-0">
+                            <b style={{ color: "red", fontSize: "17.5px" }}>
+                              {(promo?.price - (promo?.discount / 100) * promo?.price).toLocaleString("en-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
                               })}
                             </b>
-                          </h6>
-                          {/* <Row> */}
-                          {/* <br /> */}
-
-                          <Row>
-                            {/* <h5>Mulai dari</h5> */}
-                            <Col md={8} className="pe-0 d-flex align-content-end">
-                              <h5 className="d-flex align-content-end pe-1">
-                                {/* Mulai dari
-                              <br /> */}
-                                <b style={{ color: "red" }}>
-                                  {(promo?.price - (promo?.discount / 100) * promo?.price).toLocaleString("en-ID", {
-                                    style: "currency",
-                                    currency: "IDR",
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 0,
-                                  })}
-                                </b>
-                              </h5>
-                            </Col>
-                            <Col md={4} className="ps-0 d-flex justify-content-end align-items-end">
-                              <span
-                                className="d-flex justify-content-end pe-1"
-                                style={{
-                                  textDecoration: "line-through",
-                                  fontSize: "15px",
-                                  color: "gray",
-                                }}
-                              >
-                                {(promo?.price).toLocaleString("en-ID", {
-                                  style: "currency",
-                                  currency: "IDR",
-                                  minimumFractionDigits: 0,
-                                  maximumFractionDigits: 0,
-                                })}
-                              </span>
-                            </Col>
-                          </Row>
-
-                          {/* </Row> */}
+                          </h5>
                         </Card.Title>
                       </Card.Body>
                     </Card>

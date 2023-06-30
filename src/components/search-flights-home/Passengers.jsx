@@ -27,7 +27,7 @@ function Passengers() {
     <Col xs={3} md={2}>
       <Form.Group>
         <Form.Label>Passengers</Form.Label>
-        <Form.Control data-count={`${count}`} placeholder="Jumlah" value={`${count} Penumpang`} name="number_passenger" className="form-input" onClick={handleShowPassenger} />
+        <Form.Control required data-count={`${count}`} placeholder="Jumlah" value={`${count} Penumpang`} name="number_passenger" className="form-input" onClick={handleShowPassenger} />
       </Form.Group>
 
       <Modal
@@ -106,7 +106,17 @@ function Passengers() {
           </Container>
         </Modal.Body>
         <Modal.Footer>
-          <button style={{ border: "none", borderRadius: "10px", background: "#1b3260", width: "100px", color: "white", height: "40px" }} onClick={handleClosePassenger}>
+          <button
+            style={{
+              border: "none",
+              borderRadius: "10px",
+              background: "#1b3260",
+              width: "100px",
+              color: "white",
+              height: "40px",
+            }}
+            onClick={handleClosePassenger}
+          >
             Simpan
           </button>
         </Modal.Footer>

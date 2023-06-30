@@ -16,6 +16,7 @@ function SeatClasses() {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API}/web/classes`);
       const data = response.data.data;
+      // console.log(data);
       setSeatClass(data);
     } catch (error) {
       toast.error(error?.message);
@@ -37,7 +38,16 @@ function SeatClasses() {
     <Col xs={3} md={2}>
       <Form.Group>
         <Form.Label>Seat Class</Form.Label>
-        <Form.Control data-id={idSeatClass} placeholder="Kelas Kabin" value={selectedClass} name="seat_class" className="form-input" onClick={handleShowClass} />
+        <Form.Control
+          required
+          data-id={idSeatClass}
+          placeholder="Kelas Kabin"
+          value={selectedClass}
+          // ? selectedClass : seatClass[0]?.name}
+          name="seat_class"
+          className="form-input"
+          onClick={handleShowClass}
+        />
       </Form.Group>
 
       <Modal
@@ -61,6 +71,7 @@ function SeatClasses() {
                     seatClass.length > 0 &&
                     seatClass.map((seat) => (
                       <ListGroup.Item
+                        key={seat?.id}
                         action
                         variant="light"
                         onClick={(e) => {
@@ -82,7 +93,17 @@ function SeatClasses() {
           </Container>
         </Modal.Body>
         <Modal.Footer>
-          <button style={{ border: "none", borderRadius: "10px", background: "#1b3260", width: "100px", color: "white", height: "40px" }} onClick={handleCloseClass}>
+          <button
+            style={{
+              border: "none",
+              borderRadius: "10px",
+              background: "#1b3260",
+              width: "100px",
+              color: "white",
+              height: "40px",
+            }}
+            onClick={handleCloseClass}
+          >
             Simpan
           </button>
         </Modal.Footer>
