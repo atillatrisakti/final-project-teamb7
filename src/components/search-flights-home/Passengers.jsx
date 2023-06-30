@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Button, Col, Container, Form, InputGroup, Modal, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Modal,
+  Row,
+} from "react-bootstrap";
 import { Icon } from "@iconify/react";
 
 function Passengers() {
@@ -16,7 +24,10 @@ function Passengers() {
     setOptions((prev) => {
       return {
         ...prev,
-        [passenger]: operation === "plus" ? options[passenger] + 1 : options[passenger] - 1,
+        [passenger]:
+          operation === "plus"
+            ? options[passenger] + 1
+            : options[passenger] - 1,
       };
     });
   };
@@ -27,7 +38,15 @@ function Passengers() {
     <Col xs={3} md={2}>
       <Form.Group>
         <Form.Label>Passengers</Form.Label>
-        <Form.Control required data-count={`${count}`} placeholder="Jumlah" value={`${count} Penumpang`} name="number_passenger" className="form-input" onClick={handleShowPassenger} />
+        <Form.Control
+          required
+          data-count={`${count}`}
+          placeholder="Jumlah"
+          value={`${count} Penumpang`}
+          name="number_passenger"
+          className="form-input"
+          onClick={handleShowPassenger}
+        />
       </Form.Group>
 
       <Modal
@@ -48,17 +67,39 @@ function Passengers() {
               <Col xs={10} md={6} className="d-flex align-items-center">
                 <Icon icon="el:adult" className="icon-input me-2" />
                 <span>
-                  <b className="mb-0">Dewasa</b> <br /> <p className="my-auto font-passenger">(12 tahun ke atas)</p>
+                  <b className="mb-0">Dewasa</b> <br />{" "}
+                  <p className="my-auto font-passenger">(12 tahun ke atas)</p>
                 </span>
               </Col>
               <Col xs={8} md={6} className="d-flex align-items-center">
                 <InputGroup className="ps-2">
-                  <Button variant="outline-secondary" disabled={options.dewasa <= 0} onClick={() => handleOption("dewasa", "min")} style={{ borderRadius: "5px" }}>
-                    <Icon icon="fa6-solid:minus" className="d-flex align-items-center" />
+                  <Button
+                    variant="outline-secondary"
+                    disabled={options.dewasa <= 0}
+                    onClick={() => handleOption("dewasa", "min")}
+                    style={{ borderRadius: "5px" }}
+                  >
+                    <Icon
+                      icon="fa6-solid:minus"
+                      className="d-flex align-items-center"
+                    />
                   </Button>
-                  <Form.Control placeholder="0" value={options.dewasa} aria-label="Jumlah Penumpang" className="mx-1 text-center" style={{ borderRadius: "5px" }} />
-                  <Button variant="outline-secondary" onClick={() => handleOption("dewasa", "plus")} style={{ borderRadius: "5px" }}>
-                    <Icon icon="fa6-solid:plus" className="d-flex align-items-center" />
+                  <Form.Control
+                    placeholder="0"
+                    value={options.dewasa}
+                    aria-label="Jumlah Penumpang"
+                    className="mx-1 text-center"
+                    style={{ borderRadius: "5px" }}
+                  />
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => handleOption("dewasa", "plus")}
+                    style={{ borderRadius: "5px" }}
+                  >
+                    <Icon
+                      icon="fa6-solid:plus"
+                      className="d-flex align-items-center"
+                    />
                   </Button>
                 </InputGroup>
               </Col>
@@ -68,17 +109,39 @@ function Passengers() {
                 <Icon icon="fa-solid:child" className="icon-input me-2" />
 
                 <span>
-                  <b className="mb-0">Anak</b> <br /> <p className="my-auto font-passenger">(2 - 11 tahun)</p>
+                  <b className="mb-0">Anak</b> <br />{" "}
+                  <p className="my-auto font-passenger">(2 - 11 tahun)</p>
                 </span>
               </Col>
               <Col xs={8} md={6} className="d-flex align-items-center">
                 <InputGroup className="ps-2">
-                  <Button variant="outline-secondary" disabled={options.anak <= 0} onClick={() => handleOption("anak", "min")} style={{ borderRadius: "5px" }}>
-                    <Icon icon="fa6-solid:minus" className="d-flex align-items-center" />
+                  <Button
+                    variant="outline-secondary"
+                    disabled={options.anak <= 0}
+                    onClick={() => handleOption("anak", "min")}
+                    style={{ borderRadius: "5px" }}
+                  >
+                    <Icon
+                      icon="fa6-solid:minus"
+                      className="d-flex align-items-center"
+                    />
                   </Button>
-                  <Form.Control placeholder="0" value={options.anak} aria-label="Jumlah Penumpang" className="mx-1 text-center" style={{ borderRadius: "5px" }} />
-                  <Button variant="outline-secondary" onClick={() => handleOption("anak", "plus")} style={{ borderRadius: "5px" }}>
-                    <Icon icon="fa6-solid:plus" className="d-flex align-items-center" />
+                  <Form.Control
+                    placeholder="0"
+                    value={options.anak}
+                    aria-label="Jumlah Penumpang"
+                    className="mx-1 text-center"
+                    style={{ borderRadius: "5px" }}
+                  />
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => handleOption("anak", "plus")}
+                    style={{ borderRadius: "5px" }}
+                  >
+                    <Icon
+                      icon="fa6-solid:plus"
+                      className="d-flex align-items-center"
+                    />
                   </Button>
                 </InputGroup>
               </Col>
@@ -88,17 +151,39 @@ function Passengers() {
                 <Icon icon="fa6-solid:baby" className="icon-input me-2" />
 
                 <span>
-                  <b className="mb-0">Bayi</b> <br /> <p className="my-auto font-passenger">(Di bawah 2 tahun)</p>
+                  <b className="mb-0">Bayi</b> <br />{" "}
+                  <p className="my-auto font-passenger">(Di bawah 2 tahun)</p>
                 </span>
               </Col>
               <Col xs={8} md={6} className="d-flex align-items-center">
                 <InputGroup className="ps-2">
-                  <Button variant="outline-secondary" disabled={options.bayi <= 0} onClick={() => handleOption("bayi", "min")} style={{ borderRadius: "5px" }}>
-                    <Icon icon="fa6-solid:minus" className="d-flex align-items-center" />
+                  <Button
+                    variant="outline-secondary"
+                    disabled={options.bayi <= 0}
+                    onClick={() => handleOption("bayi", "min")}
+                    style={{ borderRadius: "5px" }}
+                  >
+                    <Icon
+                      icon="fa6-solid:minus"
+                      className="d-flex align-items-center"
+                    />
                   </Button>
-                  <Form.Control placeholder="0" value={options.bayi} aria-label="Jumlah Penumpang" className="mx-1 text-center" style={{ borderRadius: "5px" }} />
-                  <Button variant="outline-secondary" onClick={() => handleOption("bayi", "plus")} style={{ borderRadius: "5px" }}>
-                    <Icon icon="fa6-solid:plus" className="d-flex align-items-center" />
+                  <Form.Control
+                    placeholder="0"
+                    value={options.bayi}
+                    aria-label="Jumlah Penumpang"
+                    className="mx-1 text-center"
+                    style={{ borderRadius: "5px" }}
+                  />
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => handleOption("bayi", "plus")}
+                    style={{ borderRadius: "5px" }}
+                  >
+                    <Icon
+                      icon="fa6-solid:plus"
+                      className="d-flex align-items-center"
+                    />
                   </Button>
                 </InputGroup>
               </Col>
