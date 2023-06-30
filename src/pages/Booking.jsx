@@ -48,19 +48,19 @@ function Booking() {
       passenger_title_id: Number(passenger_title_id),
       passenger_name: "",
       passenger_family_name: "",
-      passenger_dob: "",
+      passenger_dob: null,
       passenger_nationality_id: "",
       passenger_identity_card: "",
       passenger_identity_card_publisher_id: "",
-      passenger_identity_card_due_date: "",
+      passenger_identity_card_due_date: null,
     },
   ]);
 
-  const handlePassengerChange = (e, index, field) => {
+  const handlePassengerChange = (value, index, field) => {
     const updatedPassengers = [...passengers];
     updatedPassengers[index] = {
       ...updatedPassengers[index],
-      [field]: e.target.value,
+      [field]: value,
     };
     setPassengers(updatedPassengers);
   };
@@ -492,10 +492,16 @@ function Booking() {
                               required
                               className="custom-date"
                               selected={
-                                passenger_dob ? new Date(passenger_dob) : null
+                                passengers[index]?.passenger_dob
+                                  ? new Date(passengers[index]?.passenger_dob)
+                                  : null
                               }
                               onChange={(date) =>
-                                setPassenger_dob(formatDate(date))
+                                handlePassengerChange(
+                                  formatDate(date),
+                                  index,
+                                  "passenger_dob"
+                                )
                               }
                               dateFormat="yyyy-MM-dd"
                               placeholderText="yyyy-mm-dd"
@@ -519,9 +525,13 @@ function Booking() {
                           <Form.Select
                             required
                             aria-label="Select Countries"
-                            value={passenger_nationality_id}
+                            value={passengers.passenger_nationality_id}
                             onChange={(e) =>
-                              setPassenger_nationality_id(e.target.value)
+                              handlePassengerChange(
+                                e,
+                                0 - index,
+                                "passenger_nationality_id"
+                              )
                             }
                           >
                             <option value="">Select Countries</option>
@@ -543,9 +553,13 @@ function Booking() {
                             required
                             placeholder="KTP/Paspor"
                             name="identification"
-                            value={passenger_identity_card}
+                            value={passengers.passenger_identity_card}
                             onChange={(e) =>
-                              setPassenger_identity_card(e.target.value)
+                              handlePassengerChange(
+                                e,
+                                0 - index,
+                                "passenger_identity_card"
+                              )
                             }
                             pattern=".{16}"
                           />
@@ -560,10 +574,14 @@ function Booking() {
                           <Form.Select
                             required
                             aria-label="Select Countries"
-                            value={passenger_identity_card_publisher_id}
+                            value={
+                              passengers.passenger_identity_card_publisher_id
+                            }
                             onChange={(e) =>
-                              setPassenger_identity_card_publisher_id(
-                                e.target.value
+                              handlePassengerChange(
+                                e,
+                                0 - index,
+                                "passenger_identity_card_publisher_id"
                               )
                             }
                           >
@@ -587,13 +605,15 @@ function Booking() {
                               required
                               className="custom-date"
                               selected={
-                                passenger_identity_card_due_date
-                                  ? new Date(passenger_identity_card_due_date)
+                                passengers[index]?.passenger_identity_card_due_date
+                                  ? new Date(passengers[index]?.passenger_identity_card_due_date)
                                   : null
                               }
                               onChange={(date) =>
-                                setPassenger_identity_card_due_date(
-                                  formatDate(date)
+                                handlePassengerChange(
+                                  formatDate(date),
+                                  index,
+                                  "passenger_identity_card_due_date"
                                 )
                               }
                               dateFormat="yyyy-MM-dd"

@@ -69,6 +69,7 @@ function DepartureAirports() {
     <Col xs={7} md={5}>
       <Form.Group>
         <Form.Control
+          required
           data-id={idDeptAirport}
           placeholder="Kota Asal"
           name="departure_airport"
@@ -89,11 +90,7 @@ function DepartureAirports() {
           <Form>
             <Row>
               <Col>
-                <InputGroup
-                  className="mb-3 my-1"
-                  controlId="exampleForm.ControlInput1"
-                  style={{ width: "42.8rem" }}
-                >
+                <InputGroup className="mb-3 my-1" style={{ width: "42.8rem" }}>
                   <Form.Control
                     type="text"
                     name="search"
@@ -136,7 +133,7 @@ function DepartureAirports() {
               <ListGroup className="mb-2">
                 {filteredAirport && filteredAirport.length > 0 ? (
                   filteredAirport.map((item) => (
-                    <div className="list-group fluid shadow">
+                    <div className="list-group fluid shadow" key={item?.id}>
                       <ListGroup.Item
                         action
                         variant="light"
@@ -144,6 +141,7 @@ function DepartureAirports() {
                           e.preventDefault();
                           setAirport(item.airports);
                           setSelectedAirport(item?.name);
+                          setSearch("");
                           setIdDeptAirport(item?.id);
 
                           // console.log()
