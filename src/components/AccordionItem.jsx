@@ -16,7 +16,7 @@ const AccordionItem = (props) => {
     async function getFlightFacilities() {
       try {
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/facilities`
+          `${process.env.REACT_APP_API}/web/facilities`
         );
         setFlightFacilities(response.data.data);
       } catch (error) {

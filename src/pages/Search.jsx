@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
@@ -67,7 +67,9 @@ function Search() {
               onClick={() => {}}
               style={{ cursor: "pointer" }}
             >
-              <img src={arrow} alt="left-arrow" className="mb-1" />
+              <Link to={"/"}>
+                <img src={arrow} alt="left-arrow" className="mb-1" />
+              </Link>
               <span>
                 {departureAirportCode} - {arrivalAirportCode} -{" "}
                 {params?.number_passenger} Penumpang - {airplaneClass}
@@ -75,7 +77,9 @@ function Search() {
             </div>
           </Col>
           <Col sm={2}>
-            <button className="change-search">Ubah Pencarian</button>
+            <Link to={"/"}>
+              <button className="change-search">Ubah Pencarian</button>
+            </Link>
           </Col>
         </Row>
         <Row className="my-4 d-flex align-items-center">
