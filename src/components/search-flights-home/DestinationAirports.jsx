@@ -92,7 +92,7 @@ function DestinationAirports() {
               <Col>
                 <InputGroup className="mb-3 my-1" style={{ width: "42.8rem" }}>
                   <Form.Control
-                    type="text"
+                    type="search"
                     name="search"
                     value={search}
                     placeholder="Hai, mau ke mana nih?"
