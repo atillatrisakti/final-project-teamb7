@@ -67,7 +67,7 @@ function Passengers() {
               <Col xs={10} md={6} className="d-flex align-items-center">
                 <Icon icon="el:adult" className="icon-input me-2" />
                 <span>
-                  <b className="mb-0">Dewasa</b> <br />
+                  <b className="mb-0">Dewasa</b> <br />{" "}
                   <p className="my-auto font-passenger">(12 tahun ke atas)</p>
                 </span>
               </Col>
@@ -83,33 +83,7 @@ function Passengers() {
                       icon="fa6-solid:minus"
                       className="d-flex align-items-center"
                     />
-                  <Button
-                    variant="outline-secondary"
-                    disabled={options.dewasa <= 0}
-                    onClick={() => handleOption("dewasa", "min")}
-                    style={{ borderRadius: "5px" }}
-                  >
-                    <Icon
-                      icon="fa6-solid:minus"
-                      className="d-flex align-items-center"
-                    />
                   </Button>
-                  <Form.Control
-                    placeholder="0"
-                    value={options.dewasa}
-                    aria-label="Jumlah Penumpang"
-                    className="mx-1 text-center"
-                    style={{ borderRadius: "5px" }}
-                  />
-                  <Button
-                    variant="outline-secondary"
-                    onClick={() => handleOption("dewasa", "plus")}
-                    style={{ borderRadius: "5px" }}
-                  >
-                    <Icon
-                      icon="fa6-solid:plus"
-                      className="d-flex align-items-center"
-                    />
                   <Form.Control
                     placeholder="0"
                     value={options.dewasa}
