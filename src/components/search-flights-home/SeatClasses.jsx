@@ -1,14 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  ListGroup,
-  Modal,
-  Row,
-} from "react-bootstrap";
+import { Col, Container, Form, ListGroup, Modal, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 function SeatClasses() {
@@ -22,9 +14,7 @@ function SeatClasses() {
 
   const getSeatClass = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API}/web/classes`
-      );
+      const response = await axios.get(`${process.env.REACT_APP_API}/web/classes`);
       const data = response.data.data;
       setSeatClass(data);
     } catch (error) {
@@ -47,14 +37,7 @@ function SeatClasses() {
     <Col xs={3} md={2}>
       <Form.Group>
         <Form.Label>Seat Class</Form.Label>
-        <Form.Control
-          data-id={idSeatClass}
-          placeholder="Kelas Kabin"
-          value={selectedClass}
-          name="seat_class"
-          className="form-input"
-          onClick={handleShowClass}
-        />
+        <Form.Control data-id={idSeatClass} placeholder="Kelas Kabin" value={selectedClass} name="seat_class" className="form-input" onClick={handleShowClass} />
       </Form.Group>
 
       <Modal
@@ -100,7 +83,9 @@ function SeatClasses() {
           </Container>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleCloseClass}>Simpan</Button>
+          <button style={{ border: "none", borderRadius: "10px", background: "#1b3260", width: "100px", color: "white", height: "40px" }} onClick={handleCloseClass}>
+            Simpan
+          </button>
         </Modal.Footer>
       </Modal>
     </Col>
