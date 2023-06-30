@@ -3,11 +3,13 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 import loc from "../assets/booking/loc.svg";
 import thinarrow from "../assets/search/Arrow.svg";
 import "../styles/History.css";
-import NoHistory from "../components/NoHistory";
 import { Link, useNavigate } from "react-router-dom";
 import arrow from "../assets/account/fi_arrow-left.svg";
 import axios from "axios";
 import { toast } from "react-toastify";
+import NoHistory from "../components/NoHistory";
+import DetailHistory from "../components/booking-payment-history/DetailHistory";
+
 
 function History() {
   const navigate = useNavigate();
@@ -71,7 +73,7 @@ function History() {
       (detailTransaction[0]?.flight.discount / 100);
 
   const totalPrice =
-    discountPrice + discountPrice * (detailTransaction[0]?.flight.tax);
+    discountPrice + discountPrice * detailTransaction[0]?.flight.tax;
 
   const handleCardClick = (transactionId, index) => {
     const newIsCardActive = Array(transaction.length).fill(false);
@@ -396,7 +398,12 @@ function History() {
                           </div>
                         </Col>
                         <Col style={{ fontWeight: "bold", color: "#315bb0" }}>
-                          IDR {totalPrice}
+                          {totalPrice.toLocaleString("en-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          })}
                         </Col>
                       </Row>
                     </Container>
@@ -406,267 +413,10 @@ function History() {
                 </Card.Body>
               </Card>
             </Col>
+            {/* ========== Detail Pesanan ========== */}
             <Col md={6}>
               {showOrderDetails[index] && (
-                <Card
-                  className="detail"
-                  style={{ border: "none", boxShadow: "none" }}
-                >
-                  <Card.Body>
-                    <Card.Title
-                      style={{
-                        border: "none",
-                        boxShadow: "none",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Detail Pesanan
-                      <button
-                        className="btn-status"
-                        style={{
-                          backgroundColor:
-                            transaction.status === "unpaid"
-                              ? "#FF0000"
-                              : transaction.status === "paid"
-                              ? "#73CA5C"
-                              : null,
-                          color: "#FFFFFF",
-                          borderRadius: "20px",
-                          border: "none",
-                          fontSize: "16px",
-                        }}
-                      >
-                        {transaction.status}
-                      </button>
-                    </Card.Title>
-                    <Row>
-                      <Col md={6}>
-                        <Card.Title
-                          style={{
-                            border: "none",
-                            boxShadow: "none",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Booking Code:
-                        </Card.Title>
-                      </Col>
-                      <Col>
-                        <div style={{ fontWeight: "bold", color: "#315bb0" }}>
-                          6799ggYKb
-                        </div>
-                      </Col>
-                    </Row>
-                    {/* <Card.Body> */}
-                    <Row>
-                      <Col
-                        md={6}
-                        style={{
-                          color: "#151515",
-                        }}
-                      >
-                        <div style={{ fontWeight: "bold" }}>
-                          {new Date(
-                            detailTransaction[0]?.flight.departure_date
-                          ).toLocaleTimeString("id", {
-                            timeZone:
-                              detailTransaction[0]?.flight
-                                .departure_city_time_zone,
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </div>
-                        <div>
-                          {new Date(
-                            detailTransaction[0]?.flight.departure_date
-                          ).toLocaleDateString("en-GB", {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                          })}
-                        </div>
-                      </Col>
-                      <Col md={6}>
-                        <div
-                          style={{
-                            color: "#315bb0",
-                            textAlign: "right",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Keberangkatan
-                        </div>
-                      </Col>
-                    </Row>
-                    <div
-                      style={{
-                        borderTop: "none",
-                        borderLeft: "none",
-                        borderRight: "none",
-                        borderBottom: "1px solid #D0D0D0",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {detailTransaction[0]?.flight.departure_airport}
-                    </div>
-                    <Container>
-                      <div
-                        className="info"
-                        style={{
-                          borderTop: "none",
-                          borderLeft: "none",
-                          borderRight: "none",
-                          borderBottom: "1px solid #D0D0D0",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <div
-                            style={{ marginRight: "8px", marginBottom: "20px" }}
-                          >
-                            <img
-                              src={detailTransaction[0]?.flight.airplane_logo}
-                              alt="info"
-                              fluid
-                              width="24"
-                              height="24"
-                            />
-                          </div>
-                          <div>
-                            <h5
-                              style={{
-                                margin: 0,
-                                fontSize: "16px",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              {detailTransaction[0]?.flight.airplane_name} -
-                              {detailTransaction[0]?.flight.airplane_class}
-                            </h5>
-                            <div style={{ marginBottom: "10px" }}>
-                              <p style={{ margin: 0, fontSize: "14px" }}>
-                                {detailTransaction[0]?.flight.airplane_code}
-                              </p>
-                            </div>
-                            <p style={{ margin: 0 }}>Informasi:</p>
-                            <p
-                              style={{
-                                margin: 0,
-                                fontWeight: "normal",
-                                color: "#315bb0",
-                              }}
-                            >
-                              Penumpang 1 : Siti Aisyah
-                            </p>
-                            <p style={{ margin: 0, fontWeight: "normal" }}>
-                              ID: 12346
-                            </p>
-                            <p
-                              style={{
-                                margin: 0,
-                                fontWeight: "normal",
-                                color: "#315bb0",
-                              }}
-                            >
-                              Penumpang 2 : Siti Aisyah
-                            </p>
-                            <p style={{ margin: 0, fontWeight: "normal" }}>
-                              ID: 12346
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </Container>
-                    <Row>
-                      <Col
-                        md={6}
-                        style={{
-                          color: "#151515",
-                        }}
-                      >
-                        <div style={{ fontWeight: "bold" }}>
-                          {new Date(
-                            detailTransaction[0]?.flight.arrival_date
-                          ).toLocaleTimeString("id", {
-                            timeZone:
-                              detailTransaction[0]?.flight
-                                .arrival_city_time_zone,
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </div>
-                        <div>
-                          {new Date(
-                            detailTransaction[0]?.flight.arrival_date
-                          ).toLocaleDateString("en-GB", {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                          })}
-                        </div>
-                      </Col>
-                      <Col md={6}>
-                        <div
-                          style={{
-                            color: "#315bb0",
-                            textAlign: "right",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Kedatangan
-                        </div>
-                      </Col>
-                    </Row>
-                    <div
-                      style={{
-                        borderTop: "none",
-                        borderLeft: "none",
-                        borderRight: "none",
-                        borderBottom: "1px solid #D0D0D0",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {detailTransaction[0]?.flight.arrival_airport}
-                    </div>
-                    <Container
-                      style={{
-                        borderTop: "none",
-                        borderLeft: "none",
-                        borderRight: "none",
-                        borderBottom: "1px solid #D0D0D0",
-                        marginRight: "8px",
-                      }}
-                    >
-                      <div style={{ fontWeight: "bold" }}>Rincian Harga</div>
-                      <Row>
-                        <Col md={6}>
-                          <div>2 Adult</div>
-                          <div>1 Baby</div>
-                          <div>Tax</div>
-                        </Col>
-                        <Col>
-                          <div>IDR {detailTransaction[0]?.flight.price}</div>
-                          <div>IDR 0</div>
-                          <div>IDR {detailTransaction[0]?.flight.tax}</div>
-                        </Col>
-                      </Row>
-                    </Container>
-                    <Row>
-                      <Col md={6} style={{ fontWeight: "bold" }}>
-                        Total
-                      </Col>
-                      <Col
-                        md={6}
-                        style={{ fontWeight: "bold", color: "#315bb0" }}
-                      >
-                        IDR {totalPrice}
-                      </Col>
-                    </Row>
-                    {renderActionButton()}
-                    {/* </Card.Body> */}
-                  </Card.Body>
-                </Card>
+                <DetailHistory />
               )}
             </Col>
           </Row>

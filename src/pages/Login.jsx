@@ -24,7 +24,7 @@ function Login() {
 
       let config = {
         method: "post",
-        url: "https://flight-booking-api-development.up.railway.app/api/web/customer-auth/login",
+        url: `${process.env.REACT_APP_API}/web/customer-auth/login`,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

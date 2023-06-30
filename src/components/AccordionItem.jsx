@@ -3,7 +3,7 @@ import arrowAccor from "../assets/accordion/Suffix.svg";
 import arrow from "../assets/search/Arrow.svg";
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -11,11 +11,14 @@ const AccordionItem = (props) => {
   const [item, setItem] = useState(props.item);
   const [isActive, setIsActive] = useState(false);
   const [flightFacilities, setFlightFacilities] = useState([]);
+  const params = useParams();
 
   useEffect(() => {
     async function getFlightFacilities() {
       try {
-        const response = await axios.get(`https://flight-booking-api-development.up.railway.app/api/web/facilities`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/web/facilities`
+        );
         setFlightFacilities(response.data.data);
       } catch (error) {
         toast.error(error?.message);
@@ -100,7 +103,7 @@ const AccordionItem = (props) => {
                     maximumFractionDigits: 0,
                   })}
                 </div>
-                <Link to={`/booking/${item.id}/${item.numberPassenger}`} style={{ textDecoration: "none" }}>
+                <Link to={`/booking/${item.id}/${params?.number_passenger}`} style={{ textDecoration: "none" }}>
                   <button style={{ float: "right" }} className="mt-2 btn-pilih">
                     Pilih
                   </button>

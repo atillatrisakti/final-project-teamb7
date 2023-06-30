@@ -4,10 +4,11 @@ import "../styles/Booking.css";
 import { Link, useParams } from "react-router-dom";
 import { FaCheckCircle, FaCalendarAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
-import ItemBooking from "../components/ItemBooking";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import DetailBooking from "../components/booking-payment-history/DetailBooking";
+import ItemBooking from "../components/booking-payment-history/ItemBooking";
 
 function Booking() {
   const [name, setName] = useState("");
@@ -40,7 +41,29 @@ function Booking() {
   const [flight_id, setFlight_id] = useState();
   const [seats_id, setSeats_id] = useState();
   const params = useParams();
-  const [facilities, setFacilities] = useState([]);
+  const number_passenger = params.number_passenger;
+  const passengerArray = Array.from({ length: number_passenger });
+  const [passengers, setPassengers] = useState([
+    {
+      passenger_title_id: Number(passenger_title_id),
+      passenger_name: "",
+      passenger_family_name: "",
+      passenger_dob: "",
+      passenger_nationality_id: "",
+      passenger_identity_card: "",
+      passenger_identity_card_publisher_id: "",
+      passenger_identity_card_due_date: "",
+    },
+  ]);
+
+  const handlePassengerChange = (e, index, field) => {
+    const updatedPassengers = [...passengers];
+    updatedPassengers[index] = {
+      ...updatedPassengers[index],
+      [field]: e.target.value,
+    };
+    setPassengers(updatedPassengers);
+  };
 
   //switch passenger has family name
   const handleSwitchChange = () => {
@@ -67,12 +90,6 @@ function Booking() {
     const day = date.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
-
-  //count discount & price
-  const discountPrice =
-    detailFlight[0]?.price -
-    detailFlight[0]?.price * (detailFlight[0]?.discount / 100);
-  const totalPrice = discountPrice + discountPrice * detailFlight[0]?.tax;
 
   //get countries
   useEffect(() => {
@@ -117,7 +134,7 @@ function Booking() {
         const data = response.data.data;
         setTitles(data);
         if (data.length > 0) {
-          setTitle_id(data[0].id); // Assuming the title ID is available in the API response
+          setTitle_id(data[0].id);
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -144,6 +161,12 @@ function Booking() {
     setValidated(true);
 
     try {
+      const passengerData = passengers.map((passenger) => ({
+        flight_id,
+        seat_id: seats_id,
+        ...passenger,
+      }));
+
       let data = JSON.stringify({
         customer_identity: {
           title_id,
@@ -152,21 +175,22 @@ function Booking() {
           email,
           phone,
         },
-        passenger_identity: [
-          {
-            flight_id,
-            seat_id: seats_id,
-            passenger_title_id: Number(passenger_title_id),
-            passenger_name,
-            passenger_family_name,
-            passenger_dob,
-            passenger_nationality_id,
-            passenger_identity_card,
-            passenger_identity_card_publisher_id,
-            passenger_identity_card_due_date,
-            // passenger_type,
-          },
-        ],
+        passenger_identity: passengerData,
+        // passenger_identity: [
+        //   {
+        //     flight_id,
+        //     seat_id: seats_id,
+        //     passenger_title_id: Number(passenger_title_id),
+        //     passenger_name,
+        //     passenger_family_name,
+        //     passenger_dob,
+        //     passenger_nationality_id,
+        //     passenger_identity_card,
+        //     passenger_identity_card_publisher_id,
+        //     passenger_identity_card_due_date,
+        //     // passenger_type,
+        //   },
+        // ],
       });
 
       const token = localStorage.getItem("token");
@@ -191,16 +215,6 @@ function Booking() {
     }
   };
 
-  // const location = useLocation();
-  // const searchParams = new URLSearchParams(location.search);
-  // const numberPassenger = searchParams.get("number_passenger");
-
-  //  useEffect(() => {
-  //    console.log("Number of passengers:", numberPassenger);
-  //  }, [numberPassenger]);
-  // const numberPassenger = params.number_passenger;
-  // console.log(numberPassenger);
-
   //get detail flight
   useEffect(() => {
     async function getDetailFlight() {
@@ -219,34 +233,6 @@ function Booking() {
     getDetailFlight();
   }, [params]);
 
-  //get facilities
-  useEffect(() => {
-    async function getFacilities() {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/facilities`
-        );
-        setFacilities(response.data.data);
-      } catch (error) {
-        toast.error(error?.message);
-      }
-    }
-    getFacilities();
-    // console.log(flightFacilities[0].name);
-  }, []);
-
-  const titlestyle = {
-    width: "178px",
-    height: "30px",
-    left: "16px",
-    top: "16px",
-    fontStyle: "normal",
-    fontWeight: "700",
-    fontSize: "20px",
-    lineHeight: "30px",
-    color: "#000000",
-  };
-
   return (
     <Container className="data">
       <Row>
@@ -259,7 +245,7 @@ function Booking() {
         <Col md={6}>
           <Card className="card-1" style={{ borderRadius: "0" }}>
             <Card.Body>
-              <Card.Title style={titlestyle}>Isi Data Pemesan</Card.Title>
+              <Card.Title>Isi Data Pemesan</Card.Title>
               <Card
                 className="pemesan"
                 style={{ border: "none", boxShadow: "none" }}
@@ -382,236 +368,255 @@ function Booking() {
           {/* ========== Data Penumpang ========== */}
           <Card className="card-2" style={{ borderRadius: "0" }}>
             <Card.Body>
-              <Card.Title style={titlestyle}>Isi Data Penumpang</Card.Title>
-              <Card
-                className="pemesan"
-                style={{ border: "none", boxShadow: "none" }}
-              >
-                <Card.Header
-                  className="card-header"
-                  style={{
-                    backgroundColor: "#3c3c3c",
-                    color: "#FFFFFF",
-                    borderTopLeftRadius: "12px",
-                    borderTopRightRadius: "12px",
-                  }}
-                >
-                  Data Diri Penumpang - Adult
-                  {formSubmitted && (
-                    <FaCheckCircle
-                      className="ml-2"
+              <Card.Title>Isi Data Penumpang</Card.Title>
+              {passengerArray.map((passenger, index) => (
+                <div key={index}>
+                  <Card
+                    className="pemesan"
+                    style={{ border: "none", boxShadow: "none" }}
+                  >
+                    <Card.Header
+                      className="card-header"
                       style={{
-                        verticalAlign: "middle",
-                        color: "#73CA5C",
-                        marginLeft: "auto",
+                        backgroundColor: "#3c3c3c",
+                        color: "#FFFFFF",
+                        borderTopLeftRadius: "12px",
+                        borderTopRightRadius: "12px",
                       }}
-                    />
-                  )}
-                </Card.Header>
-                <Card.Body>
-                  <Form noValidate validated={validated}>
-                    <Form.Group className="mb-3" controlId="formGroupSelect">
-                      <Form.Label className="form-label-booking">
-                        Title
-                      </Form.Label>
-                      <Form.Select
-                        required
-                        aria-label="Select Title"
-                        value={passenger_title_id}
-                        onChange={(e) => setPassenger_title_id(e.target.value)}
-                      >
-                        <option value="">Select Title</option>
-                        {titles.map((title) => (
-                          <option key={title.id} value={title.id}>
-                            {title.name}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Please select a title.
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="form-label-booking">
-                        Nama Lengkap
-                      </Form.Label>
-                      <Form.Control
-                        required
-                        placeholder="Nama Lengkap"
-                        name="fullName"
-                        value={passenger_name}
-                        onChange={(e) => setPassenger_name(e.target.value)}
-                        style={{ width: "454px", height: "40px" }}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please enter passenger full name.
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Row>
-                      <Col xs="auto">
-                        <Form.Label className="form-label-booking">
-                          Punya Nama Keluarga
-                        </Form.Label>
-                      </Col>
-                      <Col className="text-end">
-                        <Form.Check
-                          type="switch"
-                          id="custom-switch"
-                          className="ml-3"
-                          name="hasFamilyName"
-                          checked={passenger_hasFamilyName}
-                          onChange={handleSwitchChange}
-                        />
-                      </Col>
-                    </Row>
-                    {passenger_hasFamilyName ? (
-                      <Form.Group className="mb-3">
-                        <Form.Label className="form-label-booking">
-                          Nama Keluarga
-                        </Form.Label>
-                        <Form.Control
-                          placeholder="Nama Keluarga"
-                          name="familyName"
-                          value={passenger_family_name}
-                          onChange={(e) =>
-                            setPassenger_family_name(e.target.value)
-                          }
-                          style={{ width: "454px", height: "40px" }}
-                        />
-                      </Form.Group>
-                    ) : null}
-                    <Form.Group>
-                      <Form.Label className="form-label-booking">
-                        Tanggal Lahir
-                      </Form.Label>
-                      <div style={{ position: "relative", width: "100%" }}>
-                        <DatePicker
-                          required
-                          className="custom-date"
-                          selected={
-                            passenger_dob ? new Date(passenger_dob) : null
-                          }
-                          onChange={(date) =>
-                            setPassenger_dob(formatDate(date))
-                          }
-                          dateFormat="yyyy-MM-dd"
-                          placeholderText="yyyy-mm-dd"
-                        />
-                        <div
+                    >
+                      Data Diri Penumpang - Adult {index + 1}
+                      {formSubmitted && (
+                        <FaCheckCircle
+                          className="ml-2"
                           style={{
-                            position: "absolute",
-                            right: "10px",
-                            top: "50%",
-                            transform: "translateY(-50%)",
+                            verticalAlign: "middle",
+                            color: "#73CA5C",
+                            marginLeft: "auto",
                           }}
-                        >
-                          <FaCalendarAlt />
-                        </div>
-                      </div>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="form-label-booking">
-                        Kewarganegaraan
-                      </Form.Label>
-                      <Form.Select
-                        required
-                        aria-label="Select Countries"
-                        value={passenger_nationality_id}
-                        onChange={(e) =>
-                          setPassenger_nationality_id(e.target.value)
-                        }
-                      >
-                        <option value="">Select Countries</option>
-                        {countries.map((country) => (
-                          <option key={country.id} value={country.id}>
-                            {country.name}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Please enter passenger nationality.
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="form-label-booking">
-                        KTP/Paspor
-                      </Form.Label>
-                      <Form.Control
-                        required
-                        placeholder="KTP/Paspor"
-                        name="identification"
-                        value={passenger_identity_card}
-                        onChange={(e) =>
-                          setPassenger_identity_card(e.target.value)
-                        }
-                        pattern=".{16}"
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please enter a valid identification (16 characters).
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="form-label-booking">
-                        Negara Penerbit
-                      </Form.Label>
-                      <Form.Select
-                        required
-                        aria-label="Select Countries"
-                        value={passenger_identity_card_publisher_id}
-                        onChange={(e) =>
-                          setPassenger_identity_card_publisher_id(
-                            e.target.value
-                          )
-                        }
-                      >
-                        <option value="">Select Countries</option>
-                        {countries.map((country) => (
-                          <option key={country.id} value={country.id}>
-                            {country.name}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Please enter passenger identity card publisher.
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group>
-                      <Form.Label className="form-label-booking">
-                        Berlaku Sampai
-                      </Form.Label>
-                      <div style={{ position: "relative", width: "100%" }}>
-                        <DatePicker
-                          required
-                          className="custom-date"
-                          selected={
-                            passenger_identity_card_due_date
-                              ? new Date(passenger_identity_card_due_date)
-                              : null
-                          }
-                          onChange={(date) =>
-                            setPassenger_identity_card_due_date(
-                              formatDate(date)
-                            )
-                          }
-                          dateFormat="yyyy-MM-dd"
-                          placeholderText="yyyy-mm-dd"
                         />
+                      )}
+                    </Card.Header>
+                    <Card.Body>
+                      <Form noValidate validated={validated}>
+                        <Form.Group
+                          className="mb-3"
+                          controlId="formGroupSelect"
+                        >
+                          <Form.Label className="form-label-booking">
+                            Title
+                          </Form.Label>
+                          <Form.Select
+                            required
+                            aria-label="Select Title"
+                            value={passengers.passenger_title_id}
+                            onChange={(e) =>
+                              handlePassengerChange(
+                                e,
+                                index,
+                                "passenger_title_id"
+                              )
+                            }
+                          >
+                            <option value="">Select Title</option>
+                            {titles.map((title) => (
+                              <option key={title.id} value={title.id}>
+                                {title.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Please select a title.
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="form-label-booking">
+                            Nama Lengkap
+                          </Form.Label>
+                          <Form.Control
+                            required
+                            placeholder="Nama Lengkap"
+                            name="fullName"
+                            value={passengers.passenger_name}
+                            onChange={(e) =>
+                              handlePassengerChange(e, index, "passenger_name")
+                            }
+                            style={{ width: "454px", height: "40px" }}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Please enter passenger full name.
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Row>
+                          <Col xs="auto">
+                            <Form.Label className="form-label-booking">
+                              Punya Nama Keluarga
+                            </Form.Label>
+                          </Col>
+                          <Col className="text-end">
+                            <Form.Check
+                              type="switch"
+                              id="custom-switch"
+                              className="ml-3"
+                              name="hasFamilyName"
+                              checked={passenger_hasFamilyName}
+                              onChange={handleSwitchChange}
+                            />
+                          </Col>
+                        </Row>
+                        {passenger_hasFamilyName ? (
+                          <Form.Group className="mb-3">
+                            <Form.Label className="form-label-booking">
+                              Nama Keluarga
+                            </Form.Label>
+                            <Form.Control
+                              placeholder="Nama Keluarga"
+                              name="familyName"
+                              value={passengers.passenger_family_name}
+                              onChange={(e) =>
+                                handlePassengerChange(
+                                  e,
+                                  index,
+                                  "passenger_family_name"
+                                )
+                              }
+                              style={{ width: "454px", height: "40px" }}
+                            />
+                          </Form.Group>
+                        ) : null}
+                        <Form.Group>
+                          <Form.Label className="form-label-booking">
+                            Tanggal Lahir
+                          </Form.Label>
+                          <div style={{ position: "relative", width: "100%" }}>
+                            <DatePicker
+                              required
+                              className="custom-date"
+                              selected={
+                                passenger_dob ? new Date(passenger_dob) : null
+                              }
+                              onChange={(date) =>
+                                setPassenger_dob(formatDate(date))
+                              }
+                              dateFormat="yyyy-MM-dd"
+                              placeholderText="yyyy-mm-dd"
+                            />
+                            <div
+                              style={{
+                                position: "absolute",
+                                right: "10px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                              }}
+                            >
+                              <FaCalendarAlt />
+                            </div>
+                          </div>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="form-label-booking">
+                            Kewarganegaraan
+                          </Form.Label>
+                          <Form.Select
+                            required
+                            aria-label="Select Countries"
+                            value={passenger_nationality_id}
+                            onChange={(e) =>
+                              setPassenger_nationality_id(e.target.value)
+                            }
+                          >
+                            <option value="">Select Countries</option>
+                            {countries.map((country) => (
+                              <option key={country.id} value={country.id}>
+                                {country.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Please enter passenger nationality.
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="form-label-booking">
+                            KTP/Paspor
+                          </Form.Label>
+                          <Form.Control
+                            required
+                            placeholder="KTP/Paspor"
+                            name="identification"
+                            value={passenger_identity_card}
+                            onChange={(e) =>
+                              setPassenger_identity_card(e.target.value)
+                            }
+                            pattern=".{16}"
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Please enter a valid identification (16 characters).
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="form-label-booking">
+                            Negara Penerbit
+                          </Form.Label>
+                          <Form.Select
+                            required
+                            aria-label="Select Countries"
+                            value={passenger_identity_card_publisher_id}
+                            onChange={(e) =>
+                              setPassenger_identity_card_publisher_id(
+                                e.target.value
+                              )
+                            }
+                          >
+                            <option value="">Select Countries</option>
+                            {countries.map((country) => (
+                              <option key={country.id} value={country.id}>
+                                {country.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Please enter passenger identity card publisher.
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Label className="form-label-booking">
+                            Berlaku Sampai
+                          </Form.Label>
+                          <div style={{ position: "relative", width: "100%" }}>
+                            <DatePicker
+                              required
+                              className="custom-date"
+                              selected={
+                                passenger_identity_card_due_date
+                                  ? new Date(passenger_identity_card_due_date)
+                                  : null
+                              }
+                              onChange={(date) =>
+                                setPassenger_identity_card_due_date(
+                                  formatDate(date)
+                                )
+                              }
+                              dateFormat="yyyy-MM-dd"
+                              placeholderText="yyyy-mm-dd"
+                            />
 
-                        <div
-                          style={{
-                            position: "absolute",
-                            right: "10px",
-                            top: "50%",
-                            transform: "translateY(-50%)",
-                          }}
-                        >
-                          <FaCalendarAlt />
-                        </div>
-                      </div>
-                    </Form.Group>
-                  </Form>
-                </Card.Body>
-              </Card>
+                            <div
+                              style={{
+                                position: "absolute",
+                                right: "10px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                              }}
+                            >
+                              <FaCalendarAlt />
+                            </div>
+                          </div>
+                        </Form.Group>
+                      </Form>
+                    </Card.Body>
+                  </Card>
+                </div>
+              ))}
             </Card.Body>
           </Card>
           {/* <Card className="card-3" style={{ borderRadius: "0" }}>
@@ -672,203 +677,7 @@ function Booking() {
               Detail Penerbangan
             </Card.Header>
             <Card.Body>
-              <Row>
-                <Col
-                  md={6}
-                  style={{
-                    color: "#151515",
-                  }}
-                >
-                  <div style={{ fontWeight: "bold" }}>
-                    {new Date(
-                      detailFlight[0]?.departure_date
-                    ).toLocaleTimeString("id", {
-                      timeZone: detailFlight[0]?.departure_city_time_zone,
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </div>
-                  <div>
-                    {new Date(
-                      detailFlight[0]?.departure_date
-                    ).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </div>
-                </Col>
-                <Col md={6}>
-                  <div
-                    style={{
-                      color: "#315bb0",
-                      textAlign: "right",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Keberangkatan
-                  </div>
-                </Col>
-              </Row>
-              <div
-                style={{
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom: "1px solid #D0D0D0",
-                  fontWeight: "bold",
-                }}
-              >
-                {detailFlight[0]?.departure_airport}
-              </div>
-              <Container className="mt-2">
-                <div
-                  className="info"
-                  style={{
-                    borderTop: "none",
-                    borderLeft: "none",
-                    borderRight: "none",
-                    borderBottom: "1px solid #D0D0D0",
-                    alignItems: "center",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <div style={{ marginRight: "8px", marginBottom: "20px" }}>
-                      <img
-                        src={detailFlight[0]?.airplane_logo}
-                        alt="info"
-                        fluid
-                        width="24"
-                        height="24"
-                      />
-                    </div>
-                    <div>
-                      <h5
-                        style={{
-                          margin: 0,
-                          fontSize: "16px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {detailFlight[0]?.airplane_name} -
-                        {detailFlight[0]?.airplane_class}
-                      </h5>
-                      <div style={{ marginBottom: "10px" }}>
-                        <p style={{ margin: 0, fontSize: "14px" }}>
-                          {detailFlight[0]?.airplane_code}
-                        </p>
-                      </div>
-                      <p style={{ margin: 0 }}>Informasi:</p>
-                      <p style={{ margin: 0, fontWeight: "normal" }}>
-                        {facilities.map((facility) => (
-                          <p style={{ margin: 0, fontWeight: "normal" }}>
-                            {facility.name}
-                          </p>
-                        ))}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </Container>
-              <Row>
-                <Col
-                  md={6}
-                  style={{
-                    color: "#151515",
-                  }}
-                >
-                  <div style={{ fontWeight: "bold" }}>
-                    {new Date(detailFlight[0]?.arrival_date).toLocaleTimeString(
-                      "id",
-                      {
-                        timeZone: detailFlight[0]?.arrival_city_time_zone,
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }
-                    )}
-                  </div>
-                  <div>
-                    {new Date(detailFlight[0]?.arrival_date).toLocaleDateString(
-                      "en-GB",
-                      {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      }
-                    )}
-                  </div>
-                </Col>
-                <Col md={6}>
-                  <div
-                    style={{
-                      color: "#315bb0",
-                      textAlign: "right",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Kedatangan
-                  </div>
-                </Col>
-              </Row>
-              <div
-                style={{
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom: "1px solid #D0D0D0",
-                  fontWeight: "bold",
-                }}
-              >
-                {detailFlight[0]?.arrival_airport}
-              </div>
-              <Container
-                className="my-2"
-                style={{
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom: "1px solid #D0D0D0",
-                  marginRight: "8px",
-                }}
-              >
-                <div style={{ fontWeight: "bold" }}>Rincian Harga</div>
-                <Row>
-                  <Col md={6}>
-                    <div>2 Adult</div>
-                    <div>1 Baby</div>
-                    <div>Tax</div>
-                  </Col>
-                  <Col>
-                    <div>
-                      {(
-                        detailFlight[0]?.price -
-                        detailFlight[0]?.price *
-                          (detailFlight[0]?.discount / 100)
-                      ).toLocaleString("en-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0,
-                      })}
-                    </div>
-                    <div>IDR 0</div>
-                    <div>IDR {detailFlight[0]?.tax}</div>
-                  </Col>
-                </Row>
-              </Container>
-              <Row>
-                <Col md={6} style={{ fontWeight: "bold" }}>
-                  Total
-                </Col>
-                <Col md={6} style={{ fontWeight: "bold", color: "#315bb0" }}>
-                  {totalPrice.toLocaleString("en-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  })}
-                </Col>
-              </Row>
+              <DetailBooking />
               {formSubmitted && detailFlight && (
                 <Link
                   to={`/payment/${detailFlight[0]?.id}`}
