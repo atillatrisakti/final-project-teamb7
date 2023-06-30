@@ -25,9 +25,7 @@ function Payment() {
   useEffect(() => {
     async function getDetailFlight() {
       try {
-        const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/flights/${id}`
-        );
+        const response = await axios.get(`${process.env.REACT_APP_API}/web/flights/${id}`);
         setDetailFlight(response.data.data);
       } catch (error) {
         console.log(error);
@@ -56,9 +54,7 @@ function Payment() {
   };
 
   const getCardBorderStyle = (account) => {
-    return selectedAccounts.includes(account)
-      ? "2px solid rgba(113, 38, 181, 0.75)"
-      : "2px solid #ccc";
+    return selectedAccounts.includes(account) ? "2px solid rgba(113, 38, 181, 0.75)" : "2px solid #ccc";
   };
 
   if (paymentSuccess) {
@@ -71,14 +67,7 @@ function Payment() {
         </Row>
         <Row>
           <Col md={12} className="payment-success">
-            <img
-              src={img}
-              alt="img"
-              fluid
-              width="204"
-              height="204"
-              style={{ marginTop: "100px" }}
-            />
+            <img src={img} alt="img" fluid width="204" height="204" style={{ marginTop: "100px" }} />
             <div className="payment-success">
               <p style={{ margin: 0, color: "#7126b5" }}>Selamat!!</p>
               <p>Transaksi Pembayaran Tiket Sukses</p>
@@ -146,19 +135,8 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="Gopay"
-                        checked={selectedAccounts.includes("Gopay")}
-                        onChange={handleCheckboxChange}
-                      />
-                      <img
-                        src={gopay}
-                        alt="img"
-                        fluid
-                        width="100"
-                        height="60"
-                      />
+                      <input type="checkbox" value="Gopay" checked={selectedAccounts.includes("Gopay")} onChange={handleCheckboxChange} />
+                      <img src={gopay} alt="img" fluid width="100" height="60" />
                     </label>
                   </div>
                 </details>
@@ -173,14 +151,7 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="BRI Virtual Account"
-                        checked={selectedAccounts.includes(
-                          "BRI Virtual Account"
-                        )}
-                        onChange={handleCheckboxChange}
-                      />
+                      <input type="checkbox" value="BRI Virtual Account" checked={selectedAccounts.includes("BRI Virtual Account")} onChange={handleCheckboxChange} />
                       BRI Virtual Account
                     </label>
                   </div>
@@ -192,14 +163,7 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="BCA Virtual Account"
-                        checked={selectedAccounts.includes(
-                          "BCA Virtual Account"
-                        )}
-                        onChange={handleCheckboxChange}
-                      />
+                      <input type="checkbox" value="BCA Virtual Account" checked={selectedAccounts.includes("BCA Virtual Account")} onChange={handleCheckboxChange} />
                       BCA Virtual Account
                     </label>
                   </div>
@@ -211,14 +175,7 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="Mandiri Virtual Account"
-                        checked={selectedAccounts.includes(
-                          "Mandiri Virtual Account"
-                        )}
-                        onChange={handleCheckboxChange}
-                      />
+                      <input type="checkbox" value="Mandiri Virtual Account" checked={selectedAccounts.includes("Mandiri Virtual Account")} onChange={handleCheckboxChange} />
                       Mandiri Virtual Account
                     </label>
                   </div>
@@ -230,14 +187,7 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="BNI Virtual Account"
-                        checked={selectedAccounts.includes(
-                          "BNI Virtual Account"
-                        )}
-                        onChange={handleCheckboxChange}
-                      />
+                      <input type="checkbox" value="BNI Virtual Account" checked={selectedAccounts.includes("BNI Virtual Account")} onChange={handleCheckboxChange} />
                       BNI Virtual Account
                     </label>
                   </div>
@@ -249,12 +199,7 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="Bank Lainnya"
-                        checked={selectedAccounts.includes("Bank Lainnya")}
-                        onChange={handleCheckboxChange}
-                      />
+                      <input type="checkbox" value="Bank Lainnya" checked={selectedAccounts.includes("Bank Lainnya")} onChange={handleCheckboxChange} />
                       Bank Lainnya
                     </label>
                   </div>
@@ -268,38 +213,10 @@ function Payment() {
                       marginTop: "10px",
                     }}
                   >
-                    <img
-                      src={mastercard}
-                      alt="img"
-                      fluid
-                      width="50"
-                      height="50"
-                      style={{ margin: "0 5px" }}
-                    />
-                    <img
-                      src={visa}
-                      alt="img"
-                      fluid
-                      width="50"
-                      height="50"
-                      style={{ margin: "0 5px" }}
-                    />
-                    <img
-                      src={amex}
-                      alt="img"
-                      fluid
-                      width="50"
-                      height="50"
-                      style={{ margin: "0 5px" }}
-                    />
-                    <img
-                      src={paypal}
-                      alt="img"
-                      fluid
-                      width="50"
-                      height="50"
-                      style={{ margin: "0 5px" }}
-                    />
+                    <img src={mastercard} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
+                    <img src={visa} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
+                    <img src={amex} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
+                    <img src={paypal} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
                   </div>
                   <Form
                     style={{
@@ -308,10 +225,7 @@ function Payment() {
                       marginLeft: "120px",
                     }}
                   >
-                    <Form.Group
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                       <Form.Label>Card Number</Form.Label>
                       <Form.Control
                         type="email"
@@ -325,10 +239,7 @@ function Payment() {
                         }}
                       />
                     </Form.Group>
-                    <Form.Group
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                       <Form.Label>Card Holder Name</Form.Label>
                       <Form.Control
                         type="email"
@@ -344,10 +255,7 @@ function Payment() {
                     </Form.Group>
                     <Row>
                       <Col md={6}>
-                        <Form.Group
-                          className="mb-3"
-                          controlId="exampleForm.ControlInput1"
-                        >
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                           <Form.Label>CVV</Form.Label>
                           <Form.Control
                             type="email"
@@ -363,10 +271,7 @@ function Payment() {
                         </Form.Group>
                       </Col>
                       <Col>
-                        <Form.Group
-                          className="mb-3"
-                          controlId="exampleForm.ControlInput1"
-                        >
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                           <Form.Label>Expiry Date</Form.Label>
                           <Form.Control
                             type="email"
@@ -405,10 +310,7 @@ function Payment() {
           </button>
         </Col>
         <Col md={6}>
-          <Card
-            className="detail"
-            style={{ border: "none", boxShadow: "none" }}
-          >
+          <Card className="detail" style={{ border: "none", boxShadow: "none" }}>
             <Row>
               <Col md={6}>
                 <Card.Title
@@ -422,9 +324,7 @@ function Payment() {
                 </Card.Title>
               </Col>
               <Col>
-                <div style={{ fontWeight: "bold", color: "#7126b5" }}>
-                  6799ggYKb
-                </div>
+                <div style={{ fontWeight: "bold", color: "#7126b5" }}>6799ggYKb</div>
               </Col>
             </Row>
             <Card.Body>
@@ -438,18 +338,14 @@ function Payment() {
                   }}
                 >
                   <div>
-                    {new Date(
-                      detailFlight[0]?.departure_date
-                    ).toLocaleTimeString("id", {
+                    {new Date(detailFlight[0]?.departure_date).toLocaleTimeString("id", {
                       timeZone: detailFlight[0]?.departure_city_time_zone,
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
                   </div>
                   <div>
-                    {new Date(
-                      detailFlight[0]?.departure_date
-                    ).toLocaleDateString("en-GB", {
+                    {new Date(detailFlight[0]?.departure_date).toLocaleDateString("en-GB", {
                       day: "numeric",
                       month: "long",
                       year: "numeric",
@@ -497,18 +393,13 @@ function Payment() {
                     </div>
                     <div>
                       <h5 style={{ margin: 0 }}>
-                        {detailFlight[0]?.airplane_name} -
-                        {detailFlight[0]?.airplane_class}
+                        {detailFlight[0]?.airplane_name} -{detailFlight[0]?.airplane_class}
                       </h5>
                       <div style={{ marginBottom: "10px" }}>
-                        <p style={{ margin: 0, fontSize: "14px" }}>
-                          {detailFlight[0]?.airplane_code}
-                        </p>
+                        <p style={{ margin: 0, fontSize: "14px" }}>{detailFlight[0]?.airplane_code}</p>
                       </div>
                       <p style={{ margin: 0 }}>Informasi:</p>
-                      <p style={{ margin: 0, fontWeight: "normal" }}>
-                        {detailFlight[0]?.facilities}
-                      </p>
+                      <p style={{ margin: 0, fontWeight: "normal" }}>{detailFlight[0]?.facilities}</p>
                     </div>
                   </div>
                 </div>
@@ -523,24 +414,18 @@ function Payment() {
                   }}
                 >
                   <div style={{ fontWeight: "bold" }}>
-                    {new Date(detailFlight[0]?.arrival_date).toLocaleTimeString(
-                      "id",
-                      {
-                        timeZone: detailFlight[0]?.arrival_city_time_zone,
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }
-                    )}
+                    {new Date(detailFlight[0]?.arrival_date).toLocaleTimeString("id", {
+                      timeZone: detailFlight[0]?.arrival_city_time_zone,
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </div>
                   <div>
-                    {new Date(detailFlight[0]?.arrival_date).toLocaleDateString(
-                      "en-GB",
-                      {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      }
-                    )}
+                    {new Date(detailFlight[0]?.arrival_date).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
                   </div>
                 </Col>
                 <Col md={6}>

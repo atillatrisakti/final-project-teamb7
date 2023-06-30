@@ -38,7 +38,7 @@ function Register() {
 
       let config = {
         method: "post",
-        url: "https://flight-booking-api-development.up.railway.app/api/web/customer-auth/register",
+        url: `${process.env.REACT_APP_API}/web/customer-auth/register`,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -52,11 +52,7 @@ function Register() {
 
       window.location.href = "/login";
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response.data.message);
-        return;
-      }
-      toast.error(error.message);
+      toast.error("Email have already registered!");
     }
   };
 

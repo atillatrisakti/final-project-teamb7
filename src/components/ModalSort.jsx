@@ -12,7 +12,7 @@ function ModalSort({ sort, setSort }) {
     async function getListFlight() {
       try {
         const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
+          `${process.env.REACT_APP_API}/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
         );
         setFlight(response.data.data);
       } catch (error) {

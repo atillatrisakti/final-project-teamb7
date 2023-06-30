@@ -11,7 +11,6 @@ import "../styles/Navbar.css";
 
 function Navbarr(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn ? props.isLoggedIn : false);
-  console.log("ini props", props);
 
   useEffect(() => {
     setIsLoggedIn(props.isLoggedIn);
