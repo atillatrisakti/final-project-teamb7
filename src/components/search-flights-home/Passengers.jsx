@@ -57,7 +57,7 @@ function Passengers() {
         style={{
           marginLeft: "61.5%",
           marginTop: "15%",
-          width: "25%", //"25.2%",
+          width: "25%",
         }}
       >
         <Modal.Header closeButton></Modal.Header>
@@ -67,7 +67,7 @@ function Passengers() {
               <Col xs={10} md={6} className="d-flex align-items-center">
                 <Icon icon="el:adult" className="icon-input me-2" />
                 <span>
-                  <b className="mb-0">Dewasa</b> <br />{" "}
+                  <b className="mb-0">Dewasa</b> <br />
                   <p className="my-auto font-passenger">(12 tahun ke atas)</p>
                 </span>
               </Col>

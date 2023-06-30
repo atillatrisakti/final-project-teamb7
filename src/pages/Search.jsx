@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
@@ -16,10 +16,19 @@ import "../styles/Accordion.css";
 import axios from "axios";
 
 function Search() {
+  const params = useParams();
+
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  // console.log(queryParams.get("is_promo"));
+
+  // const queryParams = new URLSearchParams("?term=pizza&location=Bangalore");
+  // for (const [key, value] of queryParams) {
+  //   console.log({ key, value }); // {key: 'term', value: 'pizza'} {key: 'location', value: 'Bangalore'}
+  // }
+
   const [date, setDate] = useState("");
 
-  const params = useParams();
-  // console.log(params.departure_date);
   const [sort, setSort] = useState("Termurah");
 
   const [flight, setFlight] = useState([]);
@@ -31,13 +40,20 @@ function Search() {
   const [departureDate, setDepartureDate] = useState("");
 
   useEffect(() => {
+    // const departureAirportId = queryParams?.get("departure_airport_id");
+    // const destinationAirportId = queryParams?.get("destination_airport_id");
+    // const startDate = queryParams?.get("departure_date");
+    // const passenger = queryParams?.get("number_passenger");
+    // const seatClassId = queryParams?.get("class_id");
+    // const isPromo = queryParams?.get("is_promo");
+
     async function fetchPost() {
       try {
         setLoading(true);
         const response = await axios.get(
           `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
         );
-        // console.log(response.data);
+        console.log(response.data);
         // console.log(params.is_promo);
 
         setFlight(response.data.data);
