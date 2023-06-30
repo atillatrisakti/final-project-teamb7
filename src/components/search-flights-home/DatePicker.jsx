@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { Col, Container, Form, InputGroup, Modal, Row } from "react-bootstrap";
-import { format, isAfter, isBefore, isValid, parse } from "date-fns";
+import {
+  addDays,
+  format,
+  isAfter,
+  isBefore,
+  isValid,
+  parse,
+  subDays,
+} from "date-fns";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import startOfToday from "date-fns/esm/startOfToday/index.js";
 
 function DatePicker() {
   const [selectedSingleDate, setSelectedSingleDate] = useState(new Date()); // only start date
-
   const [selectedRange, setSelectedRange] = useState(new Date()); // start date and end date
   const [fromValue, setFromValue] = useState("");
   const [toValue, setToValue] = useState("");
@@ -57,18 +65,23 @@ function DatePicker() {
   const handleRangeSelect = (range) => {
     setSelectedRange(range);
     if (range?.from) {
-      // setFromValue(format(range.from, "MMMM d, yyyy"));
+      // setFromValue(format(range.from, "d MMMM yyyy"));
       setFromValue(format(range.from, "y-MM-dd"));
     } else {
       setFromValue("");
     }
     if (range?.to && isDisabled) {
-      // setToValue(format(range.to, "MMMM d, yyyy"));
+      // setToValue(format(range.to, "d MMMM yyyy"));
       setToValue(format(range.to, "y-MM-dd"));
       handleCloseDate();
     } else {
       setToValue("");
     }
+  };
+
+  const disabledDays = {
+    from: subDays(new Date(), 31),
+    to: subDays(new Date(), 1),
   };
 
   return (
@@ -81,10 +94,13 @@ function DatePicker() {
               📅
             </InputGroup.Text>
             <Form.Control
+              required
               size={10}
               placeholder="From Date"
               name="start_date"
-              value={fromValue}
+              value={
+                fromValue ? fromValue : format(selectedSingleDate, "y-MM-dd")
+              }
               onChange={handleFromChange}
               onClick={handleShowDate}
               className="form-input"
@@ -98,7 +114,11 @@ function DatePicker() {
             size={10}
             placeholder="To Date"
             name="end_date"
-            value={toValue}
+            value={
+              toValue
+                ? toValue
+                : format(addDays(selectedSingleDate, 1), "y-MM-dd")
+            }
             onChange={handleToChange}
             onClick={handleShowDate}
             className="form-input"
@@ -110,7 +130,7 @@ function DatePicker() {
             id="custom-switch"
             onClick={() => {
               setIsDisabled(!isDisabled);
-              setFromValue("");
+              setFromValue(""); // there's selectedSingleDate value so can't do this
               setToValue("");
             }}
           />
@@ -142,6 +162,8 @@ function DatePicker() {
                     pagedNavigation
                     showOutsideDays
                     fixedWeeks
+                    disabled={disabledDays}
+                    fromMonth={new Date(2023, new Date().getMonth())}
                   />
                 ) : (
                   <DayPicker
@@ -153,6 +175,8 @@ function DatePicker() {
                     pagedNavigation
                     showOutsideDays
                     fixedWeeks
+                    disabled={disabledDays}
+                    fromMonth={new Date(2023, new Date().getMonth())}
                   />
                 )}
               </Col>

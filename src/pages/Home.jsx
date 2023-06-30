@@ -37,7 +37,6 @@ function Home() {
           `${process.env.REACT_APP_API}/web/banners`
         );
         setBanner(response.data.data);
-        // console.log(banner[1].picture);
       } catch (error) {
         toast.error(error?.message);
       }
@@ -76,13 +75,19 @@ function Home() {
     navigate(
       `/search/${departure}/${destination}/${startDate}/${numberPassenger}/${seatClass}/${isPromo}`
     );
+    navigate(
+      `/search/${departure}/${destination}/${endDate}/${numberPassenger}/${seatClass}/${isPromo}`
+    );
     // console.log("searchhh", form.seat_class.attributes.getNamedItem("data-id"));
   };
 
   return (
     <>
       <Carousel
-        controls={true}
+        controls={false}
+        indicators={false}
+        touch={true}
+        // interval={5000}
         style={{
           position: "absolute",
           top: "4.8rem",
