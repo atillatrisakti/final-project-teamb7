@@ -15,6 +15,9 @@ import Account from "./pages/Account";
 import SendEmailReset from "./pages/SendEmailReset";
 import ResetPass from "./pages/ResetPass";
 
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -45,6 +48,8 @@ function App() {
           <Route path="/email-reset" element={<SendEmailReset />} />
           <Route path="/reset-password" element={<ResetPass />} />
         </Routes>
+
+        <ToastContainer theme="colored" />
       </BrowserRouter>
     </Provider>
   );

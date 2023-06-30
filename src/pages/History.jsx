@@ -17,20 +17,17 @@ function History() {
   const [isCardActive, setIsCardActive] = useState(false);
   const [orderStatus, setOrderStatus] = useState("issued");
   const hasOrderHistory = true;
-  const [history, setHistory] = useState([])
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     const getHistory = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `https://flight-booking-api-development.up.railway.app/api/customer/transactions`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${process.env.REACT_APP_API}/customer/transactions`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = response.data.data;
         setHistory(data);
       } catch (error) {
@@ -79,15 +76,9 @@ function History() {
         history.map((transaction) => (
           <Row key={transaction.id}>
             <Col md={6}>
-              <Card
-                className="history-booking"
-                style={{ border: "none", boxShadow: "none" }}
-              >
+              <Card className="history-booking" style={{ border: "none", boxShadow: "none" }}>
                 <Card.Body>
-                  <Card
-                    className="by-month"
-                    style={{ border: "none", boxShadow: "none" }}
-                  >
+                  <Card className="by-month" style={{ border: "none", boxShadow: "none" }}>
                     <Card.Body>
                       <Card.Title
                         style={{
@@ -96,12 +87,7 @@ function History() {
                       >
                         Maret 2023
                       </Card.Title>
-                      <Card
-                        className={`history-month ${
-                          activeMonth === 0 && isCardActive ? "active" : ""
-                        }`}
-                        onClick={() => handleCardClick(0)}
-                      >
+                      <Card className={`history-month ${activeMonth === 0 && isCardActive ? "active" : ""}`} onClick={() => handleCardClick(0)}>
                         <button
                           className="btn-status"
                           style={{
@@ -124,17 +110,9 @@ function History() {
                         >
                           <Row>
                             <Col md={4}>
-                              <div
-                                style={{ display: "flex", alignItems: "top" }}
-                              >
+                              <div style={{ display: "flex", alignItems: "top" }}>
                                 <div style={{ marginRight: "8px" }}>
-                                  <img
-                                    src={loc}
-                                    alt="loc"
-                                    fluid
-                                    width="24"
-                                    height="24"
-                                  />
+                                  <img src={loc} alt="loc" fluid width="24" height="24" />
                                 </div>
                                 <div>
                                   <p
@@ -175,35 +153,15 @@ function History() {
                                 }}
                               >
                                 <div>
-                                  <img
-                                    src={thin}
-                                    alt="thin"
-                                    fluid
-                                    width="105"
-                                    height="24"
-                                  />
-                                  <img
-                                    src={right}
-                                    alt="right"
-                                    fluid
-                                    width="5"
-                                    height="10"
-                                  />
+                                  <img src={thin} alt="thin" fluid width="105" height="24" />
+                                  <img src={right} alt="right" fluid width="5" height="10" />
                                 </div>
                               </div>
                             </Col>
                             <Col>
-                              <div
-                                style={{ display: "flex", alignItems: "top" }}
-                              >
+                              <div style={{ display: "flex", alignItems: "top" }}>
                                 <div style={{ marginRight: "8px" }}>
-                                  <img
-                                    src={loc}
-                                    alt="loc"
-                                    fluid
-                                    width="24"
-                                    height="24"
-                                  />
+                                  <img src={loc} alt="loc" fluid width="24" height="24" />
                                 </div>
                                 <div>
                                   <p
@@ -284,11 +242,7 @@ function History() {
                                 </p>
                               </div>
                             </Col>
-                            <Col
-                              style={{ fontWeight: "bold", color: "#7126b5" }}
-                            >
-                              IDR 9.850.000
-                            </Col>
+                            <Col style={{ fontWeight: "bold", color: "#7126b5" }}>IDR 9.850.000</Col>
                           </Row>
                         </Container>
                       </Card>
@@ -299,10 +253,7 @@ function History() {
             </Col>
             <Col md={6}>
               {showOrderDetails && (
-                <Card
-                  className="detail"
-                  style={{ border: "none", boxShadow: "none" }}
-                >
+                <Card className="detail" style={{ border: "none", boxShadow: "none" }}>
                   <Card.Body>
                     <Card.Title
                       style={{
@@ -322,8 +273,7 @@ function History() {
                           fontSize: "16px",
                         }}
                       >
-                        {orderStatus.charAt(0).toUpperCase() +
-                          orderStatus.slice(1)}
+                        {orderStatus.charAt(0).toUpperCase() + orderStatus.slice(1)}
                       </button>
                     </Card.Title>
                     <Row>
@@ -339,9 +289,7 @@ function History() {
                         </Card.Title>
                       </Col>
                       <Col>
-                        <div style={{ fontWeight: "bold", color: "#7126b5" }}>
-                          6799ggYKb
-                        </div>
+                        <div style={{ fontWeight: "bold", color: "#7126b5" }}>6799ggYKb</div>
                       </Col>
                     </Row>
                     {/* <Card.Body> */}
@@ -394,31 +342,17 @@ function History() {
                       >
                         <div style={{ display: "flex", alignItems: "center" }}>
                           <div style={{ marginRight: "8px" }}>
-                            <img
-                              src={info}
-                              alt="info"
-                              fluid
-                              width="24"
-                              height="24"
-                            />
+                            <img src={info} alt="info" fluid width="24" height="24" />
                           </div>
                           <div>
                             <h5 style={{ margin: 0 }}>Jet Air - Economy</h5>
                             <div style={{ marginBottom: "10px" }}>
-                              <p style={{ margin: 0, fontSize: "14px" }}>
-                                JT - 203
-                              </p>
+                              <p style={{ margin: 0, fontSize: "14px" }}>JT - 203</p>
                             </div>
                             <p style={{ margin: 0 }}>Informasi:</p>
-                            <p style={{ margin: 0, fontWeight: "normal" }}>
-                              Baggage 20 kg
-                            </p>
-                            <p style={{ margin: 0, fontWeight: "normal" }}>
-                              Cabin Baggage 7 kg
-                            </p>
-                            <p style={{ margin: 0, fontWeight: "normal" }}>
-                              In Flight Entertainment
-                            </p>
+                            <p style={{ margin: 0, fontWeight: "normal" }}>Baggage 20 kg</p>
+                            <p style={{ margin: 0, fontWeight: "normal" }}>Cabin Baggage 7 kg</p>
+                            <p style={{ margin: 0, fontWeight: "normal" }}>In Flight Entertainment</p>
                           </div>
                         </div>
                       </div>
@@ -485,10 +419,7 @@ function History() {
                       <Col md={6} style={{ fontWeight: "bold" }}>
                         Total
                       </Col>
-                      <Col
-                        md={6}
-                        style={{ fontWeight: "bold", color: "#7126b5" }}
-                      >
+                      <Col md={6} style={{ fontWeight: "bold", color: "#7126b5" }}>
                         IDR 9.850.000
                       </Col>
                     </Row>
