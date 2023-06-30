@@ -320,6 +320,16 @@ function Home() {
                         year: "numeric",
                       }
                     )}/1/1/${!isPromo}`}
+                    to={`/search/${promo?.departure_airport_id}/${
+                      promo?.arrival_airport_id
+                    }/${new Date(promo?.departure_date).toLocaleDateString(
+                      "en-CA",
+                      {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      }
+                    )}/1/1/${!isPromo}`}
                     style={{ textDecoration: "none", borderColor: "black" }}
                   >
                     <Card
