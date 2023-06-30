@@ -136,7 +136,7 @@ function DestinationAirports() {
               <ListGroup className="mb-2">
                 {filteredAirport && filteredAirport.length > 0 ? (
                   filteredAirport.map((item) => (
-                    <div className="list-group fluid shadow">
+                    <div className="list-group fluid shadow" key={item?.id}>
                       <ListGroup.Item
                         action
                         variant="light"

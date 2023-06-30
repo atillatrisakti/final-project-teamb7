@@ -78,6 +78,7 @@ function SeatClasses() {
                     seatClass.length > 0 &&
                     seatClass.map((seat) => (
                       <ListGroup.Item
+                        key={seat?.id}
                         action
                         variant="light"
                         onClick={(e) => {

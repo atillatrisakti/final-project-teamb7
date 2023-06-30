@@ -54,7 +54,7 @@ function AccordionFlight() {
       ) : flight && flight.length > 0 ? (
         flight.map((item) => (
           <>
-            <div className="accordion-title">
+            <div className="accordion-title" key={item?.id}>
               <Card
                 style={{ height: "127px", width: "750px" }}
                 className="mt-2"
@@ -321,7 +321,10 @@ function AccordionFlight() {
                             Informasi:
                           </p>
                           {flightFacilities.map((facil) => (
-                            <p style={{ margin: 0, fontWeight: "normal" }}>
+                            <p
+                              style={{ margin: 0, fontWeight: "normal" }}
+                              key={facil?.id}
+                            >
                               {facil.name}
                             </p>
                           ))}
