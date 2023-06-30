@@ -57,7 +57,7 @@ function Passengers() {
         style={{
           marginLeft: "61.5%",
           marginTop: "15%",
-          width: "25%", //"25.2%",
+          width: "25%",
         }}
       >
         <Modal.Header closeButton></Modal.Header>

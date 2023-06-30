@@ -11,7 +11,6 @@ import {
 } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import startOfToday from "date-fns/esm/startOfToday/index.js";
 
 function DatePicker() {
   const [selectedSingleDate, setSelectedSingleDate] = useState(new Date()); // only start date

@@ -11,9 +11,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 
-import Banner1 from "../assets/1.svg";
-import DestinationPromo from "../assets/img-destination.svg";
-
 import { Icon } from "@iconify/react";
 import DepartureAirports from "../components/search-flights-home/DepartureAirports";
 import DestinationAirports from "../components/search-flights-home/DestinationAirports";
@@ -28,6 +25,8 @@ function Home() {
 
   const [destinationPromos, setDestinationPromos] = useState([]);
   const [banner, setBanner] = useState([]);
+
+  const [filteredCategory, setFilteredCategory] = useState(null);
   const [isPromo, setIsPromo] = useState(false);
 
   useEffect(() => {
@@ -59,6 +58,10 @@ function Home() {
     getDestinationPromos();
   }, []);
 
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   navigate(`/search?query=${searchValue}`);
+  // }
   const onSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -72,25 +75,44 @@ function Home() {
       form.number_passenger.attributes.getNamedItem("data-count").value;
     const seatClass = form.seat_class.attributes.getNamedItem("data-id").value;
 
+    // navigate(
+    //   `/search?departure_airport_id=${departure}&destination_airport_id=${destination}&departure_date=${startDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
+    // );
     navigate(
       `/search/${departure}/${destination}/${startDate}/${numberPassenger}/${seatClass}/${isPromo}`
     );
-    navigate(
-      `/search/${departure}/${destination}/${endDate}/${numberPassenger}/${seatClass}/${isPromo}`
-    );
+    // navigate(
+    //   `/search/${departure}/${destination}/${endDate}/${numberPassenger}/${seatClass}/${isPromo}`
+    // );
     // console.log("searchhh", form.seat_class.attributes.getNamedItem("data-id"));
   };
+
+  useEffect(() => {
+    setFilteredCategory(destinationPromos);
+  }, [destinationPromos]);
+
+  function handleCategoryClick(e) {
+    let buttonCategory = e.target.value;
+    buttonCategory !== "all"
+      ? setFilteredCategory(
+          destinationPromos.filter(
+            (items) => items?.arrival_city === buttonCategory
+          )
+        )
+      : setFilteredCategory(destinationPromos);
+  }
+  // console.log(filteredCategory);
 
   return (
     <>
       <Carousel
-        controls={false}
+        controls={true}
         indicators={false}
         touch={true}
         // interval={5000}
         style={{
           position: "absolute",
-          top: "4.8rem",
+          top: "5.2rem",
           left: 0,
           right: 0,
           bottom: 0,
@@ -112,24 +134,11 @@ function Home() {
               ></img>
             </Carousel.Item>
           ))}
-        {banner &&
-          banner.map((item) => (
-            <Carousel.Item key={item.id}>
-              <img
-                src={`${item?.picture}`}
-                alt="banner"
-                style={{
-                  width: "100%",
-                  maxHeight: "590px",
-                }}
-                className="mx-auto"
-              ></img>
-            </Carousel.Item>
-          ))}
       </Carousel>
+
       <div>
         <Container>
-          <Row style={{ marginTop: "14rem" }}>
+          <Row style={{ marginTop: "19.3rem" }}>
             <Col>
               <Form onSubmit={onSubmit}>
                 <Card className="mx-auto mb-4" style={{ width: "75rem" }}>
@@ -246,10 +255,28 @@ function Home() {
               marginBottom: "1.3rem",
             }}
           >
+            <Col className="mb-1 me-0">
+              <Button
+                value="all"
+                variant="outline-dark"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "9px",
+                  padding: "15px",
+                  borderRadius: "25px",
+                }}
+                onClick={handleCategoryClick}
+              >
+                <Icon icon="iconamoon:search-bold" className="icon-input" />
+                All
+              </Button>
+            </Col>
             {destinationPromos &&
               destinationPromos.slice(0, 6).map((promo) => (
                 <Col className="mb-1 me-0" key={promo?.id}>
                   <Button
+                    value={promo?.arrival_city}
                     variant="outline-dark"
                     style={{
                       display: "flex",
@@ -257,7 +284,9 @@ function Home() {
                       gap: "9px",
                       padding: "15px",
                       borderRadius: "25px",
+                      marginBottom: "0.5rem",
                     }}
+                    onClick={handleCategoryClick}
                   >
                     <Icon icon="iconamoon:search-bold" className="icon-input" />
                     {promo?.arrival_city}
@@ -267,12 +296,12 @@ function Home() {
           </Row>
 
           <Row
-            className="mt-2 d-flex justify-content-center"
-            // style={{ marginLeft: "5.4%", marginRight: "5.4%" }}
-            style={{ marginLeft: "2.7%", marginRight: "2.6%" }}
+            className="mt-2"
+            // className="mt-2 d-flex justify-content-center"
+            style={{ marginLeft: "2.8%", marginRight: "2.8%" }}
           >
-            {destinationPromos &&
-              destinationPromos.map((promo) => (
+            {filteredCategory &&
+              filteredCategory.map((promo) => (
                 <Col
                   sm="auto"
                   md="auto"

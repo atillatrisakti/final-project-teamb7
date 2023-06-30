@@ -18,19 +18,7 @@ function Booking() {
   const [title_id, setTitle_id] = useState("");
   const [hasFamilyName, setHasFamilyName] = useState(false);
   const [passenger_title_id, setPassenger_title_id] = useState("");
-  const [passenger_name, setPassenger_name] = useState("");
   const [passenger_family_name, setPassenger_family_name] = useState("");
-  const [passenger_dob, setPassenger_dob] = useState("");
-  const [passenger_nationality_id, setPassenger_nationality_id] = useState("");
-  const [passenger_identity_card, setPassenger_identity_card] = useState("");
-  const [
-    passenger_identity_card_publisher_id,
-    setPassenger_identity_card_publisher_id,
-  ] = useState();
-  const [
-    passenger_identity_card_due_date,
-    setPassenger_identity_card_due_date,
-  ] = useState("");
   // const [passenger_type, setPassenger_type] = useState("")
   const [passenger_hasFamilyName, setPassenger_hasFamilyName] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -274,91 +262,34 @@ function Booking() {
                 <Card.Body>
                   <Form noValidate validated={validated}>
                     <Form.Group className="mb-3">
-                      <Form.Label className="form-label-booking">
-                        Nama Lengkap
-                      </Form.Label>
-                      <Form.Control
-                        required
-                        placeholder="Nama Lengkap"
-                        name="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        style={{ width: "454px", height: "40px" }}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please enter your full name.
-                      </Form.Control.Feedback>
+                      <Form.Label className="form-label-booking">Nama Lengkap</Form.Label>
+                      <Form.Control required placeholder="Nama Lengkap" name="name" value={name} onChange={(e) => setName(e.target.value)} style={{ width: "454px", height: "40px" }} />
+                      <Form.Control.Feedback type="invalid">Please enter your full name.</Form.Control.Feedback>
                     </Form.Group>
                     <Row>
                       <Col xs="auto">
-                        <Form.Label className="form-label-booking">
-                          Punya Nama Keluarga
-                        </Form.Label>
+                        <Form.Label className="form-label-booking">Punya Nama Keluarga</Form.Label>
                       </Col>
                       <Col className="text-end">
-                        <Form.Check
-                          type="switch"
-                          id="custom-switch"
-                          className="ml-3"
-                          name="hasFamilyName"
-                          checked={hasFamilyName}
-                          onChange={handleSwitch}
-                        />
+                        <Form.Check type="switch" id="custom-switch" className="ml-3" name="hasFamilyName" checked={hasFamilyName} onChange={handleSwitch} />
                       </Col>
                     </Row>
                     {hasFamilyName ? (
                       <Form.Group className="mb-3">
-                        <Form.Label className="form-label-booking">
-                          Nama Keluarga
-                        </Form.Label>
-                        <Form.Control
-                          required
-                          placeholder="Nama Keluarga"
-                          name="familyName"
-                          value={family_name}
-                          onChange={(e) => setFamily_name(e.target.value)}
-                          style={{ width: "454px", height: "40px" }}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Please enter a family name.
-                        </Form.Control.Feedback>
+                        <Form.Label className="form-label-booking">Nama Keluarga</Form.Label>
+                        <Form.Control required placeholder="Nama Keluarga" name="familyName" value={family_name} onChange={(e) => setFamily_name(e.target.value)} style={{ width: "454px", height: "40px" }} />
+                        <Form.Control.Feedback type="invalid">Please enter a family name.</Form.Control.Feedback>
                       </Form.Group>
                     ) : null}
                     <Form.Group className="mb-3">
-                      <Form.Label className="form-label-booking">
-                        Nomor Telepon
-                      </Form.Label>
-                      <Form.Control
-                        required
-                        placeholder="Nomor Telepon"
-                        name="phone"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        pattern="[0-9]{9,12}"
-                        style={{ width: "454px", height: "40px" }}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {phone && (phone.length < 9 || phone.length > 12)
-                          ? "Phone must be string between 9 and 12 digits"
-                          : "Please enter a valid phone number."}
-                      </Form.Control.Feedback>
+                      <Form.Label className="form-label-booking">Nomor Telepon</Form.Label>
+                      <Form.Control required placeholder="Nomor Telepon" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} pattern="[0-9]{9,12}" style={{ width: "454px", height: "40px" }} />
+                      <Form.Control.Feedback type="invalid">{phone && (phone.length < 9 || phone.length > 12) ? "Phone must be string between 9 and 12 digits" : "Please enter a valid phone number."}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formGroupEmail">
-                      <Form.Label className="form-label-booking">
-                        Email
-                      </Form.Label>
-                      <Form.Control
-                        required
-                        type="email"
-                        placeholder="contoh: siti@gmail.com"
-                        name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={{ width: "454px", height: "40px" }}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please enter a valid email address.
-                      </Form.Control.Feedback>
+                      <Form.Label className="form-label-booking">Email</Form.Label>
+                      <Form.Control required type="email" placeholder="contoh: siti@gmail.com" name="email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: "454px", height: "40px" }} />
+                      <Form.Control.Feedback type="invalid">Please enter a valid email address.</Form.Control.Feedback>
                     </Form.Group>
                   </Form>
                 </Card.Body>
@@ -384,7 +315,7 @@ function Booking() {
                         borderTopRightRadius: "12px",
                       }}
                     >
-                      Data Diri Penumpang - Adult {index + 1}
+                      Data Diri Penumpang -  {index + 1}
                       {formSubmitted && (
                         <FaCheckCircle
                           className="ml-2"
@@ -686,23 +617,14 @@ function Booking() {
         </Col>
         {/* ========== Detail Penerbangan ========== */}
         <Col md={6}>
-          <Card
-            className="booking"
-            style={{ border: "none", boxShadow: "none" }}
-          >
-            <Card.Header
-              className="detail-booking"
-              style={{ border: "none", boxShadow: "none" }}
-            >
+          <Card className="booking" style={{ border: "none", boxShadow: "none" }}>
+            <Card.Header className="detail-booking" style={{ border: "none", boxShadow: "none" }}>
               Detail Penerbangan
             </Card.Header>
             <Card.Body>
               <DetailBooking />
               {formSubmitted && detailFlight && (
-                <Link
-                  to={`/payment/${detailFlight[0]?.id}`}
-                  style={{ textDecoration: "none" }}
-                >
+                <Link to={`/payment/${detailFlight[0]?.id}`} style={{ textDecoration: "none" }}>
                   <button
                     className="btn-tiket"
                     size="lg"

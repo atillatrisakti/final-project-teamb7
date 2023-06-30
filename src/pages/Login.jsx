@@ -35,11 +35,12 @@ function Login() {
       const response = await axios.request(config);
       const { token } = response.data.data;
 
+      console.log(response);
       localStorage.setItem("token", token);
 
       window.location.href = "/";
     } catch (error) {
-      toast.error(error?.message);
+      toast.error(error.message);
     }
   };
 
@@ -63,7 +64,7 @@ function Login() {
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <div class="d-flex justify-content-between">
                   <Form.Label>Password</Form.Label>
-                  <Link to="/reset-password" className="text-color">
+                  <Link to="/email-reset" className="text-color">
                     Lupa Kata Sandi
                   </Link>
                 </div>

@@ -20,7 +20,7 @@ function SendEmailReset() {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "https://flight-booking-api-development.up.railway.app/api/web/customer-auth/request-forgot-password",
+        url: `${process.env.REACT_APP_API}/web/customer-auth/request-forgot-password`,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -30,13 +30,15 @@ function SendEmailReset() {
 
       const response = await axios.request(config);
 
-      toast.success("We have sent you an email!");
+      console.log(response);
+
+      toast.success(response.data.message);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response.data.message);
+        toast.error(error.response.message);
         return;
       }
-      toast.error(error.message);
+      toast.error(error?.message);
     }
   };
 
