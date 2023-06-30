@@ -10,10 +10,7 @@ import login from "../assets/navbar/fi_log-in.svg";
 import "../styles/Navbar.css";
 
 function Navbarr(props) {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    props.isLoggedIn ? props.isLoggedIn : false
-  );
-  console.log("ini props", props);
+  const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn ? props.isLoggedIn : false);
 
   useEffect(() => {
     setIsLoggedIn(props.isLoggedIn);
@@ -27,10 +24,7 @@ function Navbarr(props) {
         </Navbar.Brand>
 
         {isLoggedIn ? (
-          <Navbar.Collapse
-            id="navbarScroll"
-            className="d-flex justify-content-end gap-2"
-          >
+          <Navbar.Collapse id="navbarScroll" className="d-flex justify-content-end gap-2">
             <button style={{ border: "none", background: "none" }}>
               <img src={list} alt="list" />
             </button>
@@ -44,10 +38,7 @@ function Navbarr(props) {
             </button>
           </Navbar.Collapse>
         ) : (
-          <Navbar.Collapse
-            id="navbarScroll"
-            className="d-flex justify-content-end"
-          >
+          <Navbar.Collapse id="navbarScroll" className="d-flex justify-content-end">
             <Link to={"/login"} style={{ textDecoration: "none" }}>
               <button className="login_button">
                 <img src={login} alt="login-logo" /> Masuk

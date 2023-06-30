@@ -42,11 +42,7 @@ function Accordion({ sort }) {
     <div className="accordion-item2">
       {/* {renderData()} */}
       {loading ? (
-        <img
-          src={loadingImg}
-          alt="loading-img"
-          className="d-flex justify-content-center"
-        />
+        <img src={loadingImg} alt="loading-img" className="d-flex justify-content-center" />
       ) : flight && flight.length > 0 ? (
         sort === "Termurah" ? (
           flight
