@@ -37,15 +37,14 @@ function Search() {
         const response = await axios.get(
           `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
         );
-        console.log(response.data);
-        console.log(params.is_promo);
+        // console.log(response.data);
+        // console.log(params.is_promo);
 
         setFlight(response.data.data);
         setDepartureAirportCode(response.data.data[0].departure_airport_code);
         setArrivalAirportCode(response.data.data[0].arrival_airport_code);
         setAirplaneClass(response.data.data[0].airplane_class);
         setDepartureDate(response.data.data[0].departure_date);
-        console.log(departureDate);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -63,10 +62,15 @@ function Search() {
       <Container className="mt-4">
         <Row className="d-flex justify-content-center">
           <Col sm={9}>
-            <div className="flight-desc" onClick={() => {}} style={{ cursor: "pointer" }}>
+            <div
+              className="flight-desc"
+              onClick={() => {}}
+              style={{ cursor: "pointer" }}
+            >
               <img src={arrow} alt="left-arrow" className="mb-1" />
               <span>
-                {departureAirportCode} - {arrivalAirportCode} - {params?.number_passenger} Penumpang - {airplaneClass}
+                {departureAirportCode} - {arrivalAirportCode} -{" "}
+                {params?.number_passenger} Penumpang - {airplaneClass}
               </span>
             </div>
           </Col>
@@ -110,22 +114,46 @@ function Search() {
           <Col md={4}>
             <div className="filter">
               <h5 className="mb-4">Filter</h5>
-              <div className="transit" onClick={() => {}} style={{ cursor: "pointer" }}>
+              <div
+                className="transit"
+                onClick={() => {}}
+                style={{ cursor: "pointer" }}
+              >
                 <img src={box} alt="transit" className="me-2" />
                 Transit
-                <img src={rightarrow} alt="right-arrow" style={{ float: "right" }} />
+                <img
+                  src={rightarrow}
+                  alt="right-arrow"
+                  style={{ float: "right" }}
+                />
               </div>
               <hr />
-              <div className="facility" onClick={() => {}} style={{ cursor: "pointer" }}>
+              <div
+                className="facility"
+                onClick={() => {}}
+                style={{ cursor: "pointer" }}
+              >
                 <img src={love} alt="facility" className="me-2" />
                 Fasilitas
-                <img src={rightarrow} alt="right-arrow" style={{ float: "right" }} />
+                <img
+                  src={rightarrow}
+                  alt="right-arrow"
+                  style={{ float: "right" }}
+                />
               </div>
               <hr />
-              <div className="price" onClick={() => {}} style={{ cursor: "pointer" }}>
+              <div
+                className="price"
+                onClick={() => {}}
+                style={{ cursor: "pointer" }}
+              >
                 <img src={dollar} alt="price" className="me-2" />
                 Harga
-                <img src={rightarrow} alt="right-arrow" style={{ float: "right" }} />
+                <img
+                  src={rightarrow}
+                  alt="right-arrow"
+                  style={{ float: "right" }}
+                />
               </div>
             </div>
           </Col>
