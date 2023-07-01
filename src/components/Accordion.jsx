@@ -30,8 +30,8 @@ function Accordion({ sort }) {
 
   // const renderData = () => {
   //   if (flight && flight.length > 0) {
-  //     if (sort == "termurah") {
-  //       return <div>tes</div>;
+  //     if (sort === "Termurah") {
+  //       return flight.sort((a, b) => a.price - b.price).map((item, index) => <AccordionItem item={item} index={index} />);
   //     } else {
   //       return null;
   //     }

@@ -14,6 +14,7 @@ import store from "./redux/store";
 import Account from "./pages/Account";
 import SendEmailReset from "./pages/SendEmailReset";
 import ResetPass from "./pages/ResetPass";
+import Otp from "./pages/Otp";
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -47,6 +48,7 @@ function App() {
           <Route path="/account" element={<Account isLoggedIn={setIsLoggedIn} />} />
           <Route path="/email-reset" element={<SendEmailReset />} />
           <Route path="/reset-password" element={<ResetPass />} />
+          <Route path="/otp" element={<Otp />} />
         </Routes>
 
         <ToastContainer theme="colored" />

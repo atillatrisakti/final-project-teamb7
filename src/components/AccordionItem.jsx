@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const AccordionItem = (props) => {
+const AccordionItem = (props, sort) => {
   const [item, setItem] = useState(props.item);
   const [isActive, setIsActive] = useState(false);
   const [flightFacilities, setFlightFacilities] = useState([]);
