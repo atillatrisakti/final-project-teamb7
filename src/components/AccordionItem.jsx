@@ -3,7 +3,7 @@ import arrowAccor from "../assets/accordion/Suffix.svg";
 import arrow from "../assets/search/Arrow.svg";
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -11,6 +11,7 @@ const AccordionItem = (props, sort) => {
   const [item, setItem] = useState(props.item);
   const [isActive, setIsActive] = useState(false);
   const [flightFacilities, setFlightFacilities] = useState([]);
+  const params = useParams();
 
   useEffect(() => {
     async function getFlightFacilities() {
@@ -100,7 +101,7 @@ const AccordionItem = (props, sort) => {
                     maximumFractionDigits: 0,
                   })}
                 </div>
-                <Link to={`/booking/${item.id}/${item.numberPassenger}`} style={{ textDecoration: "none" }}>
+                <Link to={`/booking/${item.id}/${params?.number_passenger}`} style={{ textDecoration: "none" }}>
                   <button style={{ float: "right" }} className="mt-2 btn-pilih">
                     Pilih
                   </button>

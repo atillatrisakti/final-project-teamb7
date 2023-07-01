@@ -35,7 +35,7 @@ function SendEmailReset() {
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response.data.message);
+        toast.error(error.response.message);
         return;
       }
       toast.error(error?.message);
