@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
@@ -47,6 +48,13 @@ function Search() {
   const isPromo = queryParams.get("is_promo");
 
   useEffect(() => {
+    // const departureAirportId = queryParams?.get("departure_airport_id");
+    // const destinationAirportId = queryParams?.get("destination_airport_id");
+    // const startDate = queryParams?.get("departure_date");
+    // const passenger = queryParams?.get("number_passenger");
+    // const seatClassId = queryParams?.get("class_id");
+    // const isPromo = queryParams?.get("is_promo");
+
     async function fetchPost() {
       try {
         setLoading(true);

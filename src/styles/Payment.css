@@ -39,11 +39,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 10px 0px;
+  /* padding: 10px 0px; */
   /* margin-top: 20px; */
   width: 518px;
   height: 800px;
-  margin-left: 250px;
+  margin-left: 80px;
   background: #ffffff;
   flex: none;
   order: 0;
@@ -84,5 +84,5 @@
 }
 
 .container section details[open] summary {
-  background: #7126b5;
+  background: #1B3260;
 }

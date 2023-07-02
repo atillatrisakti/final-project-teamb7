@@ -3,7 +3,7 @@ import arrowAccor from "../assets/accordion/Suffix.svg";
 import arrow from "../assets/search/Arrow.svg";
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -11,6 +11,7 @@ const AccordionItem = (props) => {
   const [item, setItem] = useState(props.item);
   const [isActive, setIsActive] = useState(false);
   const [flightFacilities, setFlightFacilities] = useState([]);
+  const params = useParams();
 
   const [isDisabled, setIsDisabled] = useState(false);
   const location = useLocation();

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import "../styles/Payment.css";
-import info from "../assets/booking/info.png";
 import img from "../assets/booking/img.svg";
 import mastercard from "../assets/booking/mastercard.svg";
 import visa from "../assets/booking/visa.svg";
@@ -9,31 +8,54 @@ import amex from "../assets/booking/amex.svg";
 import paypal from "../assets/booking/paypal.svg";
 import gopay from "../assets/booking/Gopay.svg";
 import { toast } from "react-toastify";
-import ItemBooking from "../components/ItemBooking";
-import { useParams } from "react-router-dom";
+import ItemBooking from "../components/booking-payment-history/ItemBooking";
+import DetailPayment from "../components/booking-payment-history/DetailPayment";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Payment() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [detailFlight, setDetailFlight] = useState([]);
-  const { id } = useParams();
+  const [selectedAccounts, setSelectedAccounts] = useState([]);
+  const [users, setUsers] = useState("");
 
-  //count price
-  const totalPrice = detailFlight[0]?.price + detailFlight[0]?.tax;
-
-  //get detail flight
+  //protected
   useEffect(() => {
-    async function getDetailFlight() {
+    const getMe = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API}/web/flights/${id}`);
-        setDetailFlight(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getDetailFlight();
-  }, [id]);
+        const token = localStorage.getItem("token");
 
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/customer/users`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = response.data.data;
+
+        setUsers(data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          // If not valid token
+          if (error.response.status === 401) {
+            localStorage.removeItem("token");
+            // Temporary solution
+            return (window.location.href = "/");
+          }
+
+          toast.error(error.response.data.message);
+          return;
+        }
+        toast.error(error.message);
+      }
+    };
+
+    getMe();
+  }, []);
+
+  //handle payment
   const handlePaymentClick = () => {
     setPaymentSuccess(true);
     toast.success("Terimakasih atas pembayaran transaksi", {
@@ -42,8 +64,7 @@ function Payment() {
     });
   };
 
-  const [selectedAccounts, setSelectedAccounts] = useState([]);
-
+  //handle checkbox
   const handleCheckboxChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
@@ -54,7 +75,9 @@ function Payment() {
   };
 
   const getCardBorderStyle = (account) => {
-    return selectedAccounts.includes(account) ? "2px solid rgba(113, 38, 181, 0.75)" : "2px solid #ccc";
+    return selectedAccounts.includes(account)
+      ? "2px solid rgba(27, 50, 90)"
+      : "2px solid #ccc";
   };
 
   if (paymentSuccess) {
@@ -67,44 +90,51 @@ function Payment() {
         </Row>
         <Row>
           <Col md={12} className="payment-success">
-            <img src={img} alt="img" fluid width="204" height="204" style={{ marginTop: "100px" }} />
+            <img
+              src={img}
+              alt="img"
+              fluid
+              width="204"
+              height="204"
+              style={{ marginTop: "100px" }}
+            />
             <div className="payment-success">
-              <p style={{ margin: 0, color: "#7126b5" }}>Selamat!!</p>
+              <p style={{ margin: 0, color: "#1B3260" }}>Selamat!!</p>
               <p>Transaksi Pembayaran Tiket Sukses</p>
             </div>
           </Col>
           <Col className="payment-success">
             <button
-              className="button"
+              className="button-booking"
               size="lg"
               style={{
-                backgroundColor: "#7126b5",
+                backgroundColor: "#1B3260",
                 color: "#FFFFFF",
                 borderRadius: "10px",
                 marginTop: "30px",
                 border: "none",
                 width: "600px",
               }}
-              // onClick={handlePaymentClick}
             >
               Terbitkan Tiket
             </button>
             <Col>
-              <button
-                className="button"
-                size="lg"
-                style={{
-                  backgroundColor: "#D0B7E6",
-                  color: "#FFFFFF",
-                  borderRadius: "10px",
-                  marginTop: "10px",
-                  border: "none",
-                  width: "600px",
-                }}
-                // onClick={handlePaymentClick}
-              >
-                Cari Penerbangan Lain
-              </button>
+              <Link to={`/`}>
+                <button
+                  className="button-booking"
+                  size="lg"
+                  style={{
+                    backgroundColor: "#5173b8",
+                    color: "#FFFFFF",
+                    borderRadius: "10px",
+                    marginTop: "10px",
+                    border: "none",
+                    width: "600px",
+                  }}
+                >
+                  Cari Penerbangan Lain
+                </button>
+              </Link>
             </Col>
           </Col>
         </Row>
@@ -135,8 +165,19 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="Gopay" checked={selectedAccounts.includes("Gopay")} onChange={handleCheckboxChange} />
-                      <img src={gopay} alt="img" fluid width="100" height="60" />
+                      <input
+                        type="checkbox"
+                        value="Gopay"
+                        checked={selectedAccounts.includes("Gopay")}
+                        onChange={handleCheckboxChange}
+                      />
+                      <img
+                        src={gopay}
+                        alt="img"
+                        fluid
+                        width="100"
+                        height="60"
+                      />
                     </label>
                   </div>
                 </details>
@@ -151,7 +192,14 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="BRI Virtual Account" checked={selectedAccounts.includes("BRI Virtual Account")} onChange={handleCheckboxChange} />
+                      <input
+                        type="checkbox"
+                        value="BRI Virtual Account"
+                        checked={selectedAccounts.includes(
+                          "BRI Virtual Account"
+                        )}
+                        onChange={handleCheckboxChange}
+                      />
                       BRI Virtual Account
                     </label>
                   </div>
@@ -163,7 +211,14 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="BCA Virtual Account" checked={selectedAccounts.includes("BCA Virtual Account")} onChange={handleCheckboxChange} />
+                      <input
+                        type="checkbox"
+                        value="BCA Virtual Account"
+                        checked={selectedAccounts.includes(
+                          "BCA Virtual Account"
+                        )}
+                        onChange={handleCheckboxChange}
+                      />
                       BCA Virtual Account
                     </label>
                   </div>
@@ -175,7 +230,14 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="Mandiri Virtual Account" checked={selectedAccounts.includes("Mandiri Virtual Account")} onChange={handleCheckboxChange} />
+                      <input
+                        type="checkbox"
+                        value="Mandiri Virtual Account"
+                        checked={selectedAccounts.includes(
+                          "Mandiri Virtual Account"
+                        )}
+                        onChange={handleCheckboxChange}
+                      />
                       Mandiri Virtual Account
                     </label>
                   </div>
@@ -187,7 +249,14 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="BNI Virtual Account" checked={selectedAccounts.includes("BNI Virtual Account")} onChange={handleCheckboxChange} />
+                      <input
+                        type="checkbox"
+                        value="BNI Virtual Account"
+                        checked={selectedAccounts.includes(
+                          "BNI Virtual Account"
+                        )}
+                        onChange={handleCheckboxChange}
+                      />
                       BNI Virtual Account
                     </label>
                   </div>
@@ -199,7 +268,12 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="Bank Lainnya" checked={selectedAccounts.includes("Bank Lainnya")} onChange={handleCheckboxChange} />
+                      <input
+                        type="checkbox"
+                        value="Bank Lainnya"
+                        checked={selectedAccounts.includes("Bank Lainnya")}
+                        onChange={handleCheckboxChange}
+                      />
                       Bank Lainnya
                     </label>
                   </div>
@@ -213,10 +287,38 @@ function Payment() {
                       marginTop: "10px",
                     }}
                   >
-                    <img src={mastercard} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
-                    <img src={visa} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
-                    <img src={amex} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
-                    <img src={paypal} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
+                    <img
+                      src={mastercard}
+                      alt="img"
+                      fluid
+                      width="50"
+                      height="50"
+                      style={{ margin: "0 5px" }}
+                    />
+                    <img
+                      src={visa}
+                      alt="img"
+                      fluid
+                      width="50"
+                      height="50"
+                      style={{ margin: "0 5px" }}
+                    />
+                    <img
+                      src={amex}
+                      alt="img"
+                      fluid
+                      width="50"
+                      height="50"
+                      style={{ margin: "0 5px" }}
+                    />
+                    <img
+                      src={paypal}
+                      alt="img"
+                      fluid
+                      width="50"
+                      height="50"
+                      style={{ margin: "0 5px" }}
+                    />
                   </div>
                   <Form
                     style={{
@@ -225,7 +327,10 @@ function Payment() {
                       marginLeft: "120px",
                     }}
                   >
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
                       <Form.Label>Card Number</Form.Label>
                       <Form.Control
                         type="email"
@@ -239,7 +344,10 @@ function Payment() {
                         }}
                       />
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
                       <Form.Label>Card Holder Name</Form.Label>
                       <Form.Control
                         type="email"
@@ -255,7 +363,10 @@ function Payment() {
                     </Form.Group>
                     <Row>
                       <Col md={6}>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group
+                          className="mb-3"
+                          controlId="exampleForm.ControlInput1"
+                        >
                           <Form.Label>CVV</Form.Label>
                           <Form.Control
                             type="email"
@@ -271,7 +382,10 @@ function Payment() {
                         </Form.Group>
                       </Col>
                       <Col>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group
+                          className="mb-3"
+                          controlId="exampleForm.ControlInput1"
+                        >
                           <Form.Label>Expiry Date</Form.Label>
                           <Form.Control
                             type="email"
@@ -298,10 +412,9 @@ function Payment() {
             style={{
               backgroundColor: "#1B3260",
               borderRadius: "10px",
-              // marginLeft: "60px",
               color: "#FFFFFF",
               border: "none",
-              width: "600px",
+              width: "580px",
             }}
             onClick={handlePaymentClick}
             disabled={paymentSuccess}
@@ -310,180 +423,7 @@ function Payment() {
           </button>
         </Col>
         <Col md={6}>
-          <Card className="detail" style={{ border: "none", boxShadow: "none" }}>
-            <Row>
-              <Col md={6}>
-                <Card.Title
-                  style={{
-                    border: "none",
-                    boxShadow: "none",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Booking Code:
-                </Card.Title>
-              </Col>
-              <Col>
-                <div style={{ fontWeight: "bold", color: "#7126b5" }}>6799ggYKb</div>
-              </Col>
-            </Row>
-            <Card.Body>
-              <Row>
-                <Col
-                  md={6}
-                  style={{
-                    color: "#151515",
-                    fontFamily: "Poppins",
-                    fontSize: "16px",
-                  }}
-                >
-                  <div>
-                    {new Date(detailFlight[0]?.departure_date).toLocaleTimeString("id", {
-                      timeZone: detailFlight[0]?.departure_city_time_zone,
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </div>
-                  <div>
-                    {new Date(detailFlight[0]?.departure_date).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </div>
-                </Col>
-                <Col md={6}>
-                  <div
-                    style={{
-                      color: "#A06ECE",
-                      fontFamily: "Poppins",
-                      fontSize: "12px",
-                      textAlign: "right",
-                    }}
-                  >
-                    Keberangkatan
-                  </div>
-                </Col>
-              </Row>
-              <div
-                style={{
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom: "1px solid #D0D0D0",
-                }}
-              >
-                {detailFlight[0]?.departure_airport}
-              </div>
-              <Container>
-                <div
-                  className="info"
-                  style={{
-                    borderTop: "none",
-                    borderLeft: "none",
-                    borderRight: "none",
-                    borderBottom: "1px solid #D0D0D0",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <div style={{ marginRight: "8px" }}>
-                      <img src={info} alt="info" fluid width="24" height="24" />
-                    </div>
-                    <div>
-                      <h5 style={{ margin: 0 }}>
-                        {detailFlight[0]?.airplane_name} -{detailFlight[0]?.airplane_class}
-                      </h5>
-                      <div style={{ marginBottom: "10px" }}>
-                        <p style={{ margin: 0, fontSize: "14px" }}>{detailFlight[0]?.airplane_code}</p>
-                      </div>
-                      <p style={{ margin: 0 }}>Informasi:</p>
-                      <p style={{ margin: 0, fontWeight: "normal" }}>{detailFlight[0]?.facilities}</p>
-                    </div>
-                  </div>
-                </div>
-              </Container>
-              <Row>
-                <Col
-                  md={6}
-                  style={{
-                    color: "#151515",
-                    fontFamily: "Poppins",
-                    fontSize: "16px",
-                  }}
-                >
-                  <div style={{ fontWeight: "bold" }}>
-                    {new Date(detailFlight[0]?.arrival_date).toLocaleTimeString("id", {
-                      timeZone: detailFlight[0]?.arrival_city_time_zone,
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </div>
-                  <div>
-                    {new Date(detailFlight[0]?.arrival_date).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </div>
-                </Col>
-                <Col md={6}>
-                  <div
-                    style={{
-                      color: "#A06ECE",
-                      fontFamily: "Poppins",
-                      fontSize: "12px",
-                      textAlign: "right",
-                    }}
-                  >
-                    Kedatangan
-                  </div>
-                </Col>
-              </Row>
-              <div
-                style={{
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom: "1px solid #D0D0D0",
-                }}
-              >
-                {detailFlight[0]?.arrival_airport}
-              </div>
-              <Container
-                style={{
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom: "1px solid #D0D0D0",
-                  marginRight: "8px",
-                }}
-              >
-                <div style={{ fontWeight: "bold" }}>Rincian Harga</div>
-                <Row>
-                  <Col md={6}>
-                    <div>2 Adult</div>
-                    <div>1 Baby</div>
-                    <div>Tax</div>
-                  </Col>
-                  <Col>
-                    <div>IDR {detailFlight[0]?.price}</div>
-                    <div>IDR 0</div>
-                    <div>IDR {detailFlight[0]?.tax}</div>
-                  </Col>
-                </Row>
-              </Container>
-              <Row>
-                <Col md={6} style={{ fontWeight: "bold" }}>
-                  Total
-                </Col>
-                <Col md={6} style={{ fontWeight: "bold", color: "#7126b5" }}>
-                  IDR {totalPrice}
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
+          <DetailPayment />
         </Col>
       </Row>
     </Container>

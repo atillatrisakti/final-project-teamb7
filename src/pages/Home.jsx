@@ -60,6 +60,10 @@ function Home() {
     getDestinationPromos();
   }, []);
 
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   navigate(`/search?query=${searchValue}`);
+  // }
   const onSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -328,6 +332,7 @@ function Home() {
                       marginBottom: "0.5rem",
                       background: `${promo?.arrival_city_image}`,
                     }}
+                    onClick={handleCategoryClick}
                     onClick={handleCategoryClick}
                   >
                     <Icon icon="iconamoon:search-bold" className="icon-input" />

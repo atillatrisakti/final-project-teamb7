@@ -14,7 +14,8 @@ function ItemBooking() {
             color: "#000000",
             textDecoration: "none",
             fontWeight:
-              window.location.pathname === "/booking/:id" || setFormSubmitted
+              window.location.pathname === "/booking/:id/:number_passengers" ||
+              setFormSubmitted
                 ? "bold"
                 : "normal",
           }}
@@ -32,7 +33,9 @@ function ItemBooking() {
             color: "#000000",
             textDecoration: "none",
             fontWeight:
-              (setFormSubmitted && window.location.pathname !== "/payment/:id") ||
+              (setFormSubmitted &&
+                window.location.pathname !==
+                  "/payment/:id/:number_passengers") ||
               (!setFormSubmitted && window.location.pathname === "/")
                 ? "normal"
                 : "bold",

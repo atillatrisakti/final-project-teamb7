@@ -14,9 +14,10 @@ import store from "./redux/store";
 import Account from "./pages/Account";
 import SendEmailReset from "./pages/SendEmailReset";
 import ResetPass from "./pages/ResetPass";
-
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Protected from "./components/Protected";
+import NoTokenAccess from "./components/NoTokenAccess";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
