@@ -287,16 +287,17 @@ function Home() {
                   className="mb-1 me-0 px-2"
                 >
                   <Link
-                    to={`/search/${promo?.departure_airport_id}/${
+                    to={`/search?departure_airport_id=${
+                      promo?.departure_airport_id
+                    }&destination_airport_id=${
                       promo?.arrival_airport_id
-                    }/${new Date(promo?.departure_date).toLocaleDateString(
-                      "en-CA",
-                      {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      }
-                    )}/1/1/${isPromo}`}
+                    }&departure_date=${new Date(
+                      promo?.departure_date
+                    ).toLocaleDateString("en-CA", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}&number_passenger=1&class_id=1&is_promo=${isPromo}`}
                     style={{ textDecoration: "none", borderColor: "black" }}
                   >
                     <Card
@@ -369,16 +370,17 @@ function Home() {
                   key={promo?.id}
                 >
                   <Link
-                    to={`/search/${promo?.departure_airport_id}/${
+                    to={`/search?departure_airport_id=${
+                      promo?.departure_airport_id
+                    }&destination_airport_id=${
                       promo?.arrival_airport_id
-                    }/${new Date(promo?.departure_date).toLocaleDateString(
-                      "en-CA",
-                      {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      }
-                    )}/1/1/${!isPromo}`}
+                    }&departure_date=${new Date(
+                      promo?.departure_date
+                    ).toLocaleDateString("en-CA", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}&number_passenger=1&class_id=1&is_promo=${!isPromo}`}
                     style={{ textDecoration: "none", borderColor: "black" }}
                   >
                     <Card

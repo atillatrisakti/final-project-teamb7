@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
@@ -18,17 +18,12 @@ import axios from "axios";
 function Search() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  // const params = queryParams.toString();
-
-  // const queryParams = new URLSearchParams("?term=pizza&location=Bangalore");
-  // for (const [key, value] of queryParams) {
-  //   console.log({ key, value }); // {key: 'term', value: 'pizza'} {key: 'location', value: 'Bangalore'}
-  // }
 
   const [date, setDate] = useState("");
 
   const [sort, setSort] = useState("Termurah");
 
+  const [flight, setFlight] = useState([]);
   const [loading, setLoading] = useState(true);
   const [departureAirportCode, setDepartureAirportCode] = useState("");
   const [arrivalAirportCode, setArrivalAirportCode] = useState("");
@@ -38,6 +33,7 @@ function Search() {
   const departureAirportId = queryParams?.get("departure_airport_id");
   const destinationAirportId = queryParams?.get("destination_airport_id");
   const startDate = queryParams?.get("departure_date");
+  const endDate = queryParams.get("end_date");
   const numberPassenger = queryParams.get("number_passenger");
   const seatClass = queryParams?.get("class_id");
   const isPromo = queryParams?.get("is_promo");
@@ -51,6 +47,7 @@ function Search() {
         );
         // console.log(response.data.data);
 
+        setFlight(response.data.data);
         setDepartureAirportCode(response.data.data[0].departure_airport_code);
         setArrivalAirportCode(response.data.data[0].arrival_airport_code);
         setAirplaneClass(response.data.data[0].airplane_class);
@@ -172,7 +169,15 @@ function Search() {
           </Col>
           <Col md={6}>
             <div className="accordion mb-5">
-              <Accordion sort={sort} />
+              <Accordion
+                sort={sort}
+                // departureAirportId={departureAirportId}
+                // destinationAirportId={destinationAirportId}
+                // departureDate={departureDate}
+                // numberPassenger={numberPassenger}
+                // seatClass={seatClass}
+                // isPromo={isPromo}
+              />
             </div>
           </Col>
         </Row>

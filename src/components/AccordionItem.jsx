@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import arrowAccor from "../assets/accordion/Suffix.svg";
 import arrow from "../assets/search/Arrow.svg";
-import { Row, Col, Container, Card } from "react-bootstrap";
+import { Row, Col, Container, Card, Button } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
@@ -11,9 +11,7 @@ const AccordionItem = (props) => {
   const [item, setItem] = useState(props.item);
   const [isActive, setIsActive] = useState(false);
   const [flightFacilities, setFlightFacilities] = useState([]);
-  const params = useParams();
 
-  const [isDisabled, setIsDisabled] = useState(false);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
@@ -37,8 +35,38 @@ const AccordionItem = (props) => {
       }
     }
     getFlightFacilities();
-    // console.log(flightFacilities[0].name);
   }, []);
+
+  const handleButtonPilih = () => {
+    if ((endDate && endDate.length > 0) || departureDate === null) {
+      return (
+        <Link
+          to={`/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`}
+          style={{ textDecoration: "none" }}
+        >
+          <button style={{ float: "right" }} className="btn-pilih">
+            Pilih
+          </button>
+          pilih penerbangan pulang
+        </Link>
+      );
+    } else {
+      return (
+        <Button
+          className="btn-pilih py-0 d-flex justify-content-center align-items-center"
+          as={Link}
+          to={`/booking/${item?.id}/${numberPassenger}`}
+          style={{
+            float: "right",
+            textDecoration: "none",
+            backgroundColor: "#1b3260",
+          }}
+        >
+          Pilih
+        </Button>
+      );
+    }
+  };
 
   return (
     <>
@@ -230,26 +258,8 @@ const AccordionItem = (props) => {
                     </h6>
                   )}
                 </div>
-                {endDate === "" || null ? (
-                  <Link
-                    to={`/booking/${item?.id}/${item?.number_passenger}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <button style={{ float: "right" }} className="btn-pilih">
-                      Pilih
-                    </button>
-                  </Link>
-                ) : (
-                  <Link
-                    to={`/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    pilih penerbangan pulang
-                    <button style={{ float: "right" }} className="btn-pilih">
-                      Pilih
-                    </button>
-                  </Link>
-                )}
+
+                {handleButtonPilih()}
               </Col>
             </Row>
           </Container>

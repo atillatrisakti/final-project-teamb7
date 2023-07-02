@@ -13,7 +13,7 @@ function Accordion({ sort }) {
   // console.log(queryParams.get("departure_airport_id"));
 
   const [flight, setFlight] = useState([]);
-  const [flightEndDate, setFlightEndDate] = useState([]);
+  const [flightReturn, setFlightReturn] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const departureAirportId = queryParams.get("departure_airport_id");
@@ -25,40 +25,61 @@ function Accordion({ sort }) {
   const isPromo = queryParams.get("is_promo");
 
   useEffect(() => {
-    if (departureDate !== undefined) {
-      async function getListFlight() {
-        try {
-          setLoading(true);
-          const response = await axios.get(
-            `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
-          );
-          setFlight(response.data.data);
-          setLoading(false);
-        } catch (error) {
-          setLoading(false);
-          toast.error(error?.message);
-        }
+    async function getListFlight() {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
+        );
+        setFlight(response.data.data);
+        // console.log(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        toast.error(error?.message);
       }
-      getListFlight();
-    } else {
-      return "";
     }
+    getListFlight();
   }, []);
 
-  // const renderData = () => {
-  //   if (flight && flight.length > 0) {
-  //     if (sort == "termurah") {
-  //       return <div>tes</div>;
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-  // };
+  const renderData = () => {
+    if (loading) {
+      <img
+        src={loadingImg}
+        alt="loading-img"
+        className="d-flex justify-content-center"
+      />;
+    } else if (flight && flight.length > 0) {
+      if (sort === "Termurah") {
+        return flight
+          .sort((a, b) => a.price - b.price)
+          .map((item, index) => (
+            <>
+              <AccordionItem item={item} index={index} />
+            </>
+          ));
+      } else {
+        return flight
+          .sort((a, b) => b.price - a.price)
+          .map((item, index) => (
+            <>
+              <AccordionItem item={item} index={index} />
+            </>
+          ));
+      }
+    } else {
+      return (
+        <div className="d-flex justify-content-center text-secondary">
+          <NoResult />
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="accordion-item2">
-      {/* {renderData()} */}
-      {loading ? (
+      {renderData()}
+      {/* {loading ? (
         <img
           src={loadingImg}
           alt="loading-img"
@@ -86,7 +107,7 @@ function Accordion({ sort }) {
         <div className="d-flex justify-content-center text-secondary">
           <NoResult />
         </div>
-      )}
+      )} */}
     </div>
   );
 }
