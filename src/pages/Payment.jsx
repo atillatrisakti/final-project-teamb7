@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import "../styles/Payment.css";
 import img from "../assets/booking/img.svg";
@@ -10,9 +10,52 @@ import gopay from "../assets/booking/Gopay.svg";
 import { toast } from "react-toastify";
 import ItemBooking from "../components/booking-payment-history/ItemBooking";
 import DetailPayment from "../components/booking-payment-history/DetailPayment";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Payment() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [selectedAccounts, setSelectedAccounts] = useState([]);
+  const [users, setUsers] = useState("");
+
+  //protected
+  useEffect(() => {
+    const getMe = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/customer/users`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = response.data.data;
+
+        setUsers(data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          // If not valid token
+          if (error.response.status === 401) {
+            localStorage.removeItem("token");
+            // Temporary solution
+            return (window.location.href = "/");
+          }
+
+          toast.error(error.response.data.message);
+          return;
+        }
+        toast.error(error.message);
+      }
+    };
+
+    getMe();
+  }, []);
+
+  //handle payment
   const handlePaymentClick = () => {
     setPaymentSuccess(true);
     toast.success("Terimakasih atas pembayaran transaksi", {
@@ -21,8 +64,7 @@ function Payment() {
     });
   };
 
-  const [selectedAccounts, setSelectedAccounts] = useState([]);
-
+  //handle checkbox
   const handleCheckboxChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
@@ -48,7 +90,14 @@ function Payment() {
         </Row>
         <Row>
           <Col md={12} className="payment-success">
-            <img src={img} alt="img" fluid width="204" height="204" style={{ marginTop: "100px" }} />
+            <img
+              src={img}
+              alt="img"
+              fluid
+              width="204"
+              height="204"
+              style={{ marginTop: "100px" }}
+            />
             <div className="payment-success">
               <p style={{ margin: 0, color: "#1B3260" }}>Selamat!!</p>
               <p>Transaksi Pembayaran Tiket Sukses</p>
@@ -66,26 +115,26 @@ function Payment() {
                 border: "none",
                 width: "600px",
               }}
-              // onClick={handlePaymentClick}
             >
               Terbitkan Tiket
             </button>
             <Col>
-              <button
-                className="button-booking"
-                size="lg"
-                style={{
-                  backgroundColor: "#5173b8",
-                  color: "#FFFFFF",
-                  borderRadius: "10px",
-                  marginTop: "10px",
-                  border: "none",
-                  width: "600px",
-                }}
-                // onClick={handlePaymentClick}
-              >
-                Cari Penerbangan Lain
-              </button>
+              <Link to={`/`}>
+                <button
+                  className="button-booking"
+                  size="lg"
+                  style={{
+                    backgroundColor: "#5173b8",
+                    color: "#FFFFFF",
+                    borderRadius: "10px",
+                    marginTop: "10px",
+                    border: "none",
+                    width: "600px",
+                  }}
+                >
+                  Cari Penerbangan Lain
+                </button>
+              </Link>
             </Col>
           </Col>
         </Row>
@@ -116,8 +165,19 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="Gopay" checked={selectedAccounts.includes("Gopay")} onChange={handleCheckboxChange} />
-                      <img src={gopay} alt="img" fluid width="100" height="60" />
+                      <input
+                        type="checkbox"
+                        value="Gopay"
+                        checked={selectedAccounts.includes("Gopay")}
+                        onChange={handleCheckboxChange}
+                      />
+                      <img
+                        src={gopay}
+                        alt="img"
+                        fluid
+                        width="100"
+                        height="60"
+                      />
                     </label>
                   </div>
                 </details>
@@ -132,7 +192,14 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="BRI Virtual Account" checked={selectedAccounts.includes("BRI Virtual Account")} onChange={handleCheckboxChange} />
+                      <input
+                        type="checkbox"
+                        value="BRI Virtual Account"
+                        checked={selectedAccounts.includes(
+                          "BRI Virtual Account"
+                        )}
+                        onChange={handleCheckboxChange}
+                      />
                       BRI Virtual Account
                     </label>
                   </div>
@@ -144,7 +211,14 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="BCA Virtual Account" checked={selectedAccounts.includes("BCA Virtual Account")} onChange={handleCheckboxChange} />
+                      <input
+                        type="checkbox"
+                        value="BCA Virtual Account"
+                        checked={selectedAccounts.includes(
+                          "BCA Virtual Account"
+                        )}
+                        onChange={handleCheckboxChange}
+                      />
                       BCA Virtual Account
                     </label>
                   </div>
@@ -156,7 +230,14 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="Mandiri Virtual Account" checked={selectedAccounts.includes("Mandiri Virtual Account")} onChange={handleCheckboxChange} />
+                      <input
+                        type="checkbox"
+                        value="Mandiri Virtual Account"
+                        checked={selectedAccounts.includes(
+                          "Mandiri Virtual Account"
+                        )}
+                        onChange={handleCheckboxChange}
+                      />
                       Mandiri Virtual Account
                     </label>
                   </div>
@@ -168,7 +249,14 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="BNI Virtual Account" checked={selectedAccounts.includes("BNI Virtual Account")} onChange={handleCheckboxChange} />
+                      <input
+                        type="checkbox"
+                        value="BNI Virtual Account"
+                        checked={selectedAccounts.includes(
+                          "BNI Virtual Account"
+                        )}
+                        onChange={handleCheckboxChange}
+                      />
                       BNI Virtual Account
                     </label>
                   </div>
@@ -180,7 +268,12 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input type="checkbox" value="Bank Lainnya" checked={selectedAccounts.includes("Bank Lainnya")} onChange={handleCheckboxChange} />
+                      <input
+                        type="checkbox"
+                        value="Bank Lainnya"
+                        checked={selectedAccounts.includes("Bank Lainnya")}
+                        onChange={handleCheckboxChange}
+                      />
                       Bank Lainnya
                     </label>
                   </div>
@@ -194,10 +287,38 @@ function Payment() {
                       marginTop: "10px",
                     }}
                   >
-                    <img src={mastercard} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
-                    <img src={visa} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
-                    <img src={amex} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
-                    <img src={paypal} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
+                    <img
+                      src={mastercard}
+                      alt="img"
+                      fluid
+                      width="50"
+                      height="50"
+                      style={{ margin: "0 5px" }}
+                    />
+                    <img
+                      src={visa}
+                      alt="img"
+                      fluid
+                      width="50"
+                      height="50"
+                      style={{ margin: "0 5px" }}
+                    />
+                    <img
+                      src={amex}
+                      alt="img"
+                      fluid
+                      width="50"
+                      height="50"
+                      style={{ margin: "0 5px" }}
+                    />
+                    <img
+                      src={paypal}
+                      alt="img"
+                      fluid
+                      width="50"
+                      height="50"
+                      style={{ margin: "0 5px" }}
+                    />
                   </div>
                   <Form
                     style={{
@@ -206,7 +327,10 @@ function Payment() {
                       marginLeft: "120px",
                     }}
                   >
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
                       <Form.Label>Card Number</Form.Label>
                       <Form.Control
                         type="email"
@@ -220,7 +344,10 @@ function Payment() {
                         }}
                       />
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
                       <Form.Label>Card Holder Name</Form.Label>
                       <Form.Control
                         type="email"
@@ -236,7 +363,10 @@ function Payment() {
                     </Form.Group>
                     <Row>
                       <Col md={6}>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group
+                          className="mb-3"
+                          controlId="exampleForm.ControlInput1"
+                        >
                           <Form.Label>CVV</Form.Label>
                           <Form.Control
                             type="email"
@@ -252,7 +382,10 @@ function Payment() {
                         </Form.Group>
                       </Col>
                       <Col>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group
+                          className="mb-3"
+                          controlId="exampleForm.ControlInput1"
+                        >
                           <Form.Label>Expiry Date</Form.Label>
                           <Form.Control
                             type="email"
@@ -279,10 +412,9 @@ function Payment() {
             style={{
               backgroundColor: "#1B3260",
               borderRadius: "10px",
-              // marginLeft: "60px",
               color: "#FFFFFF",
               border: "none",
-              width: "600px",
+              width: "580px",
             }}
             onClick={handlePaymentClick}
             disabled={paymentSuccess}

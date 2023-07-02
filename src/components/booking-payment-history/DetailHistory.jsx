@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-function DetailHistory() {
+function DetailHistory({ selectedTransactionId }) {
   const navigate = useNavigate();
   const [transaction, setTransaction] = useState([]);
   const [detailTransaction, setDetailTransaction] = useState([]);
-  const params = useParams();
-  const number_passenger = params.number_passenger;
+  const [number_passenger, setNumber_passenger] = useState([]);
 
   //get history transaction
   useEffect(() => {
@@ -26,7 +25,7 @@ function DetailHistory() {
         );
         const transaction = response.data.data;
         setTransaction(transaction);
-        console.log(transaction);
+        // console.log(transaction);
 
         const detailPromises = transaction.map(async (flight) => {
           const detailResponse = await axios.get(
@@ -44,6 +43,16 @@ function DetailHistory() {
         const detailResults = await Promise.all(detailPromises);
         setDetailTransaction(detailResults);
         // console.log(detailResults);
+        const passengerCounts = detailResults.reduce(
+          (acc, detailData, index) => {
+            const transactionId = transaction[index].id;
+            const count = detailData.passengers.length;
+            return { ...acc, [transactionId]: count };
+          },
+          {}
+        );
+
+        setNumber_passenger(passengerCounts);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error.response.data.message);
@@ -56,30 +65,41 @@ function DetailHistory() {
     getTransactionData();
   }, []);
 
+  useEffect(() => {
+    const passengerCounts = detailTransaction.map(
+      (detailData) => detailData.passengers.length
+    );
+    setNumber_passenger(passengerCounts);
+  }, [detailTransaction]);
+
   //count price
   const discountPrice =
-    detailTransaction[0]?.flight.price -
-    detailTransaction[0]?.flight.price *
-      (detailTransaction[0]?.flight.discount / 100);
+    number_passenger[selectedTransactionId] *
+    (detailTransaction[selectedTransactionId]?.flight.price -
+      detailTransaction[selectedTransactionId]?.flight.price *
+        (detailTransaction[selectedTransactionId]?.flight.discount / 100));
 
   const totalPrice =
-    discountPrice + discountPrice * detailTransaction[0]?.flight.tax;
+    discountPrice +
+    discountPrice *
+      (detailTransaction[selectedTransactionId]?.flight.tax / 100);
 
   const handleLanjutBayar = () => {
-    const transactionId = detailTransaction[0]?.flight.id;
+    const transactionId = detailTransaction[selectedTransactionId]?.flight.id;
+    const passengers = number_passenger[selectedTransactionId];
     if (transactionId) {
-      navigate(`/payment/${transactionId}`);
+      navigate(`/payment/${transactionId}/${passengers}`);
     }
   };
 
   const renderActionButton = () => {
-    if (transaction[0]?.status === "issued") {
+    if (transaction[selectedTransactionId]?.status === "paid") {
       return (
         <button className="btn-tiket" style={{ backgroundColor: "#1B3260" }}>
           Cetak Tiket
         </button>
       );
-    } else if (transaction[0]?.status === "unpaid") {
+    } else if (transaction[selectedTransactionId]?.status === "unpaid") {
       return (
         <button
           className="btn-tiket"
@@ -108,10 +128,14 @@ function DetailHistory() {
               className="btn-status"
               style={{
                 backgroundColor:
-                  transaction.status === "unpaid"
+                  transaction[selectedTransactionId]?.status === "unpaid"
                     ? "#FF0000"
-                    : transaction.status === "paid"
+                    : transaction[selectedTransactionId]?.status === "paid"
                     ? "#73CA5C"
+                    : transaction[selectedTransactionId]?.status ===
+                        "expired" ||
+                      transaction[selectedTransactionId]?.status === "cancelled"
+                    ? "#73706F"
                     : null,
                 color: "#FFFFFF",
                 borderRadius: "20px",
@@ -119,7 +143,7 @@ function DetailHistory() {
                 fontSize: "16px",
               }}
             >
-              {transaction.status}
+              {transaction[selectedTransactionId]?.status}
             </button>
           </Card.Title>
           <Row>
@@ -140,7 +164,6 @@ function DetailHistory() {
               </div>
             </Col>
           </Row>
-          {/* <Card.Body> */}
           <Row>
             <Col
               md={6}
@@ -150,17 +173,22 @@ function DetailHistory() {
             >
               <div style={{ fontWeight: "bold" }}>
                 {new Date(
-                  detailTransaction[0]?.flight.departure_date
+                  detailTransaction[
+                    selectedTransactionId
+                  ]?.flight.departure_date
                 ).toLocaleTimeString("id", {
                   timeZone:
-                    detailTransaction[0]?.flight.departure_city_time_zone,
+                    detailTransaction[selectedTransactionId]?.flight
+                      .departure_city_time_zone,
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
               </div>
               <div>
                 {new Date(
-                  detailTransaction[0]?.flight.departure_date
+                  detailTransaction[
+                    selectedTransactionId
+                  ]?.flight.departure_date
                 ).toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "long",
@@ -189,7 +217,7 @@ function DetailHistory() {
               fontWeight: "bold",
             }}
           >
-            {detailTransaction[0]?.flight.departure_airport}
+            {detailTransaction[selectedTransactionId]?.flight.departure_airport}
           </div>
           <Container>
             <div
@@ -203,10 +231,13 @@ function DetailHistory() {
                 alignItems: "center",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <div style={{ marginRight: "8px", marginBottom: "20px" }}>
+              <div style={{ display: "flex" }}>
+                <div style={{ marginRight: "8px" }}>
                   <img
-                    src={detailTransaction[0]?.flight.airplane_logo}
+                    src={
+                      detailTransaction[selectedTransactionId]?.flight
+                        .airplane_logo
+                    }
                     alt="info"
                     fluid
                     width="24"
@@ -221,35 +252,49 @@ function DetailHistory() {
                       fontWeight: "bold",
                     }}
                   >
-                    {detailTransaction[0]?.flight.airplane_name} -
-                    {detailTransaction[0]?.flight.airplane_class}
+                    {
+                      detailTransaction[selectedTransactionId]?.flight
+                        .airplane_name
+                    }{" "}
+                    -{" "}
+                    {
+                      detailTransaction[selectedTransactionId]?.flight
+                        .airplane_class
+                    }
                   </h5>
                   <div style={{ marginBottom: "10px" }}>
-                    <p style={{ margin: 0, fontSize: "14px" }}>
-                      {detailTransaction[0]?.flight.airplane_code}
+                    <p style={{ margin: 0, fontSize: "16px" }}>
+                      {
+                        detailTransaction[selectedTransactionId]?.flight
+                          .airplane_code
+                      }
                     </p>
                   </div>
-                  <p style={{ margin: 0 }}>Informasi:</p>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontWeight: "normal",
-                      color: "#315bb0",
-                    }}
-                  >
-                    Penumpang 1 : Siti Aisyah
-                  </p>
-                  <p style={{ margin: 0, fontWeight: "normal" }}>ID: 12346</p>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontWeight: "normal",
-                      color: "#315bb0",
-                    }}
-                  >
-                    Penumpang 2 : Siti Aisyah
-                  </p>
-                  <p style={{ margin: 0, fontWeight: "normal" }}>ID: 12346</p>
+                  <b>
+                    <p style={{ margin: 0 }}>Informasi:</p>
+                  </b>
+                  {detailTransaction[selectedTransactionId] &&
+                  detailTransaction[selectedTransactionId].passengers
+                    ? detailTransaction[selectedTransactionId].passengers
+                        .slice(0, number_passenger[selectedTransactionId])
+                        .map((passenger, passengerIndex) => (
+                          <div key={passengerIndex}>
+                            <p
+                              style={{
+                                margin: 0,
+                                fontWeight: "normal",
+                                color: "#315bb0",
+                              }}
+                            >
+                              Penumpang {passengerIndex + 1}:{" "}
+                              {passenger.passenger_name}
+                            </p>
+                            <p style={{ margin: 0, fontWeight: "normal" }}>
+                              ID: {passenger.transaction_detail_id}
+                            </p>
+                          </div>
+                        ))
+                    : null}
                 </div>
               </div>
             </div>
@@ -263,16 +308,18 @@ function DetailHistory() {
             >
               <div style={{ fontWeight: "bold" }}>
                 {new Date(
-                  detailTransaction[0]?.flight.arrival_date
+                  detailTransaction[selectedTransactionId]?.flight.arrival_date
                 ).toLocaleTimeString("id", {
-                  timeZone: detailTransaction[0]?.flight.arrival_city_time_zone,
+                  timeZone:
+                    detailTransaction[selectedTransactionId]?.flight
+                      .arrival_city_time_zone,
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
               </div>
               <div>
                 {new Date(
-                  detailTransaction[0]?.flight.arrival_date
+                  detailTransaction[selectedTransactionId]?.flight.arrival_date
                 ).toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "long",
@@ -301,7 +348,7 @@ function DetailHistory() {
               fontWeight: "bold",
             }}
           >
-            {detailTransaction[0]?.flight.arrival_airport}
+            {detailTransaction[selectedTransactionId]?.flight.arrival_airport}
           </div>
           <Container
             style={{
@@ -315,27 +362,25 @@ function DetailHistory() {
             <div style={{ fontWeight: "bold" }}>Rincian Harga</div>
             <Row>
               <Col md={6}>
-                <div>{number_passenger} Adult</div>
-                <div>1 Baby</div>
+                <div>{number_passenger[selectedTransactionId]} Penumpang</div>
+                {/* <div>1 Baby</div> */}
                 <div>Tax</div>
               </Col>
               <Col>
                 <div>
-                  {detailTransaction[0]?.flight.price -
-                  detailTransaction[0]?.flight.price * (detailTransaction[0]?.flight.discount / 100)
-                    ? detailTransaction[0]?.flight.price.toLocaleString(
-                        "en-ID",
-                        {
-                          style: "currency",
-                          currency: "IDR",
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 0,
-                        }
-                      )
-                    : "N/A"}
+                  {discountPrice.toLocaleString("en-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}
                 </div>
-                <div>IDR 0</div>
-                <div>IDR {detailTransaction[0]?.flight.tax}</div>
+                {/* <div>IDR 0</div> */}
+                <div>
+                  {detailTransaction[selectedTransactionId]?.flight.tax.toFixed(
+                    0
+                  ) + "%"}
+                </div>
               </Col>
             </Row>
           </Container>
