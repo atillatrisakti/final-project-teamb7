@@ -3,7 +3,7 @@ import arrowAccor from "../assets/accordion/Suffix.svg";
 import arrow from "../assets/search/Arrow.svg";
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -12,6 +12,18 @@ const AccordionItem = (props) => {
   const [isActive, setIsActive] = useState(false);
   const [flightFacilities, setFlightFacilities] = useState([]);
   const params = useParams();
+
+  const [isDisabled, setIsDisabled] = useState(false);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const departureAirportId = queryParams.get("departure_airport_id");
+  const destinationAirportId = queryParams.get("destination_airport_id");
+  const departureDate = queryParams.get("departure_date");
+  const endDate = queryParams.get("end_date");
+  const numberPassenger = queryParams.get("number_passenger");
+  const seatClass = queryParams.get("class_id");
+  const isPromo = queryParams.get("is_promo");
 
   useEffect(() => {
     async function getFlightFacilities() {
@@ -27,6 +39,7 @@ const AccordionItem = (props) => {
     getFlightFacilities();
     // console.log(flightFacilities[0].name);
   }, []);
+
   return (
     <>
       <div className="accordion-title" key={props.index}>
@@ -217,11 +230,26 @@ const AccordionItem = (props) => {
                     </h6>
                   )}
                 </div>
-                <Link to={`/booking/${item.id}/${params?.number_passenger}`} style={{ textDecoration: "none" }}>
-                  <button style={{ float: "right" }} className="mt-2 btn-pilih">
-                    Pilih
-                  </button>
-                </Link>
+                {endDate === "" || null ? (
+                  <Link
+                    to={`/booking/${item?.id}/${item?.number_passenger}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <button style={{ float: "right" }} className="btn-pilih">
+                      Pilih
+                    </button>
+                  </Link>
+                ) : (
+                  <Link
+                    to={`/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    pilih penerbangan pulang
+                    <button style={{ float: "right" }} className="btn-pilih">
+                      Pilih
+                    </button>
+                  </Link>
+                )}
               </Col>
             </Row>
           </Container>

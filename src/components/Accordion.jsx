@@ -1,32 +1,49 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import NoResult from "../components/NoResult";
 import loadingImg from "../assets/search/🦆 illustration _Loading_.svg";
 import AccordionItem from "./AccordionItem";
 
 function Accordion({ sort }) {
-  const params = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  // const params = queryParams.toString();
+  // console.log(queryParams.get("departure_airport_id"));
+
   const [flight, setFlight] = useState([]);
+  const [flightEndDate, setFlightEndDate] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const departureAirportId = queryParams.get("departure_airport_id");
+  const destinationAirportId = queryParams.get("destination_airport_id");
+  const departureDate = queryParams.get("departure_date");
+  const endDate = queryParams.get("end_date");
+  const numberPassenger = queryParams.get("number_passenger");
+  const seatClass = queryParams.get("class_id");
+  const isPromo = queryParams.get("is_promo");
+
   useEffect(() => {
-    async function getListFlight() {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
-        );
-        setFlight(response.data.data);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        toast.error(error?.message);
+    if (departureDate !== undefined) {
+      async function getListFlight() {
+        try {
+          setLoading(true);
+          const response = await axios.get(
+            `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
+          );
+          setFlight(response.data.data);
+          setLoading(false);
+        } catch (error) {
+          setLoading(false);
+          toast.error(error?.message);
+        }
       }
+      getListFlight();
+    } else {
+      return "";
     }
-    getListFlight();
-  }, [params]);
+  }, []);
 
   // const renderData = () => {
   //   if (flight && flight.length > 0) {
