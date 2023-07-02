@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import NoResult from "../components/NoResult";
 import loadingImg from "../assets/search/🦆 illustration _Loading_.svg";
 import AccordionItem from "./AccordionItem";
@@ -25,24 +25,24 @@ function Accordion({ sort }) {
   const isPromo = queryParams.get("is_promo");
 
   useEffect(() => {
-    if (departureDate !== undefined) {
-      async function getListFlight() {
-        try {
-          setLoading(true);
-          const response = await axios.get(
-            `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
-          );
-          setFlight(response.data.data);
-          setLoading(false);
-        } catch (error) {
-          setLoading(false);
-          toast.error(error?.message);
-        }
+    // if (departureDate !== undefined) {
+    async function getListFlight() {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
+        );
+        setFlight(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        toast.error(error?.message);
       }
-      getListFlight();
-    } else {
-      return "";
     }
+    getListFlight();
+    // } else {
+    //   return "";
+    // }
   }, []);
 
   const renderData = () => {
