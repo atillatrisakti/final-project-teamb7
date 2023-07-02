@@ -46,7 +46,7 @@
   margin-bottom: 20px;
 }
 
-.card-3 {
+/* .card-3 {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -56,7 +56,7 @@
   margin-top: 20px;
   width: 518px;
   height: 736px;
-  /* left: 16px; */
+  left: 16px;
   background: #ffffff;
   border: 1px solid #8a8a8a;
   border-radius: 4px;
@@ -64,7 +64,7 @@
   order: 0;
   align-self: stretch;
   flex-grow: 0;
-}
+} */
 
 .pemesan {
   display: flex;
@@ -88,8 +88,8 @@
   padding: 8px 16px;
   gap: 8px;
   isolation: isolate;
-  width: 486px;
-  height: 40px;
+  /* width: 486px;
+  height: 40px; */
   flex: none;
   order: 0;
   align-self: stretch;
@@ -150,9 +150,9 @@
   padding: 36px 12px;
   gap: 12px;
   position: absolute;
-  width: 370px;
-  height: 548px;
-  margin-left: 160px;
+  /* width: 370px;
+  height: 548px; */
+  margin-left: 70px;
   justify-content: center;
 }
 
@@ -172,7 +172,7 @@
 
 .info {
   width: 314px;
-  height: 133px;
+  height: 100%;
   font-family: "Poppins";
   font-style: normal;
   font-weight: 700;

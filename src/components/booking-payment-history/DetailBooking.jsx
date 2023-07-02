@@ -14,9 +14,11 @@ function DetailBooking() {
 
   //count discount & price
   const discountPrice =
-   number_passenger * (detailFlight[0]?.price -
-    detailFlight[0]?.price * (detailFlight[0]?.discount / 100));
-  const totalPrice = discountPrice + discountPrice * detailFlight[0]?.tax;
+    number_passenger *
+    (detailFlight[0]?.price -
+      detailFlight[0]?.price * (detailFlight[0]?.discount / 100));
+  const totalPrice =
+    discountPrice + (discountPrice * (detailFlight[0]?.tax/100));
 
   //get detail flight
   useEffect(() => {
@@ -215,15 +217,16 @@ function DetailBooking() {
         <div style={{ fontWeight: "bold" }}>Rincian Harga</div>
         <Row>
           <Col md={6}>
-            <div>{number_passenger} Adult</div>
-            <div>1 Baby</div>
+            <div>{number_passenger} Penumpang</div>
+            {/* <div>1 Baby</div> */}
             <div>Tax</div>
           </Col>
           <Col>
             <div>
               {(
-                number_passenger * (detailFlight[0]?.price -
-                detailFlight[0]?.price * (detailFlight[0]?.discount / 100))
+                number_passenger *
+                (detailFlight[0]?.price -
+                  detailFlight[0]?.price * (detailFlight[0]?.discount / 100))
               ).toLocaleString("en-ID", {
                 style: "currency",
                 currency: "IDR",
@@ -231,8 +234,8 @@ function DetailBooking() {
                 maximumFractionDigits: 0,
               })}
             </div>
-            <div>IDR 0</div>
-            <div>IDR {detailFlight[0]?.tax}</div>
+            {/* <div>IDR 0</div> */}
+            <div>{detailFlight[0]?.tax.toFixed(0) + "%"}</div>
           </Col>
         </Row>
       </Container>

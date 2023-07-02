@@ -6,16 +6,17 @@ import axios from "axios";
 
 function DetailPayment() {
   const [detailFlight, setDetailFlight] = useState([]);
-  const { id } = useParams();
+  const { id, number_passenger } = useParams();
   const [facilities, setFacilities] = useState([]);
-  const number_passenger = id.number_passenger;
 
   //count price
   const discountPrice =
     number_passenger *
     (detailFlight[0]?.price -
       detailFlight[0]?.price * (detailFlight[0]?.discount / 100));
-  const totalPrice = discountPrice + discountPrice * detailFlight[0]?.tax;
+
+  const totalPrice =
+    discountPrice + discountPrice * (detailFlight[0]?.tax / 100);
 
   //get detail flight
   useEffect(() => {
@@ -47,6 +48,7 @@ function DetailPayment() {
     getFacilities();
     // console.log(flightFacilities[0].name);
   }, []);
+  
   return (
     <>
       <Card className="detail" style={{ border: "none", boxShadow: "none" }}>
@@ -233,8 +235,8 @@ function DetailPayment() {
             <div style={{ fontWeight: "bold" }}>Rincian Harga</div>
             <Row>
               <Col md={6}>
-                <div>{number_passenger} Adult</div>
-                <div>1 Baby</div>
+                <div>{number_passenger} Penumpang</div>
+                {/* <div>1 Baby</div> */}
                 <div>Tax</div>
               </Col>
               <Col>
@@ -251,8 +253,8 @@ function DetailPayment() {
                     maximumFractionDigits: 0,
                   })}
                 </div>
-                <div>IDR 0</div>
-                <div>IDR {detailFlight[0]?.tax}</div>
+                {/* <div>IDR 0</div> */}
+                <div>{detailFlight[0]?.tax.toFixed() + "%"}</div>
               </Col>
             </Row>
           </Container>
