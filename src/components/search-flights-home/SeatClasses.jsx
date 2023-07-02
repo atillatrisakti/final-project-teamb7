@@ -20,6 +20,7 @@ function SeatClasses() {
       const data = response.data.data;
       // console.log(data);
       setSeatClass(data);
+      // setSelectedClass(seatClass[0].name);
     } catch (error) {
       toast.error(error?.message);
     }
