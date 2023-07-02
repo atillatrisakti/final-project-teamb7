@@ -18,6 +18,8 @@ import Otp from "./pages/Otp";
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Protected from "./components/Protected";
+import NoTokenAccess from "./components/NoTokenAccess";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -39,16 +41,64 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/search/:departure_airport_id/:destination_airport_id/:departure_date/:number_passenger/:class_id/:is_promo" element={<Search />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/booking/:id/:number_passenger" element={<Booking />} />
-          <Route path="/payment/:id/:number_passenger" element={<Payment />} />
-          <Route path="/history" element={<History />} />
+          <Route path="/search" element={<Search />} />
+          <Route
+            path="/login"
+            element={
+              <NoTokenAccess>
+                <Login />
+              </NoTokenAccess>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <NoTokenAccess>
+                <Register />
+              </NoTokenAccess>
+            }
+          />
+          <Route
+            path="/booking/:id/:number_passenger"
+            element={
+              <Protected>
+                <Booking />
+              </Protected>
+            }
+          />
+          <Route
+            path="/payment/:id/:number_passenger"
+            element={
+              <Protected>
+                <Payment />
+              </Protected>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <Protected>
+                <History />
+              </Protected>
+            }
+          />
           <Route path="/account" element={<Account isLoggedIn={setIsLoggedIn} />} />
-          <Route path="/email-reset" element={<SendEmailReset />} />
-          <Route path="/reset-password" element={<ResetPass />} />
-          <Route path="/otp" element={<Otp />} />
+          <Route
+            path="/email-reset"
+            element={
+              <NoTokenAccess>
+                <SendEmailReset />
+              </NoTokenAccess>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <NoTokenAccess>
+                <ResetPass />
+              </NoTokenAccess>
+            }
+          />
         </Routes>
 
         <ToastContainer theme="colored" />

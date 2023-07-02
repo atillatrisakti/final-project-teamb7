@@ -12,12 +12,11 @@ import {
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
-function DatePicker() {
+function DatePicker({ isDisabled, setIsDisabled }) {
   const [selectedSingleDate, setSelectedSingleDate] = useState(new Date()); // only start date
   const [selectedRange, setSelectedRange] = useState(new Date()); // start date and end date
   const [fromValue, setFromValue] = useState("");
   const [toValue, setToValue] = useState("");
-  const [isDisabled, setIsDisabled] = useState(false);
 
   const [showDate, setShowDate] = useState(false); // modal
 
@@ -111,10 +110,10 @@ function DatePicker() {
           <Form.Control
             disabled={!isDisabled}
             size={10}
-            placeholder="To Date"
+            placeholder={format(addDays(selectedSingleDate, 1), "y-MM-dd")}
             name="end_date"
             value={
-              toValue
+              !isDisabled
                 ? toValue
                 : format(addDays(selectedSingleDate, 1), "y-MM-dd")
             }

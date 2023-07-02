@@ -24,9 +24,11 @@ function Navbarr(props) {
 
         {isLoggedIn ? (
           <Navbar.Collapse id="navbarScroll" className="d-flex justify-content-end gap-2">
-            <button style={{ border: "none", background: "none" }}>
-              <img src={list} alt="list" />
-            </button>
+            <Link to={"/history"} style={{ textDecoration: "none" }}>
+              <button style={{ border: "none", background: "none" }}>
+                <img src={list} alt="list" />
+              </button>
+            </Link>
             <button style={{ border: "none", background: "none" }}>
               <img src={notif} alt="notif" />
             </button>

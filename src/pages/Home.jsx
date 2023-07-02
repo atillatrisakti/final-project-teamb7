@@ -18,6 +18,8 @@ function Home() {
   const [destinationPromos, setDestinationPromos] = useState([]);
   const [banner, setBanner] = useState([]);
 
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const [filteredCategory, setFilteredCategory] = useState(null);
   const [isPromo, setIsPromo] = useState(false);
 
@@ -63,11 +65,7 @@ function Home() {
     // navigate(
     //   `/search?departure_airport_id=${departure}&destination_airport_id=${destination}&departure_date=${startDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
     // );
-    navigate(`/search/${departure}/${destination}/${startDate}/${numberPassenger}/${seatClass}/${isPromo}`);
-    // navigate(
-    //   `/search/${departure}/${destination}/${endDate}/${numberPassenger}/${seatClass}/${isPromo}`
-    // );
-    // console.log("searchhh", form.seat_class.attributes.getNamedItem("data-id"));
+    navigate(`/search?departure_airport_id=${departure}&destination_airport_id=${destination}&departure_date=${startDate}&end_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`);
   };
 
   useEffect(() => {
@@ -78,7 +76,6 @@ function Home() {
     let buttonCategory = e.target.value;
     buttonCategory !== "all" ? setFilteredCategory(destinationPromos.filter((items) => items?.arrival_city === buttonCategory)) : setFilteredCategory(destinationPromos);
   }
-  // console.log(filteredCategory);
 
   return (
     <>
@@ -155,7 +152,7 @@ function Home() {
                       </Col>
                       {/* ================DatePicker================= */}
                       <Col xs={4} md={5}>
-                        <DatePicker />
+                        <DatePicker isDisabled={isDisabled} setIsDisabled={setIsDisabled} />
                       </Col>
                       <Col xs={2} md={1}></Col>
                       <Col xs={2} md={1}>
@@ -182,23 +179,25 @@ function Home() {
           </Row>
 
           {/* ========== FLIGHT PROMO =========*/}
-          <Row style={{ marginLeft: "5.4%", marginRight: "5.4%" }}>
-            <Col sm={10} className="mt-1">
-              <h5 className="text-dark text-popular mt-2" style={{ textShadow: "2px 2px 8px #e3ecff" }}>
-                <b>Pengen ke Luar Negeri? Nih promo buat kamu!</b>
+          <Row style={{ marginLeft: "2.8%", marginRight: "2.8%" }}>
+            <Col sm={10} className="my-1">
+              <h5 className="text-dark text-popular mt-3" style={{ textShadow: "2px 2px 8px #e3ecff" }}>
+                <b>Pilih Destinasi Favoritmu!</b>
               </h5>
+              <span>Yuk terbang ke berbagai destinasi pilihan dengan harga terbaik! Khusus dari Jakarta ya!🤗</span>
             </Col>
           </Row>
           <Row
             md="auto"
             style={{
-              marginLeft: "5.4%",
-              marginRight: "5.4%",
+              marginLeft: "2.8%",
+              marginRight: "2.8%",
               marginTop: "0.5rem",
               marginBottom: "1.3rem",
             }}
+            className="d-flex justify-content-center"
           >
-            <Col className="mb-1 me-0">
+            {/* <Col className="mb-1 me-0">
               <Button
                 value="all"
                 variant="outline-dark"
@@ -214,11 +213,37 @@ function Home() {
                 <Icon icon="iconamoon:search-bold" className="icon-input" />
                 All
               </Button>
-            </Col>
+            </Col> */}
             {destinationPromos &&
-              destinationPromos.slice(0, 6).map((promo) => (
-                <Col className="mb-1 me-0" key={promo?.id}>
-                  <Button
+              destinationPromos.slice(4, 10).map((promo) => (
+                <Col sm="12" md="6" lg="4" key={promo?.id} className="mb-1 me-0 px-2">
+                  <Link
+                    to={`/search?departure_airport_id=${promo?.departure_airport_id}&destination_airport_id=${promo?.arrival_airport_id}&departure_date=${new Date(promo?.departure_date).toLocaleDateString("en-CA", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}&number_passenger=1&class_id=1&is_promo=${isPromo}`}
+                    style={{ textDecoration: "none", borderColor: "black" }}
+                  >
+                    <Card className="text-white mb-3 shadow" style={{ borderRadius: "10px" }}>
+                      <Card.Img
+                        src={promo?.arrival_city_image}
+                        alt="destination"
+                        style={{
+                          objectFit: "cover",
+                          width: "100%",
+                          height: "150px",
+                          borderTopRightRadius: "10px",
+                        }}
+                        onClick={handleCategoryClick}
+                      />
+                      <Card.ImgOverlay>
+                        <Card.Title>{promo?.arrival_city}</Card.Title>
+                        <Card.Text>One of the best city in the world</Card.Text>
+                      </Card.ImgOverlay>
+                    </Card>
+                  </Link>
+                  {/* <Button
                     value={promo?.arrival_city}
                     variant="outline-dark"
                     style={{
@@ -228,30 +253,38 @@ function Home() {
                       padding: "15px",
                       borderRadius: "25px",
                       marginBottom: "0.5rem",
+                      background: `${promo?.arrival_city_image}`,
                     }}
+                    onClick={handleCategoryClick}
                     onClick={handleCategoryClick}
                   >
                     <Icon icon="iconamoon:search-bold" className="icon-input" />
                     {promo?.arrival_city}
-                  </Button>
+                  </Button> */}
                 </Col>
               ))}
           </Row>
 
           <Row
-            className="mt-2"
+            className="mt-2 mb-4"
             // className="mt-2 d-flex justify-content-center"
             style={{ marginLeft: "2.8%", marginRight: "2.8%" }}
           >
+            <Col sm={10} className="mb-3">
+              <h5 className="text-dark text-popular mt-3" style={{ textShadow: "2px 2px 8px #e3ecff" }}>
+                <b>Pengen ke Luar Negeri? Nih promo buat kamu!</b>
+              </h5>
+              <span>Terbang ke berbagai destinasi Internasional, tapi takut mahal? Ssstt.. tenang aja, banyak promonya loh!</span>
+            </Col>
             {filteredCategory &&
               filteredCategory.map((promo) => (
                 <Col sm="auto" md="auto" lg="auto" className="px-2" key={promo?.id}>
                   <Link
-                    to={`/search/${promo?.departure_airport_id}/${promo?.arrival_airport_id}/${new Date(promo?.departure_date).toLocaleDateString("en-CA", {
+                    to={`/search?departure_airport_id=${promo?.departure_airport_id}&destination_airport_id=${promo?.arrival_airport_id}&departure_date=${new Date(promo?.departure_date).toLocaleDateString("en-CA", {
                       day: "2-digit",
                       month: "2-digit",
                       year: "numeric",
-                    })}/1/1/${!isPromo}`}
+                    })}&number_passenger=1&class_id=1&is_promo=${!isPromo}`}
                     style={{ textDecoration: "none", borderColor: "black" }}
                   >
                     <Card className="mb-3 shadow" style={{ borderRadius: "10px", width: "228px" }}>

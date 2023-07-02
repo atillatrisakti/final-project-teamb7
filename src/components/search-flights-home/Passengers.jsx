@@ -53,7 +53,7 @@ function Passengers() {
               </Col>
               <Col xs={8} md={6} className="d-flex align-items-center">
                 <InputGroup className="ps-2">
-                  <Button variant="outline-secondary" disabled={options.dewasa <= 0} onClick={() => handleOption("dewasa", "min")} style={{ borderRadius: "5px" }}>
+                  <Button variant="outline-secondary" disabled={options.dewasa <= 1} onClick={() => handleOption("dewasa", "min")} style={{ borderRadius: "5px" }}>
                     <Icon icon="fa6-solid:minus" className="d-flex align-items-center" />
                   </Button>
                   <Form.Control placeholder="0" value={options.dewasa} aria-label="Jumlah Penumpang" className="mx-1 text-center" style={{ borderRadius: "5px" }} />

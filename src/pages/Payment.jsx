@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import "../styles/Payment.css";
 import img from "../assets/booking/img.svg";
@@ -10,9 +10,49 @@ import gopay from "../assets/booking/Gopay.svg";
 import { toast } from "react-toastify";
 import ItemBooking from "../components/booking-payment-history/ItemBooking";
 import DetailPayment from "../components/booking-payment-history/DetailPayment";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Payment() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [selectedAccounts, setSelectedAccounts] = useState([]);
+  const [users, setUsers] = useState("");
+
+  //protected
+  useEffect(() => {
+    const getMe = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(`${process.env.REACT_APP_API}/customer/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = response.data.data;
+
+        setUsers(data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          // If not valid token
+          if (error.response.status === 401) {
+            localStorage.removeItem("token");
+            // Temporary solution
+            return (window.location.href = "/");
+          }
+
+          toast.error(error.response.data.message);
+          return;
+        }
+        toast.error(error.message);
+      }
+    };
+
+    getMe();
+  }, []);
+
+  //handle payment
   const handlePaymentClick = () => {
     setPaymentSuccess(true);
     toast.success("Terimakasih atas pembayaran transaksi", {
@@ -21,8 +61,7 @@ function Payment() {
     });
   };
 
-  const [selectedAccounts, setSelectedAccounts] = useState([]);
-
+  //handle checkbox
   const handleCheckboxChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
@@ -64,26 +103,26 @@ function Payment() {
                 border: "none",
                 width: "600px",
               }}
-              // onClick={handlePaymentClick}
             >
               Terbitkan Tiket
             </button>
             <Col>
-              <button
-                className="button-booking"
-                size="lg"
-                style={{
-                  backgroundColor: "#5173b8",
-                  color: "#FFFFFF",
-                  borderRadius: "10px",
-                  marginTop: "10px",
-                  border: "none",
-                  width: "600px",
-                }}
-                // onClick={handlePaymentClick}
-              >
-                Cari Penerbangan Lain
-              </button>
+              <Link to={`/`}>
+                <button
+                  className="button-booking"
+                  size="lg"
+                  style={{
+                    backgroundColor: "#5173b8",
+                    color: "#FFFFFF",
+                    borderRadius: "10px",
+                    marginTop: "10px",
+                    border: "none",
+                    width: "600px",
+                  }}
+                >
+                  Cari Penerbangan Lain
+                </button>
+              </Link>
             </Col>
           </Col>
         </Row>
@@ -277,10 +316,9 @@ function Payment() {
             style={{
               backgroundColor: "#1B3260",
               borderRadius: "10px",
-              // marginLeft: "60px",
               color: "#FFFFFF",
               border: "none",
-              width: "600px",
+              width: "580px",
             }}
             onClick={handlePaymentClick}
             disabled={paymentSuccess}

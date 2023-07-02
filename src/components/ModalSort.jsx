@@ -1,27 +1,41 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Search.css";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 
 function ModalSort({ sort, setSort }) {
-  const params = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
   const [flight, setFlight] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const departureAirportId = queryParams.get("departure_airport_id");
+  const destinationAirportId = queryParams.get("destination_airport_id");
+  const departureDate = queryParams.get("departure_date");
+  const endDate = queryParams.get("end_date");
+  const numberPassenger = queryParams.get("number_passenger");
+  const seatClass = queryParams.get("class_id");
+  const isPromo = queryParams.get("is_promo");
 
   useEffect(() => {
     async function getListFlight() {
       try {
+        setLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API}/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
         );
         setFlight(response.data.data);
+        // console.log(response.data.data);
+        setLoading(false);
       } catch (error) {
         // toast.error(error?.message);
       }
     }
     getListFlight();
-  }, [params]);
-  console.log("flighttter", flight);
+  }, []);
+  // console.log("flighttter", flight);
 
   function handleChange(e) {
     setSort(e.target.value);

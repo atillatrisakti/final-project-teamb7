@@ -17,9 +17,7 @@ function Booking() {
   const [phone, setPhone] = useState("");
   const [title_id, setTitle_id] = useState("");
   const [hasFamilyName, setHasFamilyName] = useState(false);
-  const [passenger_title_id, setPassenger_title_id] = useState("");
   const [passenger_family_name, setPassenger_family_name] = useState("");
-  // const [passenger_type, setPassenger_type] = useState("")
   const [passenger_hasFamilyName, setPassenger_hasFamilyName] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -28,12 +26,13 @@ function Booking() {
   const [detailFlight, setDetailFlight] = useState([]);
   const [flight_id, setFlight_id] = useState();
   const [seats_id, setSeats_id] = useState();
+  const [users, setUsers] = useState("");
   const params = useParams();
   const number_passenger = params.number_passenger;
   const passengerArray = Array.from({ length: number_passenger });
-  const [passengers, setPassengers] = useState([
-    {
-      passenger_title_id: Number(passenger_title_id),
+  const [passengers, setPassengers] = useState(
+    Array.from({ length: number_passenger }).map(() => ({
+      passenger_title_id: "",
       passenger_name: "",
       passenger_family_name: "",
       passenger_dob: null,
@@ -41,16 +40,19 @@ function Booking() {
       passenger_identity_card: "",
       passenger_identity_card_publisher_id: "",
       passenger_identity_card_due_date: null,
-    },
-  ]);
+    }))
+  );
 
+  //hanlde passengers
   const handlePassengerChange = (value, index, field) => {
-    const updatedPassengers = [...passengers];
-    updatedPassengers[index] = {
-      ...updatedPassengers[index],
-      [field]: value,
-    };
-    setPassengers(updatedPassengers);
+    if (index >= 0 && index < passengers.length) {
+      const updatedPassengers = [...passengers];
+      updatedPassengers[index] = {
+        ...updatedPassengers[index],
+        [field]: value,
+      };
+      setPassengers(updatedPassengers);
+    }
   };
 
   //switch passenger has family name
@@ -158,21 +160,6 @@ function Booking() {
           phone,
         },
         passenger_identity: passengerData,
-        // passenger_identity: [
-        //   {
-        //     flight_id,
-        //     seat_id: seats_id,
-        //     passenger_title_id: Number(passenger_title_id),
-        //     passenger_name,
-        //     passenger_family_name,
-        //     passenger_dob,
-        //     passenger_nationality_id,
-        //     passenger_identity_card,
-        //     passenger_identity_card_publisher_id,
-        //     passenger_identity_card_due_date,
-        //     // passenger_type,
-        //   },
-        // ],
       });
 
       const token = localStorage.getItem("token");
@@ -212,6 +199,40 @@ function Booking() {
     }
     getDetailFlight();
   }, [params]);
+
+  //protected
+  useEffect(() => {
+    const getMe = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(`${process.env.REACT_APP_API}/customer/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = response.data.data;
+
+        setUsers(data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          // If not valid token
+          if (error.response.status === 401) {
+            localStorage.removeItem("token");
+            // Temporary solution
+            return (window.location.href = "/");
+          }
+
+          toast.error(error.response.data.message);
+          return;
+        }
+        toast.error(error.message);
+      }
+    };
+
+    getMe();
+  }, []);
 
   return (
     <Container className="data">
@@ -317,7 +338,7 @@ function Booking() {
                       <Form noValidate validated={validated}>
                         <Form.Group className="mb-3" controlId="formGroupSelect">
                           <Form.Label className="form-label-booking">Title</Form.Label>
-                          <Form.Select required aria-label="Select Title" value={passengers.passenger_title_id} onChange={(e) => handlePassengerChange(e, index, "passenger_title_id")}>
+                          <Form.Select required aria-label="Select Title" value={passengers[index]?.passenger_title_id || ""} onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_title_id")}>
                             <option value="">Select Title</option>
                             {titles.map((title) => (
                               <option key={title.id} value={title.id}>
@@ -329,7 +350,14 @@ function Booking() {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="form-label-booking">Nama Lengkap</Form.Label>
-                          <Form.Control required placeholder="Nama Lengkap" name="fullName" value={passengers.passenger_name} onChange={(e) => handlePassengerChange(e, index, "passenger_name")} style={{ width: "454px", height: "40px" }} />
+                          <Form.Control
+                            required
+                            placeholder="Nama Lengkap"
+                            name="fullName"
+                            value={passengers[index]?.passenger_name}
+                            onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_name")}
+                            style={{ width: "454px", height: "40px" }}
+                          />
                           <Form.Control.Feedback type="invalid">Please enter passenger full name.</Form.Control.Feedback>
                         </Form.Group>
                         <Row>
@@ -346,8 +374,8 @@ function Booking() {
                             <Form.Control
                               placeholder="Nama Keluarga"
                               name="familyName"
-                              value={passengers.passenger_family_name}
-                              onChange={(e) => handlePassengerChange(e, index, "passenger_family_name")}
+                              value={passengers[index]?.passenger_family_name}
+                              onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_family_name")}
                               style={{ width: "454px", height: "40px" }}
                             />
                           </Form.Group>
@@ -377,7 +405,7 @@ function Booking() {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="form-label-booking">Kewarganegaraan</Form.Label>
-                          <Form.Select required aria-label="Select Countries" value={passengers.passenger_nationality_id} onChange={(e) => handlePassengerChange(e, 0 - index, "passenger_nationality_id")}>
+                          <Form.Select required aria-label="Select Countries" value={passengers[index]?.passenger_nationality_id} onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_nationality_id")}>
                             <option value="">Select Countries</option>
                             {countries.map((country) => (
                               <option key={country.id} value={country.id}>
@@ -389,12 +417,24 @@ function Booking() {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="form-label-booking">KTP/Paspor</Form.Label>
-                          <Form.Control required placeholder="KTP/Paspor" name="identification" value={passengers.passenger_identity_card} onChange={(e) => handlePassengerChange(e, 0 - index, "passenger_identity_card")} pattern=".{16}" />
+                          <Form.Control
+                            required
+                            placeholder="KTP/Paspor"
+                            name="identification"
+                            value={passengers[index]?.passenger_identity_card}
+                            onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_identity_card")}
+                            pattern=".{16}"
+                          />
                           <Form.Control.Feedback type="invalid">Please enter a valid identification (16 characters).</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="form-label-booking">Negara Penerbit</Form.Label>
-                          <Form.Select required aria-label="Select Countries" value={passengers.passenger_identity_card_publisher_id} onChange={(e) => handlePassengerChange(e, 0 - index, "passenger_identity_card_publisher_id")}>
+                          <Form.Select
+                            required
+                            aria-label="Select Countries"
+                            value={passengers[index]?.passenger_identity_card_publisher_id}
+                            onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_identity_card_publisher_id")}
+                          >
                             <option value="">Select Countries</option>
                             {countries.map((country) => (
                               <option key={country.id} value={country.id}>
@@ -435,36 +475,6 @@ function Booking() {
               ))}
             </Card.Body>
           </Card>
-          {/* <Card className="card-3" style={{ borderRadius: "0" }}>
-            <Card.Body>
-              <Card.Title style={titlestyle}>Pilih Kursi</Card.Title>
-              <Card
-                className="pemesan"
-                style={{ border: "none", boxShadow: "none" }}
-              >
-                <Card.Header
-                  className="card-header"
-                  style={{
-                    backgroundColor: "#3c3c3c",
-                    color: "#FFFFFF",
-                    borderRadius: "2px",
-                  }}
-                >
-                  Economy - 64 Seats Avaliable
-                  {formSubmitted && (
-                    <FaCheckCircle
-                      className="ml-2"
-                      style={{
-                        verticalAlign: "middle",
-                        color: "#73CA5C",
-                        marginLeft: "auto",
-                      }}
-                    />
-                  )}
-                </Card.Header>
-              </Card>
-            </Card.Body>
-          </Card> */}
           <button
             className="button-booking"
             size="lg"
@@ -489,7 +499,7 @@ function Booking() {
             <Card.Body>
               <DetailBooking />
               {formSubmitted && detailFlight && (
-                <Link to={`/payment/${detailFlight[0]?.id}`} style={{ textDecoration: "none" }}>
+                <Link to={`/payment/${detailFlight[0]?.id}/${params.number_passenger}`} style={{ textDecoration: "none" }}>
                   <button
                     className="btn-tiket"
                     size="lg"
