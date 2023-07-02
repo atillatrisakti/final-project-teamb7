@@ -18,6 +18,8 @@ import axios from "axios";
 function Search() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  // console.log(queryParams.get("departure_airport_id"));
+  // const params = queryParams.toString();
 
   const [date, setDate] = useState("");
 
@@ -42,6 +44,9 @@ function Search() {
     async function fetchPost() {
       try {
         setLoading(true);
+        // const response = await axios.get(
+        //   `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
+        // );
         const response = await axios.get(
           `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${startDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
         );

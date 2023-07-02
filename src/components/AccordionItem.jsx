@@ -258,7 +258,6 @@ const AccordionItem = (props) => {
                     </h6>
                   )}
                 </div>
-
                 {handleButtonPilih()}
               </Col>
             </Row>

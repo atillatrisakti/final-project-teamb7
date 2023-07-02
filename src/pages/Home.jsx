@@ -28,6 +28,8 @@ function Home() {
 
   const [isDisabled, setIsDisabled] = useState(false);
 
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const [filteredCategory, setFilteredCategory] = useState(null);
   const [isPromo, setIsPromo] = useState(false);
 
