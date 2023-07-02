@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
@@ -16,17 +16,10 @@ import "../styles/Accordion.css";
 import axios from "axios";
 
 function Search() {
-  // const params = useParams();
-
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   // console.log(queryParams.get("departure_airport_id"));
   // const params = queryParams.toString();
-
-  // const queryParams = new URLSearchParams("?term=pizza&location=Bangalore");
-  // for (const [key, value] of queryParams) {
-  //   console.log({ key, value }); // {key: 'term', value: 'pizza'} {key: 'location', value: 'Bangalore'}
-  // }
 
   const [date, setDate] = useState("");
 
@@ -39,21 +32,15 @@ function Search() {
   const [airplaneClass, setAirplaneClass] = useState("");
   const [departureDate, setDepartureDate] = useState("");
 
-  const departureAirportId = queryParams.get("departure_airport_id");
-  const destinationAirportId = queryParams.get("destination_airport_id");
-  const startDate = queryParams.get("departure_date");
+  const departureAirportId = queryParams?.get("departure_airport_id");
+  const destinationAirportId = queryParams?.get("destination_airport_id");
+  const startDate = queryParams?.get("departure_date");
+  const endDate = queryParams.get("end_date");
   const numberPassenger = queryParams.get("number_passenger");
-  const seatClass = queryParams.get("class_id");
-  const isPromo = queryParams.get("is_promo");
+  const seatClass = queryParams?.get("class_id");
+  const isPromo = queryParams?.get("is_promo");
 
   useEffect(() => {
-    // const departureAirportId = queryParams?.get("departure_airport_id");
-    // const destinationAirportId = queryParams?.get("destination_airport_id");
-    // const startDate = queryParams?.get("departure_date");
-    // const passenger = queryParams?.get("number_passenger");
-    // const seatClassId = queryParams?.get("class_id");
-    // const isPromo = queryParams?.get("is_promo");
-
     async function fetchPost() {
       try {
         setLoading(true);
@@ -76,16 +63,8 @@ function Search() {
         toast.error(error?.message);
       }
     }
-
     fetchPost();
-  }, [
-    departureAirportId,
-    destinationAirportId,
-    startDate,
-    numberPassenger,
-    seatClass,
-    isPromo,
-  ]);
+  }, []);
 
   return (
     <Container className="mt-3">
@@ -195,7 +174,15 @@ function Search() {
           </Col>
           <Col md={6}>
             <div className="accordion mb-5">
-              <Accordion sort={sort} />
+              <Accordion
+                sort={sort}
+                // departureAirportId={departureAirportId}
+                // destinationAirportId={destinationAirportId}
+                // departureDate={departureDate}
+                // numberPassenger={numberPassenger}
+                // seatClass={seatClass}
+                // isPromo={isPromo}
+              />
             </div>
           </Col>
         </Row>
