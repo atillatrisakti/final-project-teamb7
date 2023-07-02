@@ -38,10 +38,11 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
+          <Route path="/search" element={<Search />} />
+          {/* <Route
             path="/search/:departure_airport_id/:destination_airport_id/:departure_date/:number_passenger/:class_id/:is_promo"
             element={<Search />}
-          />
+          /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/booking/:id/:number_passenger" element={<Booking />} />

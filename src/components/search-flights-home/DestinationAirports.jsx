@@ -148,7 +148,7 @@ function DestinationAirports() {
                             setDestAirport(dataAirport);
                             handleCloseAirport();
                           }
-                          console.log("Ini airport", item);
+                          // console.log("Ini airport", item);
                         }}
                       >
                         <div className="d-flex align-items-center my-1">

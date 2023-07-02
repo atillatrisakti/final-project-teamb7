@@ -16,11 +16,12 @@ import "../styles/Accordion.css";
 import axios from "axios";
 
 function Search() {
-  const params = useParams();
+  // const params = useParams();
 
-  // const location = useLocation();
-  // const queryParams = new URLSearchParams(location.search);
-  // console.log(queryParams.get("is_promo"));
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  // console.log(queryParams.get("departure_airport_id"));
+  // const params = queryParams.toString();
 
   // const queryParams = new URLSearchParams("?term=pizza&location=Bangalore");
   // for (const [key, value] of queryParams) {
@@ -36,25 +37,26 @@ function Search() {
   const [departureAirportCode, setDepartureAirportCode] = useState("");
   const [arrivalAirportCode, setArrivalAirportCode] = useState("");
   const [airplaneClass, setAirplaneClass] = useState("");
-
   const [departureDate, setDepartureDate] = useState("");
 
-  useEffect(() => {
-    // const departureAirportId = queryParams?.get("departure_airport_id");
-    // const destinationAirportId = queryParams?.get("destination_airport_id");
-    // const startDate = queryParams?.get("departure_date");
-    // const passenger = queryParams?.get("number_passenger");
-    // const seatClassId = queryParams?.get("class_id");
-    // const isPromo = queryParams?.get("is_promo");
+  const departureAirportId = queryParams.get("departure_airport_id");
+  const destinationAirportId = queryParams.get("destination_airport_id");
+  const startDate = queryParams.get("departure_date");
+  const numberPassenger = queryParams.get("number_passenger");
+  const seatClass = queryParams.get("class_id");
+  const isPromo = queryParams.get("is_promo");
 
+  useEffect(() => {
     async function fetchPost() {
       try {
         setLoading(true);
+        // const response = await axios.get(
+        //   `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
+        // );
         const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${startDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
         );
-        console.log(response.data);
-        // console.log(params.is_promo);
+        // console.log(response.data.data);
 
         setFlight(response.data.data);
         setDepartureAirportCode(response.data.data[0].departure_airport_code);
@@ -69,7 +71,14 @@ function Search() {
     }
 
     fetchPost();
-  }, [params]);
+  }, [
+    departureAirportId,
+    destinationAirportId,
+    startDate,
+    numberPassenger,
+    seatClass,
+    isPromo,
+  ]);
 
   return (
     <Container className="mt-3">
@@ -88,7 +97,7 @@ function Search() {
               </Link>
               <span>
                 {departureAirportCode} - {arrivalAirportCode} -{" "}
-                {params?.number_passenger} Penumpang - {airplaneClass}
+                {numberPassenger} Penumpang - {airplaneClass}
               </span>
             </div>
           </Col>

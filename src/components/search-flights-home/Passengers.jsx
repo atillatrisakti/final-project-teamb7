@@ -75,7 +75,7 @@ function Passengers() {
                 <InputGroup className="ps-2">
                   <Button
                     variant="outline-secondary"
-                    disabled={options.dewasa <= 0}
+                    disabled={options.dewasa <= 1}
                     onClick={() => handleOption("dewasa", "min")}
                     style={{ borderRadius: "5px" }}
                   >
