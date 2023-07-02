@@ -43,7 +43,7 @@ function App() {
           {/* <Route
             path="/search/:departure_airport_id/:destination_airport_id/:departure_date/:number_passenger/:class_id/:is_promo"
             element={<Search />}
-          />
+          /> */}
           <Route
             path="/login"
             element={
@@ -84,12 +84,6 @@ function App() {
               </Protected>
             }
           />
-          /> */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/booking/:id/:number_passenger" element={<Booking />} />
-          <Route path="/payment/:id" element={<Payment />} />
-          <Route path="/history" element={<History />} />
           <Route
             path="/account"
             element={<Account isLoggedIn={setIsLoggedIn} />}

@@ -232,7 +232,7 @@ const AccordionItem = (props) => {
                 </div>
                 {endDate === "" || null ? (
                   <Link
-                    to={`/booking/${item?.id}/${item?.number_passenger}`}
+                    to={`/booking/${item?.id}/${numberPassenger}`}
                     style={{ textDecoration: "none" }}
                   >
                     <button style={{ float: "right" }} className="btn-pilih">
