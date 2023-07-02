@@ -11,6 +11,7 @@ import NoHistory from "../components/NoHistory";
 import DetailHistory from "../components/booking-payment-history/DetailHistory";
 
 function History() {
+  const navigate = useNavigate();
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [activeTransaction, setActiveTransaction] = useState(null);
   const [activeMonth, setActiveMonth] = useState(null);
