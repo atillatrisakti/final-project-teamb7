@@ -64,7 +64,7 @@ function Search() {
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        toast.error(error?.message);
+        // toast.error(error?.message);
       }
     }
 
@@ -121,7 +121,7 @@ function Search() {
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col className="d-flex justify-content-end">
             <ModalSort sort={sort} setSort={setSort} />
           </Col>
         </Row>

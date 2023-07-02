@@ -16,7 +16,7 @@ function ModalSort({ sort, setSort }) {
         );
         setFlight(response.data.data);
       } catch (error) {
-        toast.error(error?.message);
+        // toast.error(error?.message);
       }
     }
     getListFlight();

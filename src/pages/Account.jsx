@@ -41,7 +41,8 @@ function Account(props) {
       const response = await axios.request(config);
       if (response.status === 200) {
         toast.success("Berhasil edit profil!");
-        navigate("/");
+        // navigate("/");
+        window.location.href = "/";
       }
 
       console.log(response);

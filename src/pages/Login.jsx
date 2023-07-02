@@ -13,7 +13,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -40,7 +40,8 @@ function Login() {
       if (response.status === 200) {
         toast.success("Login Berhasil");
         localStorage.setItem("token", token);
-        navigate("/");
+        // navigate("/");
+        window.location.href = "/";
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

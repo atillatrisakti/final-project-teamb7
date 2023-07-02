@@ -14,6 +14,13 @@ function ResetPass() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (password.length <= 8) {
+      toast.warning("Password minimal 8 karakter!");
+      if (password !== password_confirmation) {
+        toast.warning("Password dan konfirmasi password harus sama!");
+      }
+    }
+
     try {
       let data = JSON.stringify({
         password,
