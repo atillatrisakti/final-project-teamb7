@@ -45,16 +45,66 @@ function App() {
             element={<Search />}
           /> */}
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/booking/:id/:number_passenger" element={<Booking />} />
-          <Route path="/payment/:id" element={<Payment />} />
-          <Route path="/history" element={<History />} />
+          <Route
+            path="/login"
+            element={
+              <NoTokenAccess>
+                <Login />
+              </NoTokenAccess>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <NoTokenAccess>
+                <Register />
+              </NoTokenAccess>
+            }
+          />
+          <Route
+            path="/booking/:id/:number_passenger"
+            element={
+              <Protected>
+                <Booking />
+              </Protected>
+            }
+          />
+          <Route
+            path="/payment/:id/:number_passenger"
+            element={
+              <Protected>
+                <Payment />
+              </Protected>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <Protected>
+                <History />
+              </Protected>
+            }
+          />
           <Route
             path="/account"
             element={<Account isLoggedIn={setIsLoggedIn} />}
           />
-          <Route path="/email-reset" element={<SendEmailReset />} />
-          <Route path="/reset-password" element={<ResetPass />} />
+          <Route
+            path="/email-reset"
+            element={
+              <NoTokenAccess>
+                <SendEmailReset />
+              </NoTokenAccess>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <NoTokenAccess>
+                <ResetPass />
+              </NoTokenAccess>
+            }
+          />
         </Routes>
 
         <ToastContainer theme="colored" />
