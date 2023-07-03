@@ -18,10 +18,19 @@ function Home() {
   const [destinationPromos, setDestinationPromos] = useState([]);
   const [banner, setBanner] = useState([]);
 
+  // BUTTON FLIP
+  const [flipValue, setFlipValue] = useState(false);
+  const [arrival, setArrival] = useState("");
+
   const [isDisabled, setIsDisabled] = useState(false);
 
   const [filteredCategory, setFilteredCategory] = useState(null);
   const [isPromo, setIsPromo] = useState(false);
+
+  const [departureValue, setDepartureValue] = useState("");
+  const [destinationValue, setDestinationValue] = useState("");
+  const [idDeptAirport, setIdDeptAirport] = useState(0);
+  const [idDestAirport, setIdDestAirport] = useState(0);
 
   useEffect(() => {
     async function getBanners() {
@@ -48,10 +57,6 @@ function Home() {
     getDestinationPromos();
   }, []);
 
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  //   navigate(`/search?query=${searchValue}`);
-  // }
   const onSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -62,11 +67,16 @@ function Home() {
     const numberPassenger = form.number_passenger.attributes.getNamedItem("data-count").value;
     const seatClass = form.seat_class.attributes.getNamedItem("data-id").value;
 
-    // navigate(
-    //   `/search?departure_airport_id=${departure}&destination_airport_id=${destination}&departure_date=${startDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
-    // );
     navigate(`/search?departure_airport_id=${departure}&destination_airport_id=${destination}&departure_date=${startDate}&end_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`);
   };
+
+  // const handleFlipButton = (e) => {
+  //   const destination =
+  //     e.target.destination_airport.attributes.getNamedItem("data-id").value;
+
+  //   setArrival(destination);
+  //   console.log(destination);
+  // };
 
   useEffect(() => {
     setFilteredCategory(destinationPromos);
@@ -126,15 +136,21 @@ function Home() {
                         <Form.Label className="font-input">From</Form.Label>
                       </Col>
                       {/* ================Kota Asal================= */}
-                      <DepartureAirports />
+                      <DepartureAirports selectedAirport={departureValue} setSelectedAirport={setDepartureValue} idDeptAirport={idDeptAirport} setIdDeptAirport={setIdDeptAirport} />
                       <Col xs={2} md={1} className="d-flex justify-content-center">
                         <Icon
                           icon="icon-park-outline:play-cycle"
                           color="white"
                           className="icon-switch"
-                          onClick={(e) => {
-                            // e.target.departure_airport.value();
-                            console.log(e.target.departure_airport);
+                          onClick={() => {
+                            const deptValue = departureValue;
+                            const destValue = destinationValue;
+                            const idDept = idDeptAirport;
+                            const idDest = idDestAirport;
+                            setDepartureValue(destValue);
+                            setDestinationValue(deptValue);
+                            setIdDeptAirport(idDest);
+                            setIdDestAirport(idDept);
                           }}
                         />
                       </Col>
@@ -143,7 +159,7 @@ function Home() {
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
                       {/* ================Kota Tujuan================= */}
-                      <DestinationAirports />
+                      <DestinationAirports selectDestinatAirport={destinationValue} setSelectDestinatAirport={setDestinationValue} idDestAirport={idDestAirport} setIdDestAirport={setIdDestAirport} />
                     </Row>
                     <Row className="px-3 pt-2 my-3 d-flex align-items-center">
                       <Col xs={2} md={1}>

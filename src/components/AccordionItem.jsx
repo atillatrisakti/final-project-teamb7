@@ -3,11 +3,12 @@ import arrowAccor from "../assets/accordion/Suffix.svg";
 import arrow from "../assets/search/Arrow.svg";
 import { Row, Col, Container, Card, Button } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const AccordionItem = (props, sort) => {
+const AccordionItem = (props) => {
+  const navigate = useNavigate();
   const [item, setItem] = useState(props.item);
   const [isActive, setIsActive] = useState(false);
   const [flightFacilities, setFlightFacilities] = useState([]);
@@ -22,6 +23,8 @@ const AccordionItem = (props, sort) => {
   const numberPassenger = queryParams.get("number_passenger");
   const seatClass = queryParams.get("class_id");
   const isPromo = queryParams.get("is_promo");
+  const departureFlightId = queryParams.get("departure_flight_id");
+  // const returnFlightId = queryParams.get("return_flight_id");
 
   useEffect(() => {
     async function getFlightFacilities() {
@@ -36,35 +39,48 @@ const AccordionItem = (props, sort) => {
   }, []);
 
   const handleButtonPilih = () => {
-    if ((endDate && endDate.length > 0) || departureDate === null) {
+    if (!departureFlightId) {
       return (
-        <Link
-          to={`/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`}
-          style={{ textDecoration: "none" }}
-        >
-          <button style={{ float: "right" }} className="btn-pilih">
-            Pilih
-          </button>
-          pilih penerbangan pulang
-        </Link>
-      );
-    } else {
-      return (
-        <Button
-          className="btn-pilih py-0 d-flex justify-content-center align-items-center"
-          as={Link}
-          to={`/booking/${item?.id}/${numberPassenger}`}
-          style={{
-            float: "right",
-            textDecoration: "none",
-            backgroundColor: "#1b3260",
+        <button
+          style={{ float: "right" }}
+          className="btn-pilih"
+          onClick={() => {
+            if (endDate) {
+              // console.log("else item_is = ", item?.id);
+              // console.log("if endDate = ", endDate);
+              // console.log("if departureDate = ", departureDate);
+              // console.log("if departureFlightId = ", departureFlightId);
+
+              navigate(
+                `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${endDate}&end_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}&departure_flight_id=${item?.id}`
+              );
+            } else {
+              navigate(`/booking/${item?.id}/${numberPassenger}`);
+            }
           }}
         >
           Pilih
-        </Button>
+        </button>
+      );
+    } else {
+      // console.log("else item_is = ", item?.id);
+      // console.log("else endDate = ", endDate);
+      // console.log("else departureDate = ", departureDate);
+      // console.log("else departureFlightId = ", departureFlightId);
+      return (
+        <button
+          style={{ float: "right" }}
+          className="btn-pilih"
+          onClick={() => {
+            navigate(`/booking/${departureFlightId}/${numberPassenger}?return_flight_id=${item?.id}`);
+          }}
+        >
+          Pilih
+        </button>
       );
     }
   };
+  // console.log(location.search);
 
   return (
     <>
@@ -160,6 +176,7 @@ const AccordionItem = (props, sort) => {
                     maximumFractionDigits: 0,
                   })}
                 </div>
+
                 {handleButtonPilih()}
               </Col>
             </Row>

@@ -16,9 +16,10 @@ function SeatClasses() {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API}/web/classes`);
       const data = response.data.data;
-      // console.log(data);
+      console.log(data);
       setSeatClass(data);
-      // setSelectedClass(seatClass[0].name);
+      setIdSeatClass(data[0].id);
+      setSelectedClass(data[0].name);
     } catch (error) {
       toast.error(error?.message);
     }

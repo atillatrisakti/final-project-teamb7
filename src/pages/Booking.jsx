@@ -11,24 +11,27 @@ import DetailBooking from "../components/booking-payment-history/DetailBooking";
 import ItemBooking from "../components/booking-payment-history/ItemBooking";
 
 function Booking() {
+  //state customer
   const [name, setName] = useState("");
   const [family_name, setFamily_name] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [title_id, setTitle_id] = useState("");
-  const [hasFamilyName, setHasFamilyName] = useState(false);
+  // const [hasFamilyName, setHasFamilyName] = useState();
   const [passenger_family_name, setPassenger_family_name] = useState("");
   const [passenger_hasFamilyName, setPassenger_hasFamilyName] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [validated, setValidated] = useState(false);
+  //state countries, titles, detailflight, flight_id, seats_id
   const [countries, setCountries] = useState([]);
   const [titles, setTitles] = useState([]);
   const [detailFlight, setDetailFlight] = useState([]);
   const [flight_id, setFlight_id] = useState();
   const [seats_id, setSeats_id] = useState();
-  const [users, setUsers] = useState("");
+  //params number_passengers
   const params = useParams();
   const number_passenger = params.number_passenger;
+  //array passengers
   const passengerArray = Array.from({ length: number_passenger });
   const [passengers, setPassengers] = useState(
     Array.from({ length: number_passenger }).map(() => ({
@@ -42,6 +45,8 @@ function Booking() {
       passenger_identity_card_due_date: null,
     }))
   );
+  // const [departure_airport_id, setDeparture_airport_code] = useState();
+  // const [return_flight_id, setReturn_light_id] = useState();
 
   //hanlde passengers
   const handlePassengerChange = (value, index, field) => {
@@ -63,13 +68,13 @@ function Booking() {
     }
   };
 
-  //switch has family name
-  const handleSwitch = () => {
-    setHasFamilyName(!hasFamilyName);
-    if (!hasFamilyName) {
-      setFamily_name("");
-    }
-  };
+  // //switch has family name
+  // const handleSwitch = () => {
+  //   setHasFamilyName(!hasFamilyName);
+  //   if (!hasFamilyName) {
+  //     setFamily_name("");
+  //   }
+  // };
 
   //format date yyyy-mm-dd
   const formatDate = (dateString) => {
@@ -159,6 +164,8 @@ function Booking() {
           email,
           phone,
         },
+        // departure_airport_id,
+        // return_flight_id,
         passenger_identity: passengerData,
       });
 
@@ -200,38 +207,33 @@ function Booking() {
     getDetailFlight();
   }, [params]);
 
-  //protected
+  //get data customer
   useEffect(() => {
-    const getMe = async () => {
+    const getUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-
         const response = await axios.get(`${process.env.REACT_APP_API}/customer/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        const data = response.data.data;
-
-        setUsers(data);
+        const dataCustomer = response.data.data;
+        //  console.log(response.data.data)
+        //  setUsers(data);
+        const user = dataCustomer[0];
+        setName(user.customer_name);
+        setFamily_name(user.customer_family_name);
+        setEmail(user.email);
+        setPhone(user.phone);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          // If not valid token
-          if (error.response.status === 401) {
-            localStorage.removeItem("token");
-            // Temporary solution
-            return (window.location.href = "/");
-          }
-
           toast.error(error.response.data.message);
           return;
         }
         toast.error(error.message);
       }
     };
-
-    getMe();
+    getUsers();
   }, []);
 
   return (
@@ -270,36 +272,87 @@ function Booking() {
                   )}
                 </Card.Header>
                 <Card.Body>
-                  <Form noValidate validated={validated}>
+                  <Form>
                     <Form.Group className="mb-3">
                       <Form.Label className="form-label-booking">Nama Lengkap</Form.Label>
-                      <Form.Control required placeholder="Nama Lengkap" name="name" value={name} onChange={(e) => setName(e.target.value)} style={{ width: "454px", height: "40px" }} />
-                      <Form.Control.Feedback type="invalid">Please enter your full name.</Form.Control.Feedback>
+                      <Form.Control
+                        required
+                        placeholder="Nama Lengkap"
+                        name="name"
+                        value={name}
+                        readOnly
+                        // onChange={(e) => setName(e.target.value)}
+                        style={{ width: "454px", height: "40px" }}
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
+                        Please enter your full name.
+                      </Form.Control.Feedback> */}
                     </Form.Group>
                     <Row>
                       <Col xs="auto">
                         <Form.Label className="form-label-booking">Punya Nama Keluarga</Form.Label>
                       </Col>
                       <Col className="text-end">
-                        <Form.Check type="switch" id="custom-switch" className="ml-3" name="hasFamilyName" checked={hasFamilyName} onChange={handleSwitch} />
+                        <Form.Check
+                          type="switch"
+                          id="custom-switch"
+                          className="ml-3"
+                          name="hasFamilyName"
+                          // checked={hasFamilyName}
+                          // onChange={handleSwitch}
+                        />
                       </Col>
                     </Row>
-                    {hasFamilyName ? (
-                      <Form.Group className="mb-3">
-                        <Form.Label className="form-label-booking">Nama Keluarga</Form.Label>
-                        <Form.Control required placeholder="Nama Keluarga" name="familyName" value={family_name} onChange={(e) => setFamily_name(e.target.value)} style={{ width: "454px", height: "40px" }} />
-                        <Form.Control.Feedback type="invalid">Please enter a family name.</Form.Control.Feedback>
-                      </Form.Group>
-                    ) : null}
+                    {/* {hasFamilyName ? ( */}
+                    <Form.Group className="mb-3">
+                      <Form.Label className="form-label-booking">Nama Keluarga</Form.Label>
+                      <Form.Control
+                        required
+                        placeholder="Nama Keluarga"
+                        name="familyName"
+                        value={family_name}
+                        readOnly
+                        // onChange={(e) => setFamily_name(e.target.value)}
+                        style={{ width: "454px", height: "40px" }}
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
+                        Please enter a family name.
+                      </Form.Control.Feedback> */}
+                    </Form.Group>
+                    {/* // ) : null} */}
                     <Form.Group className="mb-3">
                       <Form.Label className="form-label-booking">Nomor Telepon</Form.Label>
-                      <Form.Control required placeholder="Nomor Telepon" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} pattern="[0-9]{9,12}" style={{ width: "454px", height: "40px" }} />
-                      <Form.Control.Feedback type="invalid">{phone && (phone.length < 9 || phone.length > 12) ? "Phone must be string between 9 and 12 digits" : "Please enter a valid phone number."}</Form.Control.Feedback>
+                      <Form.Control
+                        required
+                        placeholder="Nomor Telepon"
+                        name="phone"
+                        value={phone}
+                        readOnly
+                        // onChange={(e) => setPhone(e.target.value)}
+                        pattern="[0-9]{9,12}"
+                        style={{ width: "454px", height: "40px" }}
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
+                        {phone && (phone.length < 9 || phone.length > 12)
+                          ? "Phone must be string between 9 and 12 digits"
+                          : "Please enter a valid phone number."}
+                      </Form.Control.Feedback> */}
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formGroupEmail">
                       <Form.Label className="form-label-booking">Email</Form.Label>
-                      <Form.Control required type="email" placeholder="contoh: siti@gmail.com" name="email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: "454px", height: "40px" }} />
-                      <Form.Control.Feedback type="invalid">Please enter a valid email address.</Form.Control.Feedback>
+                      <Form.Control
+                        required
+                        type="email"
+                        placeholder="contoh: siti@gmail.com"
+                        name="email"
+                        value={email}
+                        readOnly
+                        // onChange={(e) => setEmail(e.target.value)}
+                        style={{ width: "454px", height: "40px" }}
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
+                        Please enter a valid email address.
+                      </Form.Control.Feedback> */}
                     </Form.Group>
                   </Form>
                 </Card.Body>
