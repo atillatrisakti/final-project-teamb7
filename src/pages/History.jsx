@@ -18,7 +18,6 @@ function History() {
   const hasOrderHistory = true;
   const [transaction, setTransaction] = useState([]);
   const [detailTransaction, setDetailTransaction] = useState([]);
-  const [users, setUsers] = useState("");
   const [number_passenger, setNumber_passenger] = useState([]);
   const [selectedTransactionId, setSelectedTransactionId] = useState("");
 
@@ -72,44 +71,6 @@ function History() {
     getTransactionData();
   }, []);
 
-  //protected
-  useEffect(() => {
-    const getMe = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        const response = await axios.get(
-          `${process.env.REACT_APP_API}/customer/users`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = response.data.data;
-
-        setUsers(data);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          // If not valid token
-          if (error.response.status === 401) {
-            localStorage.removeItem("token");
-            // Temporary solution
-            return (window.location.href = "/");
-          }
-
-          toast.error(error.response.data.message);
-          return;
-        }
-        toast.error(error.message);
-      }
-    };
-
-    getMe();
-  }, []);
-  
-
   //handle card
   const handleCardClick = (transactionId, index) => {
     const newIsCardActive = Array(transaction.length).fill(false);
@@ -147,8 +108,9 @@ function History() {
               (detailTransaction[index]?.flight.discount / 100);
 
           const totalPrice =
-            (passengerCounts * (discountPrice +
-            discountPrice * (detailTransaction[index]?.flight.tax / 100)));
+            passengerCounts *
+            (discountPrice +
+              discountPrice * (detailTransaction[index]?.flight.tax / 100));
           return (
             <Row key={transaction.id}>
               <Col md={6}>

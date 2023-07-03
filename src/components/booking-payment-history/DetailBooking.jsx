@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -18,7 +18,7 @@ function DetailBooking() {
     (detailFlight[0]?.price -
       detailFlight[0]?.price * (detailFlight[0]?.discount / 100));
   const totalPrice =
-    discountPrice + (discountPrice * (detailFlight[0]?.tax/100));
+    discountPrice + discountPrice * (detailFlight[0]?.tax / 100);
 
   //get detail flight
   useEffect(() => {
@@ -27,7 +27,7 @@ function DetailBooking() {
         const response = await axios.get(
           `${process.env.REACT_APP_API}/web/flights/${params.id}`
         );
-        // console.log(response.data.data);
+        console.log(response.data.data);
         setDetailFlight(response.data.data);
         setFlight_id(response.data.data[0].id);
         setSeats_id(response.data.data[0].seats[0].id);
