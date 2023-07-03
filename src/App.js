@@ -57,7 +57,7 @@ function App() {
             }
           />
           <Route
-            path="/booking/:id/:number_passenger"
+            path="/booking/:departure_id/:number_passenger"
             element={
               <Protected>
                 <Booking />
@@ -83,6 +83,22 @@ function App() {
           <Route
             path="/account"
             element={<Account isLoggedIn={setIsLoggedIn} />}
+          />
+          <Route
+            path="/email-reset"
+            element={
+              <NoTokenAccess>
+                <SendEmailReset />
+              </NoTokenAccess>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <NoTokenAccess>
+                <ResetPass />
+              </NoTokenAccess>
+            }
           />
           <Route
             path="/email-reset"
