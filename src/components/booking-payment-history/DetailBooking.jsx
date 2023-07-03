@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -8,9 +8,16 @@ function DetailBooking() {
   const [detailFlight, setDetailFlight] = useState([]);
   const [flight_id, setFlight_id] = useState();
   const [seats_id, setSeats_id] = useState();
-  const params = useParams();
   const [facilities, setFacilities] = useState([]);
+
+  const params = useParams();
   const number_passenger = params.number_passenger;
+
+  const location = useLocation();
+
+  const locationDetail = location.state;
+  // const queryParams = new URLSearchParams(location.pathname);
+  // console.log(location);
 
   //count discount & price
   const discountPrice =
@@ -18,14 +25,14 @@ function DetailBooking() {
     (detailFlight[0]?.price -
       detailFlight[0]?.price * (detailFlight[0]?.discount / 100));
   const totalPrice =
-    discountPrice + (discountPrice * (detailFlight[0]?.tax/100));
+    discountPrice + discountPrice * (detailFlight[0]?.tax / 100);
 
   //get detail flight
   useEffect(() => {
     async function getDetailFlight() {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/flights/${params.id}`
+          `${process.env.REACT_APP_API}/web/flights/${params.departure_id}`
         );
         // console.log(response.data.data);
         setDetailFlight(response.data.data);

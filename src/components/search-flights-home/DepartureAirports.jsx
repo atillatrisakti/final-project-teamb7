@@ -12,13 +12,18 @@ import {
 import { toast } from "react-toastify";
 import { FaSearch } from "react-icons/fa";
 
-function DepartureAirports() {
+function DepartureAirports({
+  selectedAirport,
+  setSelectedAirport,
+  idDeptAirport,
+  setIdDeptAirport,
+}) {
   const [show, setShow] = useState(false); // modal
   const [airport, setAirport] = useState([]);
-  const [selectedAirport, setSelectedAirport] = useState("");
+  // const [selectedAirport, setSelectedAirport] = useState("");
   const [search, setSearch] = useState("");
   const [dataAirport, setDataAirport] = useState([]);
-  const [idDeptAirport, setIdDeptAirport] = useState(0);
+  // const [idDeptAirport, setIdDeptAirport] = useState(0);
 
   const handleClose = () => setShow(false); // modal
   const handleShow = () => setShow(true);

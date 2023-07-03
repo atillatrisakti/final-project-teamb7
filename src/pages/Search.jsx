@@ -30,11 +30,11 @@ function Search() {
   const [departureAirportCode, setDepartureAirportCode] = useState("");
   const [arrivalAirportCode, setArrivalAirportCode] = useState("");
   const [airplaneClass, setAirplaneClass] = useState("");
-  const [departureDate, setDepartureDate] = useState("");
+  const [departureDate1, setDepartureDate1] = useState("");
 
   const departureAirportId = queryParams?.get("departure_airport_id");
   const destinationAirportId = queryParams?.get("destination_airport_id");
-  const startDate = queryParams?.get("departure_date");
+  const departureDate = queryParams?.get("departure_date");
   const endDate = queryParams.get("end_date");
   const numberPassenger = queryParams.get("number_passenger");
   const seatClass = queryParams?.get("class_id");
@@ -44,11 +44,10 @@ function Search() {
     async function fetchPost() {
       try {
         setLoading(true);
-        // const response = await axios.get(
-        //   `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${params.departure_airport_id}&destination_airport_id=${params.destination_airport_id}&departure_date=${params.departure_date}&number_passenger=${params.number_passenger}&class_id=${params.class_id}&is_promo=${params.is_promo}`
-        // );
+        // console.log("endDate = ", endDate);
+        // console.log("departureDate = ", departureDate);
         const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${startDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
         );
         // console.log(response.data.data);
 
@@ -56,7 +55,7 @@ function Search() {
         setDepartureAirportCode(response.data.data[0].departure_airport_code);
         setArrivalAirportCode(response.data.data[0].arrival_airport_code);
         setAirplaneClass(response.data.data[0].airplane_class);
-        setDepartureDate(response.data.data[0].departure_date);
+        setDepartureDate1(response.data.data[0].departure_date);
         setLoading(false);
       } catch (error) {
         setLoading(false);

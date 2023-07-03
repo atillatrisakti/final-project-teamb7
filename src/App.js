@@ -57,7 +57,7 @@ function App() {
             }
           />
           <Route
-            path="/booking/:id/:number_passenger"
+            path="/booking/:departure_id/:number_passenger"
             element={
               <Protected>
                 <Booking />

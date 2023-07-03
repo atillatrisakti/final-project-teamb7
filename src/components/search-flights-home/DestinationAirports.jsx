@@ -12,13 +12,18 @@ import {
 import { toast } from "react-toastify";
 import { FaSearch } from "react-icons/fa";
 
-function DestinationAirports() {
+function DestinationAirports({
+  selectDestinatAirport,
+  setSelectDestinatAirport,
+  idDestAirport,
+  setIdDestAirport,
+}) {
   const [show, setShow] = useState(false); // modal
   const [destAirport, setDestAirport] = useState([]);
-  const [selectedAirport, setSelectedAirport] = useState("");
+  // const [selectedAirport, setSelectedAirport] = useState("");
   const [search, setSearch] = useState("");
   const [dataAirport, setDataAirport] = useState([]);
-  const [idDestAirport, setIdDestAirport] = useState(0);
+  // const [idDestAirport, setIdDestAirport] = useState(0);
 
   const handleClose = () => setShow(false); // modal
   const handleShow = () => setShow(true);
@@ -43,8 +48,11 @@ function DestinationAirports() {
     getAirport();
   }, []);
 
+  // flip button value
+  useEffect(() => {}, []);
+
   const handleCloseAirport = () => {
-    if (selectedAirport !== "") {
+    if (selectDestinatAirport !== "") {
       handleClose();
     }
   };
@@ -75,7 +83,7 @@ function DestinationAirports() {
           name="destination_airport"
           className="form-input"
           onClick={handleShow}
-          value={selectedAirport}
+          value={selectDestinatAirport}
         />
       </Form.Group>
       {/* ======================================================== */}
@@ -140,7 +148,7 @@ function DestinationAirports() {
                         onClick={(e) => {
                           e.preventDefault();
                           setDestAirport(item.airports);
-                          setSelectedAirport(item?.name);
+                          setSelectDestinatAirport(item?.name);
                           setSearch("");
                           setIdDestAirport(item?.id);
                           // console.log()
