@@ -59,7 +59,7 @@ function Search() {
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        toast.error(error?.message);
+        // toast.error(error?.message);
       }
     }
     fetchPost();
@@ -72,17 +72,12 @@ function Search() {
       <Container className="mt-4">
         <Row className="d-flex justify-content-center">
           <Col sm={9}>
-            <div
-              className="flight-desc"
-              onClick={() => {}}
-              style={{ cursor: "pointer" }}
-            >
+            <div className="flight-desc" onClick={() => {}} style={{ cursor: "pointer" }}>
               <Link to={"/"}>
                 <img src={arrow} alt="left-arrow" className="mb-1" />
               </Link>
               <span>
-                {departureAirportCode} - {arrivalAirportCode} -{" "}
-                {numberPassenger} Penumpang - {airplaneClass}
+                {departureAirportCode} - {arrivalAirportCode} - {numberPassenger} Penumpang - {airplaneClass}
               </span>
             </div>
           </Col>
@@ -120,7 +115,7 @@ function Search() {
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col className="d-flex justify-content-end">
             <ModalSort sort={sort} setSort={setSort} />
           </Col>
         </Row>
@@ -128,46 +123,22 @@ function Search() {
           <Col md={4}>
             <div className="filter">
               <h5 className="mb-4">Filter</h5>
-              <div
-                className="transit"
-                onClick={() => {}}
-                style={{ cursor: "pointer" }}
-              >
+              <div className="transit" onClick={() => {}} style={{ cursor: "pointer" }}>
                 <img src={box} alt="transit" className="me-2" />
                 Transit
-                <img
-                  src={rightarrow}
-                  alt="right-arrow"
-                  style={{ float: "right" }}
-                />
+                <img src={rightarrow} alt="right-arrow" style={{ float: "right" }} />
               </div>
               <hr />
-              <div
-                className="facility"
-                onClick={() => {}}
-                style={{ cursor: "pointer" }}
-              >
+              <div className="facility" onClick={() => {}} style={{ cursor: "pointer" }}>
                 <img src={love} alt="facility" className="me-2" />
                 Fasilitas
-                <img
-                  src={rightarrow}
-                  alt="right-arrow"
-                  style={{ float: "right" }}
-                />
+                <img src={rightarrow} alt="right-arrow" style={{ float: "right" }} />
               </div>
               <hr />
-              <div
-                className="price"
-                onClick={() => {}}
-                style={{ cursor: "pointer" }}
-              >
+              <div className="price" onClick={() => {}} style={{ cursor: "pointer" }}>
                 <img src={dollar} alt="price" className="me-2" />
                 Harga
-                <img
-                  src={rightarrow}
-                  alt="right-arrow"
-                  style={{ float: "right" }}
-                />
+                <img src={rightarrow} alt="right-arrow" style={{ float: "right" }} />
               </div>
             </div>
           </Col>

@@ -30,9 +30,9 @@ function SendEmailReset() {
 
       const response = await axios.request(config);
 
-      console.log(response);
-
-      toast.success(response.data.message);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response.message);

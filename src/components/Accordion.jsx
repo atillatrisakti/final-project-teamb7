@@ -47,11 +47,7 @@ function Accordion({ sort }) {
 
   const renderData = () => {
     if (loading) {
-      <img
-        src={loadingImg}
-        alt="loading-img"
-        className="d-flex justify-content-center"
-      />;
+      <img src={loadingImg} alt="loading-img" className="d-flex justify-content-center" />;
     } else if (flight && flight.length > 0) {
       if (sort === "Termurah") {
         return flight

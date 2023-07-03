@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import "../styles/Payment.css";
 import img from "../assets/booking/img.svg";
@@ -24,14 +24,11 @@ function Payment() {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await axios.get(
-          `${process.env.REACT_APP_API}/customer/users`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${process.env.REACT_APP_API}/customer/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const data = response.data.data;
 
@@ -75,9 +72,7 @@ function Payment() {
   };
 
   const getCardBorderStyle = (account) => {
-    return selectedAccounts.includes(account)
-      ? "2px solid rgba(27, 50, 90)"
-      : "2px solid #ccc";
+    return selectedAccounts.includes(account) ? "2px solid rgba(27, 50, 90)" : "2px solid #ccc";
   };
 
   if (paymentSuccess) {
@@ -90,14 +85,7 @@ function Payment() {
         </Row>
         <Row>
           <Col md={12} className="payment-success">
-            <img
-              src={img}
-              alt="img"
-              fluid
-              width="204"
-              height="204"
-              style={{ marginTop: "100px" }}
-            />
+            <img src={img} alt="img" fluid width="204" height="204" style={{ marginTop: "100px" }} />
             <div className="payment-success">
               <p style={{ margin: 0, color: "#1B3260" }}>Selamat!!</p>
               <p>Transaksi Pembayaran Tiket Sukses</p>
@@ -165,19 +153,8 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="Gopay"
-                        checked={selectedAccounts.includes("Gopay")}
-                        onChange={handleCheckboxChange}
-                      />
-                      <img
-                        src={gopay}
-                        alt="img"
-                        fluid
-                        width="100"
-                        height="60"
-                      />
+                      <input type="checkbox" value="Gopay" checked={selectedAccounts.includes("Gopay")} onChange={handleCheckboxChange} />
+                      <img src={gopay} alt="img" fluid width="100" height="60" />
                     </label>
                   </div>
                 </details>
@@ -192,14 +169,7 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="BRI Virtual Account"
-                        checked={selectedAccounts.includes(
-                          "BRI Virtual Account"
-                        )}
-                        onChange={handleCheckboxChange}
-                      />
+                      <input type="checkbox" value="BRI Virtual Account" checked={selectedAccounts.includes("BRI Virtual Account")} onChange={handleCheckboxChange} />
                       BRI Virtual Account
                     </label>
                   </div>
@@ -211,14 +181,7 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="BCA Virtual Account"
-                        checked={selectedAccounts.includes(
-                          "BCA Virtual Account"
-                        )}
-                        onChange={handleCheckboxChange}
-                      />
+                      <input type="checkbox" value="BCA Virtual Account" checked={selectedAccounts.includes("BCA Virtual Account")} onChange={handleCheckboxChange} />
                       BCA Virtual Account
                     </label>
                   </div>
@@ -230,14 +193,7 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="Mandiri Virtual Account"
-                        checked={selectedAccounts.includes(
-                          "Mandiri Virtual Account"
-                        )}
-                        onChange={handleCheckboxChange}
-                      />
+                      <input type="checkbox" value="Mandiri Virtual Account" checked={selectedAccounts.includes("Mandiri Virtual Account")} onChange={handleCheckboxChange} />
                       Mandiri Virtual Account
                     </label>
                   </div>
@@ -249,14 +205,7 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="BNI Virtual Account"
-                        checked={selectedAccounts.includes(
-                          "BNI Virtual Account"
-                        )}
-                        onChange={handleCheckboxChange}
-                      />
+                      <input type="checkbox" value="BNI Virtual Account" checked={selectedAccounts.includes("BNI Virtual Account")} onChange={handleCheckboxChange} />
                       BNI Virtual Account
                     </label>
                   </div>
@@ -268,12 +217,7 @@ function Payment() {
                     }}
                   >
                     <label>
-                      <input
-                        type="checkbox"
-                        value="Bank Lainnya"
-                        checked={selectedAccounts.includes("Bank Lainnya")}
-                        onChange={handleCheckboxChange}
-                      />
+                      <input type="checkbox" value="Bank Lainnya" checked={selectedAccounts.includes("Bank Lainnya")} onChange={handleCheckboxChange} />
                       Bank Lainnya
                     </label>
                   </div>
@@ -287,38 +231,10 @@ function Payment() {
                       marginTop: "10px",
                     }}
                   >
-                    <img
-                      src={mastercard}
-                      alt="img"
-                      fluid
-                      width="50"
-                      height="50"
-                      style={{ margin: "0 5px" }}
-                    />
-                    <img
-                      src={visa}
-                      alt="img"
-                      fluid
-                      width="50"
-                      height="50"
-                      style={{ margin: "0 5px" }}
-                    />
-                    <img
-                      src={amex}
-                      alt="img"
-                      fluid
-                      width="50"
-                      height="50"
-                      style={{ margin: "0 5px" }}
-                    />
-                    <img
-                      src={paypal}
-                      alt="img"
-                      fluid
-                      width="50"
-                      height="50"
-                      style={{ margin: "0 5px" }}
-                    />
+                    <img src={mastercard} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
+                    <img src={visa} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
+                    <img src={amex} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
+                    <img src={paypal} alt="img" fluid width="50" height="50" style={{ margin: "0 5px" }} />
                   </div>
                   <Form
                     style={{
@@ -327,10 +243,7 @@ function Payment() {
                       marginLeft: "120px",
                     }}
                   >
-                    <Form.Group
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                       <Form.Label>Card Number</Form.Label>
                       <Form.Control
                         type="email"
@@ -344,10 +257,7 @@ function Payment() {
                         }}
                       />
                     </Form.Group>
-                    <Form.Group
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                       <Form.Label>Card Holder Name</Form.Label>
                       <Form.Control
                         type="email"
@@ -363,10 +273,7 @@ function Payment() {
                     </Form.Group>
                     <Row>
                       <Col md={6}>
-                        <Form.Group
-                          className="mb-3"
-                          controlId="exampleForm.ControlInput1"
-                        >
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                           <Form.Label>CVV</Form.Label>
                           <Form.Control
                             type="email"
@@ -382,10 +289,7 @@ function Payment() {
                         </Form.Group>
                       </Col>
                       <Col>
-                        <Form.Group
-                          className="mb-3"
-                          controlId="exampleForm.ControlInput1"
-                        >
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                           <Form.Label>Expiry Date</Form.Label>
                           <Form.Control
                             type="email"

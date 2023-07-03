@@ -14,10 +14,13 @@ import store from "./redux/store";
 import Account from "./pages/Account";
 import SendEmailReset from "./pages/SendEmailReset";
 import ResetPass from "./pages/ResetPass";
+import Otp from "./pages/Otp";
+
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Protected from "./components/Protected";
 import NoTokenAccess from "./components/NoTokenAccess";
+import Notification from "./pages/Notification";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -80,9 +83,14 @@ function App() {
               </Protected>
             }
           />
+          <Route path="/account" element={<Account isLoggedIn={setIsLoggedIn} />} />
           <Route
-            path="/account"
-            element={<Account isLoggedIn={setIsLoggedIn} />}
+            path="/notification"
+            element={
+              <Protected>
+                <Notification />
+              </Protected>
+            }
           />
           <Route
             path="/email-reset"

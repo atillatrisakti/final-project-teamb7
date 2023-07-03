@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../styles/Login.css";
 import logo from "../assets/navbar/logo-name.svg";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import axios from "axios";
@@ -12,6 +12,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  // const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -35,12 +37,17 @@ function Login() {
       const response = await axios.request(config);
       const { token } = response.data.data;
 
-      console.log(response);
-      localStorage.setItem("token", token);
-
-      window.location.href = "/";
+      if (response.status === 200) {
+        toast.success("Login Berhasil");
+        localStorage.setItem("token", token);
+        // navigate("/");
+        window.location.href = "/";
+      }
     } catch (error) {
-      toast.error(error.message);
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response.data.message);
+        return;
+      }
     }
   };
 
