@@ -100,6 +100,22 @@ function App() {
               </NoTokenAccess>
             }
           />
+          <Route
+            path="/email-reset"
+            element={
+              <NoTokenAccess>
+                <SendEmailReset />
+              </NoTokenAccess>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <NoTokenAccess>
+                <ResetPass />
+              </NoTokenAccess>
+            }
+          />
         </Routes>
 
         <ToastContainer theme="colored" />

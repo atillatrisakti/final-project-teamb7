@@ -13,9 +13,6 @@ const AccordionItem = (props) => {
   const [isActive, setIsActive] = useState(false);
   const [flightFacilities, setFlightFacilities] = useState([]);
 
-  // const [deptDate, setDeptDate] = useState("");
-  // const [returnDate, setReturnDate] = useState("");
-
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
