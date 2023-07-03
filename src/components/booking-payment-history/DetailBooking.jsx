@@ -34,7 +34,7 @@ function DetailBooking() {
         const response = await axios.get(
           `${process.env.REACT_APP_API}/web/flights/${params.departure_id}`
         );
-        // console.log(response.data.data);
+        console.log(response.data.data);
         setDetailFlight(response.data.data);
         setFlight_id(response.data.data[0].id);
         setSeats_id(response.data.data[0].seats[0].id);

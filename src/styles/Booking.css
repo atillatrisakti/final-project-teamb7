@@ -111,7 +111,7 @@
 .form-label-booking {
   width: 160px;
   height: 20px;
-  font-family: "Poppins";
+  /* font-family: "Poppins"; */
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -159,7 +159,7 @@
 .detail-booking {
   width: 185px;
   height: 40px;
-  font-family: "Poppins";
+  /* font-family: "Poppins"; */
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
@@ -173,7 +173,7 @@
 .info {
   width: 314px;
   height: 100%;
-  font-family: "Poppins";
+  /* font-family: "Poppins"; */
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
