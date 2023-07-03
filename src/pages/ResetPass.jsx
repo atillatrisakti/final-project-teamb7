@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Col, Container, Row, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/navbar/logo-name.svg";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -8,6 +8,10 @@ import { toast } from "react-toastify";
 function ResetPass() {
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_confirmation] = useState("");
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const token = queryParams.get("token");
 
   const navigate = useNavigate();
 
@@ -29,7 +33,7 @@ function ResetPass() {
 
       let config = {
         method: "post",
-        url: `${process.env.REACT_APP_API}/web/customer-auth/save-forgot-password`,
+        url: `${process.env.REACT_APP_API}/web/customer-auth/save-forgot-password?token=${token}`,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

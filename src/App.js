@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Protected from "./components/Protected";
 import NoTokenAccess from "./components/NoTokenAccess";
+import Notification from "./pages/Notification";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -83,6 +84,14 @@ function App() {
             }
           />
           <Route path="/account" element={<Account isLoggedIn={setIsLoggedIn} />} />
+          <Route
+            path="/notification"
+            element={
+              <Protected>
+                <Notification />
+              </Protected>
+            }
+          />
           <Route
             path="/email-reset"
             element={

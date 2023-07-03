@@ -29,9 +29,11 @@ function Navbarr(props) {
                 <img src={list} alt="list" />
               </button>
             </Link>
-            <button style={{ border: "none", background: "none" }}>
-              <img src={notif} alt="notif" />
-            </button>
+            <Link to={"/notification"} style={{ textDecoration: "none" }}>
+              <button style={{ border: "none", background: "none" }}>
+                <img src={notif} alt="notif" />
+              </button>
+            </Link>
             <button style={{ border: "none", background: "none" }}>
               <Link to={"/account"}>
                 <img src={user} alt="user" />

@@ -79,7 +79,25 @@ const AccordionItem = (props, sort) => {
                 </p>
               </div>
             </Col>
-            <Col md={6}>
+            <Col md={5} className="d-flex justify-content-end align-items-center pe-0 text-light">
+              {item?.discount > 0 ? (
+                <span
+                  style={{
+                    borderRadius: "30px",
+                    padding: "4px",
+                    paddingRight: "8px",
+                    paddingLeft: "8px",
+                    fontWeight: "bold",
+                    background: "red",
+                  }}
+                >
+                  <b>{item?.discount + "% OFF"}</b>
+                </span>
+              ) : (
+                <div></div>
+              )}
+            </Col>
+            <Col md={1}>
               <img
                 src={arrowAccor}
                 alt="arrowaccor"
