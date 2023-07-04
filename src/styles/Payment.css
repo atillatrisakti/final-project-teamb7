@@ -1,4 +1,4 @@
-.payment {
+/* .payment {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -9,9 +9,9 @@
   height: 654px;
   left: 200px;
   right: 200px;
-  /* top: 248px; */
+  top: 248px;
   justify-content: center;
-}
+} */
 
 .payment-success {
   display: flex;
@@ -40,10 +40,10 @@
   flex-direction: column;
   align-items: flex-start;
   /* padding: 10px 0px; */
-  /* margin-top: 20px; */
+  margin-top: 20px;
   width: 518px;
   height: 800px;
-  margin-left: 80px;
+  margin-left: 150px;
   background: #ffffff;
   flex: none;
   order: 0;

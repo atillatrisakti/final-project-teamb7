@@ -82,7 +82,10 @@ function History() {
     <Container>
       <div className="header">
         <Link to={"/"} style={{ textDecoration: "none" }}>
-          <div className="list mx-4 mt-3" style={{ backgroundColor: "#315bb0" }}>
+          <div
+            className="list mx-4 mt-3"
+            style={{ backgroundColor: "#1b3260" }}
+          >
             <img src={arrow} alt="left-arrow" />
             Beranda
           </div>
@@ -93,7 +96,10 @@ function History() {
           const passengerCounts = detailTransaction[index]?.passengers.length;
           const discountPrice = detailTransaction[index]?.flight.price - detailTransaction[index]?.flight.price * (detailTransaction[index]?.flight.discount / 100);
 
-          const totalPrice = passengerCounts * (discountPrice + discountPrice * (detailTransaction[index]?.flight.tax / 100));
+          const totalPrice =
+            passengerCounts *
+            (discountPrice +
+              discountPrice * (detailTransaction[index]?.flight.tax / 100));
           return (
             <Row key={transaction.id}>
               <Col md={6}>

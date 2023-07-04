@@ -26,7 +26,7 @@ function Booking() {
   const [countries, setCountries] = useState([]);
   const [titles, setTitles] = useState([]);
   const [detailFlight, setDetailFlight] = useState([]);
-  const [flight_id, setFlight_id] = useState();
+  const [flight_id, setFlight_id] = useState("");
   const [seats_id, setSeats_id] = useState();
   //params number_passengers
   const params = useParams();
@@ -67,14 +67,6 @@ function Booking() {
       setPassenger_family_name("");
     }
   };
-
-  // //switch has family name
-  // const handleSwitch = () => {
-  //   setHasFamilyName(!hasFamilyName);
-  //   if (!hasFamilyName) {
-  //     setFamily_name("");
-  //   }
-  // };
 
   //format date yyyy-mm-dd
   const formatDate = (dateString) => {
@@ -182,6 +174,7 @@ function Booking() {
       await axios.request(config);
 
       setFormSubmitted(true);
+      toast.success("Isi Data Berhasil, Lanjut Bayar!!");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response.data.message);
@@ -195,11 +188,15 @@ function Booking() {
   useEffect(() => {
     async function getDetailFlight() {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API}/web/flights/${params.id}`);
-        // console.log(response.data.data);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/web/flights/${params.departure_id}`
+        );
         setDetailFlight(response.data.data);
+        // console.log(setDetailFlight)
         setFlight_id(response.data.data[0].id);
+        // console.log(setFlight_id);
         setSeats_id(response.data.data[0].seats[0].id);
+        // console.log(setSeats_id)
       } catch (error) {
         console.log(error);
       }
@@ -212,17 +209,20 @@ function Booking() {
     const getUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`${process.env.REACT_APP_API}/customer/users`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/customer/users`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const dataCustomer = response.data.data;
         //  console.log(response.data.data)
         //  setUsers(data);
         const user = dataCustomer[0];
         setName(user.customer_name);
-        setFamily_name(user.customer_family_name);
+        // setFamily_name(user.customer_family_name);
         setEmail(user.email);
         setPhone(user.phone);
       } catch (error) {
@@ -239,13 +239,13 @@ function Booking() {
   return (
     <Container className="data">
       <Row>
-        <Row style={{ marginBottom: "30px" }}>
+        {/* <Row style={{ marginBottom: "30px" }}>
           <Col md={12}>
             <ItemBooking />
           </Col>
-        </Row>
+        </Row> */}
         {/* ========== Data Pemesan ========== */}
-        <Col md={6}>
+        <Col md={6} style={{ marginTop: "30px" }}>
           <Card className="card-1" style={{ borderRadius: "0" }}>
             <Card.Body>
               <Card.Title>Isi Data Pemesan</Card.Title>
@@ -281,29 +281,9 @@ function Booking() {
                         name="name"
                         value={name}
                         readOnly
-                        // onChange={(e) => setName(e.target.value)}
                         style={{ width: "454px", height: "40px" }}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                        Please enter your full name.
-                      </Form.Control.Feedback> */}
                     </Form.Group>
-                    <Row>
-                      <Col xs="auto">
-                        <Form.Label className="form-label-booking">Punya Nama Keluarga</Form.Label>
-                      </Col>
-                      <Col className="text-end">
-                        <Form.Check
-                          type="switch"
-                          id="custom-switch"
-                          className="ml-3"
-                          name="hasFamilyName"
-                          // checked={hasFamilyName}
-                          // onChange={handleSwitch}
-                        />
-                      </Col>
-                    </Row>
-                    {/* {hasFamilyName ? ( */}
                     <Form.Group className="mb-3">
                       <Form.Label className="form-label-booking">Nama Keluarga</Form.Label>
                       <Form.Control
@@ -328,15 +308,9 @@ function Booking() {
                         name="phone"
                         value={phone}
                         readOnly
-                        // onChange={(e) => setPhone(e.target.value)}
                         pattern="[0-9]{9,12}"
                         style={{ width: "454px", height: "40px" }}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                        {phone && (phone.length < 9 || phone.length > 12)
-                          ? "Phone must be string between 9 and 12 digits"
-                          : "Please enter a valid phone number."}
-                      </Form.Control.Feedback> */}
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formGroupEmail">
                       <Form.Label className="form-label-booking">Email</Form.Label>
@@ -347,12 +321,8 @@ function Booking() {
                         name="email"
                         value={email}
                         readOnly
-                        // onChange={(e) => setEmail(e.target.value)}
                         style={{ width: "454px", height: "40px" }}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                        Please enter a valid email address.
-                      </Form.Control.Feedback> */}
                     </Form.Group>
                   </Form>
                 </Card.Body>
@@ -443,6 +413,11 @@ function Booking() {
                               onChange={(date) => handlePassengerChange(formatDate(date), index, "passenger_dob")}
                               dateFormat="yyyy-MM-dd"
                               placeholderText="yyyy-mm-dd"
+                              showYearDropdown
+                              showMonthDropdown
+                              // scrollableYearDropdown
+                              // yearDropdownItemNumber={15}
+                              dropdownMode="select"
                             />
                             <div
                               style={{
@@ -507,6 +482,11 @@ function Booking() {
                               onChange={(date) => handlePassengerChange(formatDate(date), index, "passenger_identity_card_due_date")}
                               dateFormat="yyyy-MM-dd"
                               placeholderText="yyyy-mm-dd"
+                              showYearDropdown
+                              showMonthDropdown
+                              // scrollableYearDropdown
+                              // yearDropdownItemNumber={15}
+                              dropdownMode="select"
                             />
 
                             <div
@@ -545,10 +525,16 @@ function Booking() {
         </Col>
         {/* ========== Detail Penerbangan ========== */}
         <Col md={6}>
-          <Card className="booking" style={{ border: "none", boxShadow: "none" }}>
-            <Card.Header className="detail-booking" style={{ border: "none", boxShadow: "none" }}>
+          <Card
+            className="booking"
+            style={{ border: "none", boxShadow: "none" }}
+          >
+            <Card.Title
+              // className="detail-booking"
+              style={{ border: "none", boxShadow: "none", fontWeight: "bold" }}
+            >
               Detail Penerbangan
-            </Card.Header>
+            </Card.Title>
             <Card.Body>
               <DetailBooking />
               {formSubmitted && detailFlight && (
