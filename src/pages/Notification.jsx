@@ -6,6 +6,7 @@ import bell from "../assets/bell.svg";
 import "../styles/Notification.css";
 import axios from "axios";
 import { toast } from "react-toastify";
+import NoResult from "../components/NoResult";
 
 const Notification = () => {
   const [notification, setNotification] = useState([]);
@@ -66,28 +67,34 @@ const Notification = () => {
       <div style={{ border: "1px solid #D0D0D0", boxShadow: "0px 0px 1px rgba(0, 0, 0, 0.10)" }} />
       <Container className="mt-5 ">
         <Container className="mx-5">
-          {detailNotification.map((item) => (
-            <Row className="mx-5">
-              <div className="all-notif my-3" style={{ border: "1px solid #D0D0D0" }}>
-                <Col md={6}>
-                  <img src={bell} alt="bell" style={{ float: "left" }} className="mt-1" />
-                  <p className="ms-5 fw-bold" style={{ margin: "0", fontStyle: "italic" }}>
-                    {item[0]?.category}
-                  </p>
-                  <p className="ms-5 fw-normal" style={{ margin: "0" }}>
-                    {item[0]?.notification_title}
-                  </p>
-                  <p className="ms-5 text-muted" style={{ margin: "0" }}>
-                    {item[0]?.notification_description}
-                  </p>
-                  {/* <div style={{ float: "right" }}>date</div> */}
-                </Col>
-                <Col md={6}>
-                  <p>{new Date(item[0]?.date).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })}</p>
-                </Col>
-              </div>
-            </Row>
-          ))}
+          {detailNotification && detailNotification.length > 0 ? (
+            detailNotification.map((item, index) => (
+              <Row className="mx-5">
+                <div className="all-notif my-3" style={{ border: "1px solid #D0D0D0" }} key={index}>
+                  <Col md={6}>
+                    <img src={bell} alt="bell" style={{ float: "left" }} className="mt-1" />
+                    <p className="ms-5 fw-bold" style={{ margin: "0", fontStyle: "italic" }}>
+                      {item[0]?.category}
+                    </p>
+                    <p className="ms-5 fw-normal" style={{ margin: "0" }}>
+                      {item[0]?.notification_title}
+                    </p>
+                    <p className="ms-5 text-muted" style={{ margin: "0" }}>
+                      {item[0]?.notification_description}
+                    </p>
+                    {/* <div style={{ float: "right" }}>date</div> */}
+                  </Col>
+                  <Col md={6}>
+                    <p>{new Date(item[0]?.date).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })}</p>
+                  </Col>
+                </div>
+              </Row>
+            ))
+          ) : (
+            <div className="d-flex justify-content-center">
+              <NoResult text="Tidak ada Notifikasi" />
+            </div>
+          )}
         </Container>
       </Container>
     </>
