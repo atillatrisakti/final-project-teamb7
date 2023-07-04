@@ -92,7 +92,7 @@ function History() {
         <Link to={"/"} style={{ textDecoration: "none" }}>
           <div
             className="list mx-4 mt-3"
-            style={{ backgroundColor: "#315bb0" }}
+            style={{ backgroundColor: "#1b3260" }}
           >
             <img src={arrow} alt="left-arrow" />
             Beranda

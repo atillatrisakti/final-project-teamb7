@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import "../styles/Payment.css";
 import img from "../assets/booking/img.svg";
@@ -83,11 +83,11 @@ function Payment() {
   if (paymentSuccess) {
     return (
       <Container className="payment">
-        <Row style={{ marginBottom: "30px" }}>
+        {/* <Row style={{ marginBottom: "30px" }}>
           <Col md={12}>
             <ItemBooking />
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col md={12} className="payment-success">
             <img
@@ -144,14 +144,18 @@ function Payment() {
   return (
     <Container className="payment">
       <Row>
-        <Row style={{ marginBottom: "30px" }}>
+        {/* <Row style={{ marginBottom: "30px" }}>
           <Col md={12}>
             <ItemBooking />
           </Col>
-        </Row>
+        </Row> */}
         <Col md={6}>
-          <Card style={{ border: "none", boxShadow: "none" }}>
-            <Card.Title>Isi Data Pembayaran</Card.Title>
+          <Card
+            style={{ border: "none", boxShadow: "none", marginTop: "30px" }}
+          >
+            <Card.Title style={{ fontWeight: "bold" }}>
+              Isi Data Pembayaran
+            </Card.Title>
             <div className="method">
               <section>
                 <details style={{ marginBottom: "20px" }}>
