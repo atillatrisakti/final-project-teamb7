@@ -1,0 +1,15 @@
+/* .card-notif {
+  padding: 20px 16px;
+  border: 1px solid red;
+} */
+
+.list-notif {
+  display: flex;
+  flex-direction: row;
+  background: #1b3260;
+  border-radius: 12px;
+  padding: 10px 16px;
+  color: white;
+  gap: 8px;
+  cursor: pointer;
+}
