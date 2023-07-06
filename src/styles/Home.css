@@ -10,6 +10,7 @@
   bottom: 0;
   justify-content: "center";
   align-items: "center";
+  border: 1px solid red;
 }
 
 .icon-switch {
@@ -38,25 +39,30 @@
   color: gray;
 }
 
+.input-home {
+  width: 100%;
+}
+
+.card-home {
+  width: 100%;
+}
+
+.card-title-input {
+  display: block;
+}
+
 @media screen and (max-width: 600px) {
-  .card-home {
-    width: 200px;
+  .input-home {
+    max-width: 100%;
+  }
+
+  .card-title-input {
+    display: none;
   }
 }
-/* .button-category {
-  display: "flex";
-  align-items: "center";
-  gap: "10px";
-  padding: "15px";
-  border-radius: "25px";
-} */
 
-/* Handphone maksimum width 425 */
-/* @media (max-width: 576px) {
-  ;
-} */
-
-/* Laptop maksimum width 1024 */
-/* @media (max-width: 768px) {
-  ...;
-} */
+@media screen and (max-width: 1023px) {
+  .input-home {
+    width: 100%;
+  }
+}

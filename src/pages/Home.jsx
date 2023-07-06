@@ -90,16 +90,7 @@ function Home() {
         controls={true}
         indicators={false}
         touch={true}
-        // interval={5000}
-        style={{
-          position: "absolute",
-          top: "5.2rem",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        className="carousel-banner"
       >
         {banner &&
           banner.map((item) => (
@@ -117,25 +108,25 @@ function Home() {
           ))}
       </Carousel>
 
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", marginTop: "-160px" }}>
         <Container>
-          <Row style={{ marginTop: "19.3rem" }}>
+          <Row>
             <Col>
               <Form onSubmit={onSubmit}>
-                <Card
-                  className="mx-auto mb-4 card-home"
-                  style={{ width: "75rem" }}
-                >
+                <Card className="mx-auto mb-4 card-home">
                   <Card.Body>
                     <Card.Title
                       className="px-3 pt-2 mb-3"
-                      style={{ textShadow: "2px 2px 8px #e3ecff" }}
+                      style={{
+                        textShadow: "2px 2px 8px #e3ecff",
+                        maxWidth: "",
+                      }}
                     >
                       <b>Pilih Jadwal Penerbangan spesial di</b>{" "}
                       <b style={{ color: "#4076E2" }}>SyuraTrip!</b>
                     </Card.Title>
                     <Row className="px-3 pt-2 d-flex align-items-center">
-                      <Col xs={2} md={1}>
+                      <Col xs={2} md={1} className="card-title-input">
                         <Icon
                           icon="material-symbols:flight-takeoff"
                           color="gray"
@@ -171,7 +162,7 @@ function Home() {
                           }}
                         />
                       </Col>
-                      <Col xs={2} md={1}>
+                      <Col xs={2} md={1} className="card-title-input">
                         <Icon
                           icon="material-symbols:flight-land"
                           color="gray"
@@ -189,7 +180,7 @@ function Home() {
                       />
                     </Row>
                     <Row className="px-3 pt-2 my-3 d-flex align-items-center">
-                      <Col xs={2} md={1}>
+                      <Col xs={6} md={1} className="card-title-input">
                         <Icon
                           icon="material-symbols:date-range-outline"
                           color="gray"
@@ -199,14 +190,14 @@ function Home() {
                       </Col>
 
                       {/* ================DatePicker================= */}
-                      <Col xs={4} md={5}>
+                      <Col xs={12} md={5}>
                         <DatePicker
                           isDisabled={isDisabled}
                           setIsDisabled={setIsDisabled}
                         />
                       </Col>
-                      <Col xs={2} md={1}></Col>
-                      <Col xs={2} md={1}>
+                      <Col xs={0} md={1}></Col>
+                      <Col xs={1} md={1} className="card-title-input">
                         <Icon
                           icon="material-symbols:airline-seat-recline-normal"
                           color="gray"

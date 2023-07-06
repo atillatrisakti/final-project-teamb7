@@ -14,7 +14,9 @@ function SeatClasses() {
 
   const getSeatClass = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API}/web/classes`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API}/web/classes`
+      );
       const data = response.data.data;
       setSeatClass(data);
       setIdSeatClass(data[0].id);
@@ -36,7 +38,7 @@ function SeatClasses() {
   };
 
   return (
-    <Col xs={3} md={2}>
+    <Col xs={6} md={2}>
       <Form.Group>
         <Form.Label>Seat Class</Form.Label>
         <Form.Control

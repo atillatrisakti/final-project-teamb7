@@ -10,6 +10,7 @@ import arrowAccor from "../assets/accordion/Suffix.svg";
 import arrow from "../assets/search/Arrow.svg";
 import { Icon } from "@iconify/react";
 import AccordionItem from "./AccordionItem";
+import { IoIosArrowForward } from "react-icons/io";
 
 function AccordionAll({ sortFlight }) {
   const navigate = useNavigate();
@@ -89,15 +90,23 @@ function AccordionAll({ sortFlight }) {
               (a.price - (a.discount / 100) * a.price)
           )
           .map((item) => (
+            
             <>
-              <div className="accordion-title" key={item?.id}>
-                <Card
-                  style={{ height: "127px", width: "750px" }}
-                  className="mt-2"
-                >
+              <div
+                className="accordion-title"
+                style={{ width: "100%" }}
+                key={item.id}
+              >
+                <Card className="mt-2 card-flight">
                   <Row>
-                    <Col md={6}>
-                      <div className="list-flight">
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div>
                         <img
                           src={item?.airplane_logo}
                           alt="plane-logo"
@@ -110,63 +119,63 @@ function AccordionAll({ sortFlight }) {
                           {item?.airplane_name} - {item?.airplane_class}
                         </p>
                       </div>
-                    </Col>
-                    <Col
-                      md={5}
-                      className="d-flex justify-content-end align-items-center pe-0 text-light"
-                    >
-                      {item?.discount > 0 ? (
-                        <span
-                          style={{
-                            borderRadius: "30px",
-                            padding: "4px",
-                            paddingRight: "8px",
-                            paddingLeft: "8px",
-                            fontWeight: "bold",
-                            background: "red",
-                          }}
-                        >
-                          <b>{item?.discount + "% OFF"}</b>
-                        </span>
-                      ) : (
-                        <div></div>
-                      )}
-                    </Col>
-                    <Col md={1}>
-                      <img
-                        src={arrowAccor}
-                        alt="arrowaccor"
-                        fluid
-                        width="30"
-                        style={{ float: "right", cursor: "pointer" }}
-                        className="me-2 mt-2"
-                        onClick={() => {
-                          setIsActive(!isActive);
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "4px",
+                          alignItems: "center",
                         }}
-                      />
-                    </Col>
+                      >
+                        {item?.discount > 0 ? (
+                          <span
+                            className="discont-flight"
+                            style={{
+                              borderRadius: "30px",
+                              padding: "4px",
+                              paddingRight: "8px",
+                              paddingLeft: "8px",
+                              fontWeight: "bold",
+                              background: "red",
+                            }}
+                          >
+                            <b>{item?.discount + "% OFF"}</b>
+                          </span>
+                        ) : null}
+                        <img
+                          src={arrowAccor}
+                          alt="arrowaccor"
+                          fluid
+                          width="30"
+                          style={{ float: "right", cursor: "pointer" }}
+                          className=""
+                          onClick={(e) => {
+                            // e.preventDefault();
+                            // e.target.value();
+                            setIsActive(!isActive);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </Row>
                   <Container>
-                    <Row>
-                      <Col md={2} className="d-flex align-items-center">
-                        <div className="ms-4 fw-bold">
-                          {new Date(item?.departure_date).toLocaleTimeString(
-                            "id",
-                            {
-                              timeZone: item?.departure_city_time_zone,
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
-                          )}
-                          <br />
-                          {item?.departure_airport_code}
+                    <div className="accordion-below">
+                      {/* left */}
+                      <div className="accordion-below-left gap-3">
+                        <div className="d-flex align-items-center">
+                          <div className="ms-4 fw-bold font-title">
+                            {new Date(item?.departure_date).toLocaleTimeString(
+                              "id",
+                              {
+                                timeZone: item?.departure_city_time_zone,
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )}
+                            <br />
+                            {item?.departure_airport_code}
+                          </div>
                         </div>
-                      </Col>
-                      <Col
-                        md={4}
-                        className="d-flex justify-content-center align-items-center"
-                      >
-                        <div>
+                        <div className="">
                           <span className="d-flex justify-content-center font-count-time">
                             {Math.floor(
                               (new Date(item?.arrival_date).getTime() -
@@ -209,66 +218,78 @@ function AccordionAll({ sortFlight }) {
                               </span>
                             )}
                           </span>
-                          <img
-                            src={arrow}
-                            alt="arrow"
-                            className="d-flex justify-content-center"
-                          />
+                          <div className="divider">
+                            <IoIosArrowForward className="arrow-divider" />
+                          </div>
                           <span className="d-flex justify-content-center font-count-time">
                             Direct
                           </span>
                         </div>
-                      </Col>
-                      <Col
-                        md={2}
-                        className="ps-5 pe-0 ms-1 d-flex align-items-center"
-                      >
-                        <div className="fw-bold">
-                          {new Date(item?.arrival_date).toLocaleTimeString(
-                            "id",
-                            {
-                              timeZone: item?.arrival_city_time_zone,
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
-                          )}
-                          <br />
-                          {item?.arrival_airport_code}
+                        <div className="d-flex align-items-center font-title">
+                          <div className="fw-bold">
+                            {new Date(item?.arrival_date).toLocaleTimeString(
+                              "id",
+                              {
+                                timeZone: item?.arrival_city_time_zone,
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )}
+                            <br />
+                            {item?.arrival_airport_code}
+                          </div>
                         </div>
-                      </Col>
-                      <Col md="auto" className="d-flex align-items-center ps-0">
-                        <Icon
-                          icon="icon-park-outline:baggage-delay"
-                          color="#1b3260"
-                          width="25"
-                          height="25"
-                        />
-                      </Col>
-                      <Col md={3} className="ms-1 pe-0">
-                        <div className="d-flex justify-content-end fw-bold">
-                          {item?.discount > 0 ? (
-                            <>
-                              <span
-                                style={{
-                                  textDecoration: "line-through",
-                                  fontSize: "13px",
-                                  color: "gray",
-                                  position: "absolute",
-                                }}
-                              >
-                                {(item?.price).toLocaleString("en-ID", {
-                                  style: "currency",
-                                  currency: "IDR",
-                                  minimumFractionDigits: 0,
-                                  maximumFractionDigits: 0,
-                                })}
-                              </span>
-                              <h6 className="mt-3 mb-1">
+                      </div>
+                      {/* right */}
+                      <div className=" gap-2 accordion-below-right">
+                        <div
+                          md="auto"
+                          className="d-flex align-items-center ps-0"
+                        >
+                          <Icon
+                            icon="icon-park-outline:baggage-delay"
+                            color="#1b3260"
+                            width="25"
+                            height="25"
+                          />
+                        </div>
+                        <div className="ms-1 pe-0">
+                          <div className="d-flex justify-content-end fw-bold">
+                            {item?.discount > 0 ? (
+                              <>
+                                <span
+                                  style={{
+                                    textDecoration: "line-through",
+                                    fontSize: "13px",
+                                    color: "gray",
+                                    position: "absolute",
+                                  }}
+                                >
+                                  {(item?.price).toLocaleString("en-ID", {
+                                    style: "currency",
+                                    currency: "IDR",
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0,
+                                  })}
+                                </span>
+                                <h6 className="mt-3 mb-1">
+                                  <b>
+                                    {(
+                                      item?.price -
+                                      (item?.discount / 100) * item?.price
+                                    ).toLocaleString("en-ID", {
+                                      style: "currency",
+                                      currency: "IDR",
+                                      minimumFractionDigits: 0,
+                                      maximumFractionDigits: 0,
+                                    })}
+                                  </b>
+                                </h6>
+                              </>
+                            ) : (
+                              <h6 className="mb-2 mt-1">
                                 <b>
-                                  {(
-                                    item?.price -
-                                    (item?.discount / 100) * item?.price
-                                  ).toLocaleString("en-ID", {
+                                  {(item?.price).toLocaleString("en-ID", {
                                     style: "currency",
                                     currency: "IDR",
                                     minimumFractionDigits: 0,
@@ -276,61 +297,52 @@ function AccordionAll({ sortFlight }) {
                                   })}
                                 </b>
                               </h6>
-                            </>
+                            )}
+                          </div>
+                          {!departureFlightId ? (
+                            <button
+                              style={{ float: "right" }}
+                              className="btn-pilih"
+                              onClick={() => {
+                                if (returnDate) {
+                                  // console.log("else item_is = ", item?.id);
+                                  // console.log("if endDate = ", endDate);
+                                  // console.log("if departureDate = ", departureDate);
+                                  // console.log("if departureFlightId = ", departureFlightId);
+
+                                  navigate(
+                                    `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${returnDate}&end_date=${returnDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}&departure_flight_id=${item?.id}`
+                                  );
+                                } else {
+                                  navigate(
+                                    `/booking/${item?.id}/${numberPassenger}`
+                                  );
+                                }
+                              }}
+                            >
+                              Pilih
+                            </button>
                           ) : (
-                            <h6 className="mb-2 mt-1">
-                              <b>
-                                {(item?.price).toLocaleString("en-ID", {
-                                  style: "currency",
-                                  currency: "IDR",
-                                  minimumFractionDigits: 0,
-                                  maximumFractionDigits: 0,
-                                })}
-                              </b>
-                            </h6>
+                            <button
+                              style={{ float: "right" }}
+                              className="btn-pilih"
+                              onClick={() => {
+                                navigate(
+                                  `/booking/${departureFlightId}/${numberPassenger}?return_flight_id=${item?.id}`
+                                );
+                              }}
+                            >
+                              Pilih
+                            </button>
                           )}
                         </div>
-                        {!departureFlightId ? (
-                          <button
-                            style={{ float: "right" }}
-                            className="btn-pilih"
-                            onClick={() => {
-                              if (returnDate) {
-                                // console.log("else item_is = ", item?.id);
-                                // console.log("if endDate = ", endDate);
-                                // console.log("if departureDate = ", departureDate);
-                                // console.log("if departureFlightId = ", departureFlightId);
-
-                                navigate(
-                                  `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${returnDate}&end_date=${returnDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}&departure_flight_id=${item?.id}`
-                                );
-                              } else {
-                                navigate(
-                                  `/booking/${item?.id}/${numberPassenger}`
-                                );
-                              }
-                            }}
-                          >
-                            Pilih
-                          </button>
-                        ) : (
-                          <button
-                            style={{ float: "right" }}
-                            className="btn-pilih"
-                            onClick={() => {
-                              navigate(
-                                `/booking/${departureFlightId}/${numberPassenger}?return_flight_id=${item?.id}`
-                              );
-                            }}
-                          >
-                            Pilih
-                          </button>
-                        )}
-                      </Col>
-                    </Row>
+                      </div>
+                                
+                    </div>
                   </Container>
                 </Card>
               </div>
+
               <div className="accordion-content">
                 {isActive && (
                   <Container className="mb-2">
