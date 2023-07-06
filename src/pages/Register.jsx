@@ -104,7 +104,7 @@ function Register() {
                   <Form.Control type={showPassword ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} required />
                   <Form.Control.Feedback type="invalid">Silahkan Masukkan Password Anda</Form.Control.Feedback>
                   <span
-                    className=" position-absolute  translate-middle-y showpass"
+                    className=" position-absolute  translate-middle-y "
                     style={{
                       // height: "30px",
                       border: "none",
@@ -122,9 +122,9 @@ function Register() {
               <Form.Group className="mb-4">
                 <Form.Label>Konfirmasi Password</Form.Label>
                 <div className="position-relative">
-                  <Form.Control type="password" placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} required />
+                  <Form.Control type={showConfirm ? "text" : "password"} placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} required />
                   <span
-                    className=" position-absolute  translate-middle-y showconfirm"
+                    className=" position-absolute  translate-middle-y "
                     style={{
                       // height: "30px",
                       border: "none",

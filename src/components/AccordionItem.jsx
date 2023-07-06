@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import arrowAccor from "../assets/accordion/Suffix.svg";
-import arrow from "../assets/search/Arrow.svg";
 import { Row, Col, Container, Card, Button } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { IoIosArrowForward } from "react-icons/io";
 
 const AccordionItem = (props) => {
   const navigate = useNavigate();
@@ -131,7 +131,7 @@ const AccordionItem = (props) => {
               {/* left */}
               <div className="accordion-below-left gap-3">
                 <div className="d-flex align-items-center">
-                  <div className="ms-4 fw-bold">
+                  <div className="ms-4 fw-bold font-title">
                     {new Date(item?.departure_date).toLocaleTimeString("id", {
                       timeZone: item?.departure_city_time_zone,
                       hour: "2-digit",
@@ -141,18 +141,18 @@ const AccordionItem = (props) => {
                     {item?.departure_airport_code}
                   </div>
                 </div>
-                <div>
+                <div className="">
                   <span className="d-flex justify-content-center font-count-time">
                     {Math.floor((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60 * 24)) + "d "}
                     {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60)) % 24) + "h "}
                     {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60)) % 60) + "m"}
                   </span>
                   <div className="divider">
-                    <div className="arrow-divider" />
+                    <IoIosArrowForward className="arrow-divider" />
                   </div>
                   <span className="d-flex justify-content-center font-count-time">Direct</span>
                 </div>
-                <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center font-title">
                   <div className="fw-bold">
                     {new Date(item?.arrival_date).toLocaleTimeString("id", {
                       timeZone: item?.arrival_city_time_zone,
@@ -170,7 +170,7 @@ const AccordionItem = (props) => {
                   <Icon icon="icon-park-outline:baggage-delay" color="#1b3260" width="25" height="25" />
                 </div>
                 <div className="ms-1 pe-0">
-                  <div className="d-flex justify-content-end fw-bold">
+                  <div className="d-flex justify-content-end fw-bold ">
                     {(item?.price).toLocaleString("en-ID", {
                       style: "currency",
                       currency: "IDR",

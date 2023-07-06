@@ -21,7 +21,7 @@
 .divider {
   width: 300px;
   height: 1px;
-  background-color: red;
+  background-color: black;
   position: relative;
 }
 
@@ -30,9 +30,6 @@
   right: 0px;
   top: 50%;
   transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  background-color: red;
 }
 
 .card-flight {
@@ -50,6 +47,7 @@
   flex-direction: row;
 }
 
+/* tablet */
 @media (max-width: 1023px) {
   .accordion-item2,
   .accordion-content {
@@ -66,6 +64,7 @@
   }
 }
 
+/*  */
 @media screen and (max-width: 600px) {
   .accordion-item2,
   .accordion-content {
@@ -83,13 +82,15 @@
   .card-flight {
     height: 100%;
   }
-}
 
-/* .accordion-title {
-  width: 700px;
-  border: 0;
-  border-bottom-width: 0;
-} */
+  .font-title {
+    font-size: 12px;
+  }
+
+  .font-count-time {
+    font-size: 10px;
+  }
+}
 
 .btn-pilih {
   width: 100px;

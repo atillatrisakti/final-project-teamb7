@@ -4,10 +4,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/navbar/logo-name.svg";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { IconContext } from "react-icons";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 function ResetPass() {
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_confirmation] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -67,11 +71,44 @@ function ResetPass() {
             <Form className=" mt-4" onSubmit={handleSubmit}>
               <Form.Group>
                 <Form.Label>Masukkan Password Baru</Form.Label>
-                <Form.Control type="password" required style={{ height: "45px" }} value={password} onChange={(e) => setPassword(e.target.value)} />
+
+                <div className="position-relative">
+                  <Form.Control type={showPassword ? "text" : "password"} required style={{ height: "45px" }} value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <span
+                    className=" position-absolute  translate-middle-y "
+                    style={{
+                      // height: "30px",
+                      border: "none",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                      right: "16px",
+                      top: " 50%",
+                    }}
+                    onClick={() => setShowPassword((showPassword) => !showPassword)}
+                  >
+                    <IconContext.Provider value={{ size: "20px" }}>{showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
+                  </span>
+                </div>
               </Form.Group>
               <Form.Group>
                 <Form.Label>Konfirmasi Password Baru</Form.Label>
-                <Form.Control type="password" required style={{ height: "45px" }} value={password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)} />
+                <div className="position-relative">
+                  <Form.Control type={showConfirm ? "text" : "password"} required style={{ height: "45px" }} value={password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)} />
+                  <span
+                    className=" position-absolute  translate-middle-y "
+                    style={{
+                      // height: "30px",
+                      border: "none",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                      right: "16px",
+                      top: "50%",
+                    }}
+                    onClick={() => setShowConfirm((showConfirm) => !showConfirm)}
+                  >
+                    <IconContext.Provider value={{ size: "20px" }}>{showConfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
+                  </span>
+                </div>
               </Form.Group>
               <button className="mt-3 w-100 btn-send" type="submit">
                 Konfirmasi

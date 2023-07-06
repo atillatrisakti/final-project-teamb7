@@ -76,16 +76,13 @@
   border: 1px solid red;
 }
 
-/* Styles for mobile devices */
-/* @media screen and (max-width: 767px) {
-  .card-flight {
-    width: 100%;
+@media screen and (max-width: 600px) {
+  .filter {
+    display: none;
+  }
+
+  .change-search {
+    margin-top: 10px;
+    margin-left: 4rem;
   }
 }
-
-/* Styles for tablet devices */
-/* @media screen and (min-width: 768px) and (max-width: 1023px) {
-  .card-flight {
-    max-width: 500px;
-  }
-} */
