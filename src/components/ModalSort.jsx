@@ -43,8 +43,6 @@ function ModalSort({ sortFlight, setSortFlight }) {
     <select value={sortFlight} onChange={handleChange}>
       <option value="Termurah">Termurah</option>
       <option value="Termahal">Termahal</option>
-      <option value="Awal">Keberangkatan Paling Awal</option>
-      <option value="Akhir">Keberangkatan Paling Akhir</option>
     </select>
   );
 }
