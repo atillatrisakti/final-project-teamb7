@@ -1,0 +1,9 @@
+.btn-otp {
+  border: none;
+  width: 568px;
+  height: 48px;
+  gap: 4px;
+  border-radius: 16px;
+  background: #1b3260;
+  color: white;
+}
