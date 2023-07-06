@@ -361,7 +361,6 @@ function DetailHistory({ selectedTransactionId }) {
             <Row>
               <Col md={6}>
                 <div>{number_passenger[selectedTransactionId]} Penumpang</div>
-                <div>Tax</div>
               </Col>
               <Col>
                 <div>
@@ -372,6 +371,13 @@ function DetailHistory({ selectedTransactionId }) {
                     maximumFractionDigits: 0,
                   })}
                 </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={6}>
+                <div>Tax</div>
+              </Col>
+              <Col>
                 <div>
                   {detailTransaction[selectedTransactionId]?.flight.tax.toFixed(
                     0

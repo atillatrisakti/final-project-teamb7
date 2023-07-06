@@ -259,7 +259,6 @@ function DetailBooking() {
         <Row>
           <Col md={6}>
             <div>{number_passenger} Penumpang</div>
-            <div>Tax</div>
           </Col>
           <Col>
             <div>
@@ -275,6 +274,13 @@ function DetailBooking() {
                 maximumFractionDigits: 0,
               })}
             </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={6}>
+            <div>Tax</div>
+          </Col>
+          <Col>
             <div>{detailDepartureFlight[0]?.tax.toFixed(0) + "%"}</div>
           </Col>
         </Row>
@@ -446,7 +452,6 @@ function DetailBooking() {
               <Col md={6}>
                 <div>{number_passenger} Penumpang</div>
                 {/* <div>1 Baby</div> */}
-                <div>Tax</div>
               </Col>
               <Col>
                 <div>
@@ -462,6 +467,13 @@ function DetailBooking() {
                     maximumFractionDigits: 0,
                   })}
                 </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={6}>
+                <div>Tax</div>
+              </Col>
+              <Col>
                 <div>{detailReturnFlight[0]?.tax.toFixed(0) + "%"}</div>
               </Col>
             </Row>
