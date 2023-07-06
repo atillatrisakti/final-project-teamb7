@@ -115,6 +115,7 @@ function History() {
                     marginLeft: "20px",
                   }}
                 >
+                  {" "}
                   <Card.Body>
                     <Card
                       className={`history-month ${
@@ -153,7 +154,7 @@ function History() {
                         }}
                       >
                         <Row>
-                          <Col md={4}>
+                          <Col xs={12} md={4}>
                             <div style={{ display: "flex", alignItems: "top" }}>
                               <div style={{ marginRight: "8px" }}>
                                 <img
@@ -216,7 +217,7 @@ function History() {
                               </div>
                             </div>
                           </Col>
-                          <Col>
+                          <Col xs={12} md={4}>
                             <div
                               style={{
                                 display: "flex",
@@ -279,7 +280,7 @@ function History() {
                               </div>
                             </div>
                           </Col>
-                          <Col>
+                          <Col xs={12} md={4}>
                             <div style={{ display: "flex", alignItems: "top" }}>
                               <div style={{ marginRight: "8px" }}>
                                 <img

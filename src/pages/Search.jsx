@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import axios from "axios";
 import arrow from "../assets/search/fi_arrow-left.svg";
 import box from "../assets/search/fi_box.svg";
@@ -71,7 +70,8 @@ function Search() {
       }
     }
     fetchPost();
-  }, []);
+  }, [departureDate]);
+  // console.log(departureDate);
 
   return (
     <Container className="mt-3">
@@ -103,7 +103,7 @@ function Search() {
               <Col md="auto" className="d-flex justify-content-center date-css mx-auto mb-2 my-1">
                 <Button
                   variant="dark"
-                  onClick={(e) => {
+                  onClick={() => {
                     const dateTop = item.toLocaleDateString("en-CA", {
                       day: "2-digit",
                       month: "2-digit",

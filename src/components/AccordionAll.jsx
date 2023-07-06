@@ -60,7 +60,7 @@ function AccordionAll({ sortFlight }) {
       }
     }
     getListFlight();
-  }, []);
+  }, [departureDate]);
 
   const renderData = () => {
     if (loading) {
@@ -410,7 +410,7 @@ function AccordionAll({ sortFlight }) {
     } else {
       return (
         <div className="d-flex justify-content-center text-secondary">
-          <NoResult text="Maaf, pencarian anda tidak ditemukan" />
+          <NoResult />
         </div>
       );
     }
