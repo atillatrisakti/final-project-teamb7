@@ -97,8 +97,8 @@ function DestinationAirports({
         <Modal.Body>
           <Form>
             <Row>
-              <Col>
-                <InputGroup className="mb-3 my-1" style={{ minWidth: "280px" }}>
+              <Col xs={10}>
+                <InputGroup className="mb-3 my-1 w-100">
                   <Form.Control
                     type="search"
                     name="search"
@@ -120,7 +120,7 @@ function DestinationAirports({
                 </InputGroup>
                 <InputValue />
               </Col>
-              <Col>
+              <Col xs={2}>
                 <Modal.Header
                   closeButton
                   style={{

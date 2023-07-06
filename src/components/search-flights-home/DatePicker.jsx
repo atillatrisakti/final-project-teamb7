@@ -112,12 +112,16 @@ function DatePicker({ isDisabled, setIsDisabled }) {
           <Form.Control
             disabled={!isDisabled}
             size={10}
-            placeholder={format(addDays(selectedSingleDate, 1), "y-MM-dd")}
+            placeholder={
+              !isDisabled
+                ? format(addDays(selectedSingleDate, 1), "y-MM-dd")
+                : "Return Date"
+            }
             name="end_date"
             value={
               !isDisabled
-                ? toValue
-                : format(addDays(selectedSingleDate, 1), "y-MM-dd")
+                ? format(addDays(selectedSingleDate, 1), "y-MM-dd")
+                : toValue
             }
             onChange={handleToChange}
             onClick={handleShowDate}
