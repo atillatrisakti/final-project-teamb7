@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Form, Container, Row, Col } from "react-bootstrap";
 import "../styles/Booking.css";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaCheckCircle, FaCalendarAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -12,6 +12,7 @@ import ItemBooking from "../components/booking-payment-history/ItemBooking";
 
 function Booking() {
   //state customer
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [family_name, setFamily_name] = useState("");
   const [email, setEmail] = useState("");
@@ -22,12 +23,14 @@ function Booking() {
   const [passenger_hasFamilyName, setPassenger_hasFamilyName] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [validated, setValidated] = useState(false);
-  //state countries, titles, detailflight, flight_id, seats_id
+  //state countries, titles, detailFlight, flight_id, seats_id, returnFlight
   const [countries, setCountries] = useState([]);
   const [titles, setTitles] = useState([]);
   const [detailFlight, setDetailFlight] = useState([]);
   const [flight_id, setFlight_id] = useState("");
   const [seats_id, setSeats_id] = useState();
+  const [detailReturnFlight, setDetailReturnFlight] = useState([]);
+  const [return_id, setReturn_id] = useState();
   //params number_passengers
   const params = useParams();
   const number_passenger = params.number_passenger;
@@ -45,8 +48,6 @@ function Booking() {
       passenger_identity_card_due_date: null,
     }))
   );
-  // const [departure_airport_id, setDeparture_airport_code] = useState();
-  // const [return_flight_id, setReturn_light_id] = useState();
 
   //hanlde passengers
   const handlePassengerChange = (value, index, field) => {
@@ -70,7 +71,6 @@ function Booking() {
 
   //format date yyyy-mm-dd
   const formatDate = (dateString) => {
-    // console.log("dateString:", dateString);
     const date = new Date(dateString);
     const year = date.getFullYear().toString().padStart(4, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -83,11 +83,14 @@ function Booking() {
     const getcountries = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`${process.env.REACT_APP_API}/customer/countries`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/customer/countries`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = response.data.data;
         setCountries(data);
       } catch (error) {
@@ -106,12 +109,14 @@ function Booking() {
     const getTitles = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`${process.env.REACT_APP_API}/customer/titles`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log(response.data.data);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/customer/titles`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = response.data.data;
         setTitles(data);
         if (data.length > 0) {
@@ -128,7 +133,7 @@ function Booking() {
     getTitles();
   }, []);
 
-  //post data
+  //post data booking
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -156,8 +161,6 @@ function Booking() {
           email,
           phone,
         },
-        // departure_airport_id,
-        // return_flight_id,
         passenger_identity: passengerData,
       });
 
@@ -196,9 +199,25 @@ function Booking() {
         setFlight_id(response.data.data[0].id);
         // console.log(setFlight_id);
         setSeats_id(response.data.data[0].seats[0].id);
-        // console.log(setSeats_id)
+
+        if (params.return_id) {
+          const returnFlight = await axios.get(
+            `${process.env.REACT_APP_API}/web/flights/${params.return_id}`
+          );
+          const returnDate = await axios.get(
+            `${process.env.REACT_APP_API}/web/flights/${params.return_date}`
+          );
+
+          setDetailReturnFlight(returnFlight.data.data);
+          setReturn_id(returnFlight.data.data[0].id);
+          setSeats_id(returnFlight.data.data[0].seats[0].id);
+        }
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          toast.error(error.response.data.message);
+          return;
+        }
+        toast.error(error.message);
       }
     }
     getDetailFlight();
@@ -218,11 +237,8 @@ function Booking() {
           }
         );
         const dataCustomer = response.data.data;
-        //  console.log(response.data.data)
-        //  setUsers(data);
         const user = dataCustomer[0];
         setName(user.customer_name);
-        // setFamily_name(user.customer_family_name);
         setEmail(user.email);
         setPhone(user.phone);
       } catch (error) {
@@ -249,7 +265,10 @@ function Booking() {
           <Card className="card-1" style={{ borderRadius: "0" }}>
             <Card.Body>
               <Card.Title>Isi Data Pemesan</Card.Title>
-              <Card className="pemesan" style={{ border: "none", boxShadow: "none" }}>
+              <Card
+                className="pemesan"
+                style={{ border: "none", boxShadow: "none" }}
+              >
                 <Card.Header
                   className="card-header"
                   style={{
@@ -274,53 +293,68 @@ function Booking() {
                 <Card.Body>
                   <Form>
                     <Form.Group className="mb-3">
-                      <Form.Label className="form-label-booking">Nama Lengkap</Form.Label>
+                      <Form.Label className="form-label-booking">
+                        Nama Lengkap
+                      </Form.Label>
                       <Form.Control
                         required
                         placeholder="Nama Lengkap"
                         name="name"
                         value={name}
-                        readOnly
+                        // readOnly
+                        onChange={(e) => setName(e.target.value)}
                         style={{ width: "454px", height: "40px" }}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label className="form-label-booking">Nama Keluarga</Form.Label>
+                      <Form.Label className="form-label-booking">
+                        Nama Keluarga
+                      </Form.Label>
                       <Form.Control
                         required
                         placeholder="Nama Keluarga"
                         name="familyName"
                         value={family_name}
-                        readOnly
-                        // onChange={(e) => setFamily_name(e.target.value)}
+                        // readOnly
+                        onChange={(e) => setFamily_name(e.target.value)}
                         style={{ width: "454px", height: "40px" }}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
+                      <Form.Control.Feedback type="invalid">
                         Please enter a family name.
-                      </Form.Control.Feedback> */}
+                      </Form.Control.Feedback>
                     </Form.Group>
-                    {/* // ) : null} */}
                     <Form.Group className="mb-3">
-                      <Form.Label className="form-label-booking">Nomor Telepon</Form.Label>
+                      <Form.Label className="form-label-booking">
+                        Nomor Telepon
+                      </Form.Label>
                       <Form.Control
                         required
                         placeholder="Nomor Telepon"
                         name="phone"
                         value={phone}
-                        readOnly
+                        // readOnly
+                        onChange={(e) => setPhone(e.target.value)}
                         pattern="[0-9]{9,12}"
                         style={{ width: "454px", height: "40px" }}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {phone && (phone.length < 9 || phone.length > 12)
+                          ? "Phone must be string between 9 and 12 digits"
+                          : "Please enter a valid phone number."}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formGroupEmail">
-                      <Form.Label className="form-label-booking">Email</Form.Label>
+                      <Form.Label className="form-label-booking">
+                        Email
+                      </Form.Label>
                       <Form.Control
                         required
                         type="email"
                         placeholder="contoh: siti@gmail.com"
                         name="email"
                         value={email}
-                        readOnly
+                        // readOnly
+                        onChange={(e) => setEmail(e.target.value)}
                         style={{ width: "454px", height: "40px" }}
                       />
                     </Form.Group>
@@ -335,7 +369,10 @@ function Booking() {
               <Card.Title>Isi Data Penumpang</Card.Title>
               {passengerArray.map((passenger, index) => (
                 <div key={index}>
-                  <Card className="pemesan" style={{ border: "none", boxShadow: "none" }}>
+                  <Card
+                    className="pemesan"
+                    style={{ border: "none", boxShadow: "none" }}
+                  >
                     <Card.Header
                       className="card-header"
                       style={{
@@ -359,9 +396,25 @@ function Booking() {
                     </Card.Header>
                     <Card.Body>
                       <Form noValidate validated={validated}>
-                        <Form.Group className="mb-3" controlId="formGroupSelect">
-                          <Form.Label className="form-label-booking">Title</Form.Label>
-                          <Form.Select required aria-label="Select Title" value={passengers[index]?.passenger_title_id || ""} onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_title_id")}>
+                        <Form.Group
+                          className="mb-3"
+                          controlId="formGroupSelect"
+                        >
+                          <Form.Label className="form-label-booking">
+                            Title
+                          </Form.Label>
+                          <Form.Select
+                            required
+                            aria-label="Select Title"
+                            value={passengers[index]?.passenger_title_id || ""}
+                            onChange={(e) =>
+                              handlePassengerChange(
+                                e.target.value,
+                                index,
+                                "passenger_title_id"
+                              )
+                            }
+                          >
                             <option value="">Select Title</option>
                             {titles.map((title) => (
                               <option key={title.id} value={title.id}>
@@ -369,54 +422,93 @@ function Booking() {
                               </option>
                             ))}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">Please select a title.</Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid">
+                            Please select a title.
+                          </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                          <Form.Label className="form-label-booking">Nama Lengkap</Form.Label>
+                          <Form.Label className="form-label-booking">
+                            Nama Lengkap
+                          </Form.Label>
                           <Form.Control
                             required
                             placeholder="Nama Lengkap"
                             name="fullName"
                             value={passengers[index]?.passenger_name}
-                            onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_name")}
+                            onChange={(e) =>
+                              handlePassengerChange(
+                                e.target.value,
+                                index,
+                                "passenger_name"
+                              )
+                            }
                             style={{ width: "454px", height: "40px" }}
                           />
-                          <Form.Control.Feedback type="invalid">Please enter passenger full name.</Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid">
+                            Please enter passenger full name.
+                          </Form.Control.Feedback>
                         </Form.Group>
                         <Row>
                           <Col xs="auto">
-                            <Form.Label className="form-label-booking">Punya Nama Keluarga</Form.Label>
+                            <Form.Label className="form-label-booking">
+                              Punya Nama Keluarga
+                            </Form.Label>
                           </Col>
                           <Col className="text-end">
-                            <Form.Check type="switch" id="custom-switch" className="ml-3" name="hasFamilyName" checked={passenger_hasFamilyName} onChange={handleSwitchChange} />
+                            <Form.Check
+                              type="switch"
+                              id="custom-switch"
+                              className="ml-3"
+                              name="hasFamilyName"
+                              checked={passenger_hasFamilyName}
+                              onChange={handleSwitchChange}
+                            />
                           </Col>
                         </Row>
                         {passenger_hasFamilyName ? (
                           <Form.Group className="mb-3">
-                            <Form.Label className="form-label-booking">Nama Keluarga</Form.Label>
+                            <Form.Label className="form-label-booking">
+                              Nama Keluarga
+                            </Form.Label>
                             <Form.Control
                               placeholder="Nama Keluarga"
                               name="familyName"
                               value={passengers[index]?.passenger_family_name}
-                              onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_family_name")}
+                              onChange={(e) =>
+                                handlePassengerChange(
+                                  e.target.value,
+                                  index,
+                                  "passenger_family_name"
+                                )
+                              }
                               style={{ width: "454px", height: "40px" }}
                             />
                           </Form.Group>
                         ) : null}
                         <Form.Group>
-                          <Form.Label className="form-label-booking">Tanggal Lahir</Form.Label>
+                          <Form.Label className="form-label-booking">
+                            Tanggal Lahir
+                          </Form.Label>
                           <div style={{ position: "relative", width: "100%" }}>
                             <DatePicker
                               required
                               className="custom-date"
-                              selected={passengers[index]?.passenger_dob ? new Date(passengers[index]?.passenger_dob) : null}
-                              onChange={(date) => handlePassengerChange(formatDate(date), index, "passenger_dob")}
+                              selected={
+                                passengers[index]?.passenger_dob
+                                  ? new Date(passengers[index]?.passenger_dob)
+                                  : null
+                              }
+                              onChange={(date) =>
+                                handlePassengerChange(
+                                  formatDate(date),
+                                  index,
+                                  "passenger_dob"
+                                )
+                              }
                               dateFormat="yyyy-MM-dd"
                               placeholderText="yyyy-mm-dd"
                               showYearDropdown
                               showMonthDropdown
-                              // scrollableYearDropdown
-                              // yearDropdownItemNumber={15}
                               dropdownMode="select"
                             />
                             <div
@@ -432,36 +524,20 @@ function Booking() {
                           </div>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                          <Form.Label className="form-label-booking">Kewarganegaraan</Form.Label>
-                          <Form.Select required aria-label="Select Countries" value={passengers[index]?.passenger_nationality_id} onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_nationality_id")}>
-                            <option value="">Select Countries</option>
-                            {countries.map((country) => (
-                              <option key={country.id} value={country.id}>
-                                {country.name}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">Please enter passenger nationality.</Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="form-label-booking">KTP/Paspor</Form.Label>
-                          <Form.Control
-                            required
-                            placeholder="KTP/Paspor"
-                            name="identification"
-                            value={passengers[index]?.passenger_identity_card}
-                            onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_identity_card")}
-                            pattern=".{16}"
-                          />
-                          <Form.Control.Feedback type="invalid">Please enter a valid identification (16 characters).</Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="form-label-booking">Negara Penerbit</Form.Label>
+                          <Form.Label className="form-label-booking">
+                            Kewarganegaraan
+                          </Form.Label>
                           <Form.Select
                             required
                             aria-label="Select Countries"
-                            value={passengers[index]?.passenger_identity_card_publisher_id}
-                            onChange={(e) => handlePassengerChange(e.target.value, index, "passenger_identity_card_publisher_id")}
+                            value={passengers[index]?.passenger_nationality_id}
+                            onChange={(e) =>
+                              handlePassengerChange(
+                                e.target.value,
+                                index,
+                                "passenger_nationality_id"
+                              )
+                            }
                           >
                             <option value="">Select Countries</option>
                             {countries.map((country) => (
@@ -470,22 +546,91 @@ function Booking() {
                               </option>
                             ))}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">Please enter passenger identity card publisher.</Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid">
+                            Please enter passenger nationality.
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="form-label-booking">
+                            KTP/Paspor
+                          </Form.Label>
+                          <Form.Control
+                            required
+                            placeholder="KTP/Paspor"
+                            name="identification"
+                            value={passengers[index]?.passenger_identity_card}
+                            onChange={(e) =>
+                              handlePassengerChange(
+                                e.target.value,
+                                index,
+                                "passenger_identity_card"
+                              )
+                            }
+                            pattern=".{16}"
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Please enter a valid identification (16 characters).
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="form-label-booking">
+                            Negara Penerbit
+                          </Form.Label>
+                          <Form.Select
+                            required
+                            aria-label="Select Countries"
+                            value={
+                              passengers[index]
+                                ?.passenger_identity_card_publisher_id
+                            }
+                            onChange={(e) =>
+                              handlePassengerChange(
+                                e.target.value,
+                                index,
+                                "passenger_identity_card_publisher_id"
+                              )
+                            }
+                          >
+                            <option value="">Select Countries</option>
+                            {countries.map((country) => (
+                              <option key={country.id} value={country.id}>
+                                {country.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Please enter passenger identity card publisher.
+                          </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label className="form-label-booking">Berlaku Sampai</Form.Label>
+                          <Form.Label className="form-label-booking">
+                            Berlaku Sampai
+                          </Form.Label>
                           <div style={{ position: "relative", width: "100%" }}>
                             <DatePicker
                               required
                               className="custom-date"
-                              selected={passengers[index]?.passenger_identity_card_due_date ? new Date(passengers[index]?.passenger_identity_card_due_date) : null}
-                              onChange={(date) => handlePassengerChange(formatDate(date), index, "passenger_identity_card_due_date")}
+                              selected={
+                                passengers[index]
+                                  ?.passenger_identity_card_due_date
+                                  ? new Date(
+                                      passengers[
+                                        index
+                                      ]?.passenger_identity_card_due_date
+                                    )
+                                  : null
+                              }
+                              onChange={(date) =>
+                                handlePassengerChange(
+                                  formatDate(date),
+                                  index,
+                                  "passenger_identity_card_due_date"
+                                )
+                              }
                               dateFormat="yyyy-MM-dd"
                               placeholderText="yyyy-mm-dd"
                               showYearDropdown
                               showMonthDropdown
-                              // scrollableYearDropdown
-                              // yearDropdownItemNumber={15}
                               dropdownMode="select"
                             />
 
@@ -538,21 +683,47 @@ function Booking() {
             <Card.Body>
               <DetailBooking />
               {formSubmitted && detailFlight && (
-                <Link to={`/payment/${detailFlight[0]?.id}/${params.number_passenger}`} style={{ textDecoration: "none" }}>
-                  <button
-                    className="btn-tiket"
-                    size="lg"
-                    style={{
-                      backgroundColor: "#FF0000",
-                      color: "#FFFFFF",
-                      borderRadius: "10px",
-                      marginTop: "10px",
-                      border: "none",
-                    }}
-                  >
-                    Lanjut Bayar
-                  </button>
-                </Link>
+                <>
+                  {params.return_id ? (
+                    <button
+                      className="btn-tiket"
+                      size="lg"
+                      style={{
+                        backgroundColor: "#FF0000",
+                        color: "#FFFFFF",
+                        borderRadius: "10px",
+                        marginTop: "10px",
+                        border: "none",
+                      }}
+                      onClick={() => {
+                        navigate(
+                          `/payment/${detailFlight[0]?.id}/${params.number_passenger}/${params.return_id}/${params.return_date}`
+                        );
+                      }}
+                    >
+                      Lanjut Bayar
+                    </button>
+                  ) : (
+                    <Link
+                      to={`/payment/${detailFlight[0]?.id}/${params.number_passenger}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <button
+                        className="btn-tiket"
+                        size="lg"
+                        style={{
+                          backgroundColor: "#FF0000",
+                          color: "#FFFFFF",
+                          borderRadius: "10px",
+                          marginTop: "10px",
+                          border: "none",
+                        }}
+                      >
+                        Lanjut Bayar
+                      </button>
+                    </Link>
+                  )}
+                </>
               )}
             </Card.Body>
           </Card>
