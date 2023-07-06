@@ -11,8 +11,11 @@ import rightarrow from "../assets/search/fi_chevron-right.svg";
 import ModalSort from "../components/ModalSort";
 import AccordionAll from "../components/AccordionAll";
 import "../styles/Accordion.css";
+import useWindowSize from "../hooks/useWindowSize";
 
 function Search() {
+  const size = useWindowSize();
+
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -98,9 +101,10 @@ function Search() {
         </Row>
 
         {/* DATE ON TOP */}
-        <Row className="my-4 d-flex align-items-center bg-dark rounded-4 me-5">
-          {getThisWeekDates(new Date(departureDate)).length > 0 &&
-            getThisWeekDates(new Date(departureDate)).map((item) => (
+        {getThisWeekDates(new Date(departureDate)).length > 0 &&
+        size.width > 600 ? (
+          <Row className="my-4 d-flex align-items-center bg-dark rounded-4 me-5">
+            {getThisWeekDates(new Date(departureDate)).map((item) => (
               <Col
                 md="auto"
                 className="d-flex justify-content-center date-css mx-auto mb-2 my-1"
@@ -137,7 +141,53 @@ function Search() {
                 </Button>
               </Col>
             ))}
-        </Row>
+          </Row>
+        ) : (
+          <>
+            <Row className="my-4 d-flex align-items-center bg-dark rounded-4">
+              {getThisWeekDates(new Date(departureDate))
+                .slice(0, 3)
+                .map((item) => (
+                  <Col
+                    xs={3}
+                    md="auto"
+                    className="d-flex justify-content-center date-css mx-auto mb-2 my-1"
+                  >
+                    <Button
+                      variant="dark"
+                      onClick={(e) => {
+                        const dateTop = item.toLocaleDateString("en-CA", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        });
+
+                        navigate(
+                          `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${dateTop}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
+                        );
+                      }}
+                      className="btn-date"
+                      style={{
+                        border: "none",
+                      }}
+                    >
+                      <b>
+                        {item?.toLocaleDateString("id-ID", {
+                          weekday: "long",
+                        })}
+                      </b>
+                      <br />
+                      {item.toLocaleDateString("id-ID", {
+                        day: "2-digit",
+                        month: "numeric",
+                        year: "numeric",
+                      })}
+                    </Button>
+                  </Col>
+                ))}
+            </Row>
+          </>
+        )}
         <Row>
           <Col>
             <ModalSort sortFlight={sortFlight} setSortFlight={setSortFlight} />
@@ -190,23 +240,22 @@ function Search() {
               </div>
             </div>
           </Col>
-          
-            <div className="col-12 col-md-6 w-full mb-5">
-              <AccordionAll
-                sortFlight={sortFlight}
-                loading={loading}
-                flight={flight}
-                departureAirportId={departureAirportId}
-                destinationAirportId={destinationAirportId}
-                departureDate={departureDate}
-                returnDate={returnDate}
-                numberPassenger={numberPassenger}
-                seatClass={seatClass}
-                isPromo={isPromo}
-                departureFlightId={departureFlightId}
-              />
-            </div>
-          
+
+          <div className="col-12 col-md-6 w-full mb-5">
+            <AccordionAll
+              sortFlight={sortFlight}
+              loading={loading}
+              flight={flight}
+              departureAirportId={departureAirportId}
+              destinationAirportId={destinationAirportId}
+              departureDate={departureDate}
+              returnDate={returnDate}
+              numberPassenger={numberPassenger}
+              seatClass={seatClass}
+              isPromo={isPromo}
+              departureFlightId={departureFlightId}
+            />
+          </div>
         </Row>
       </Container>
     </Container>
