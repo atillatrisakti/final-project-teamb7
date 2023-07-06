@@ -1,29 +1,17 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "../styles/Payment.css";
-import img from "../assets/booking/img.svg";
 import { Link } from "react-router-dom";
-import arrow from "../assets/account/fi_arrow-left.svg";
+import noresult from "../assets/noresult/Group 33.svg";
 
 function NoHistory() {
   return (
     <Container>
-      <div className="header">
-        <Link to={"/"} style={{ textDecoration: "none" }}>
-          <div
-            className="list mx-4 mt-3"
-            style={{ backgroundColor: "#315bb0" }}
-          >
-            <img src={arrow} alt="left-arrow" />
-            Beranda
-          </div>
-        </Link>
-      </div>
       <div className="d-flex justify-content-start justify-content-center align-items-center">
         <Row>
           <Col md={12} className="payment-success">
             <img
-              src={img}
+              src={noresult}
               alt="img"
               fluid
               width="204"

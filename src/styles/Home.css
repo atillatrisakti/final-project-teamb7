@@ -38,6 +38,11 @@
   color: gray;
 }
 
+@media screen and (max-width: 600px) {
+  .card-home {
+    width: 200px;
+  }
+}
 /* .button-category {
   display: "flex";
   align-items: "center";

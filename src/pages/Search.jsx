@@ -63,7 +63,7 @@ function Search() {
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        toast.error(error?.message);
+        // toast.error(error?.message);
       }
     }
     fetchPost();
@@ -74,8 +74,8 @@ function Search() {
       <h4 className="text-pilih">Pilih Penerbangan</h4>
 
       <Container className="mt-4">
-        <Row className="d-flex">
-          <Col sm={9} className="p-0">
+        <Row className="d-flex justify-content-center">
+          <Col md={9} xs={12} lg={9}>
             <div
               className="flight-desc"
               onClick={() => {}}
@@ -90,7 +90,7 @@ function Search() {
               </span>
             </div>
           </Col>
-          <Col sm={2} className="d-flex align-items-center">
+          <Col md={2} xs={12} lg={3}>
             <Link to={"/"}>
               <button className="change-search">Ubah Pencarian</button>
             </Link>
@@ -144,7 +144,7 @@ function Search() {
           </Col>
         </Row>
         <Row className="mt-4">
-          <Col md={4}>
+          <Col sm={12} md={4}>
             <div className="filter">
               <h5 className="mb-4">Filter</h5>
               <div
@@ -190,8 +190,8 @@ function Search() {
               </div>
             </div>
           </Col>
-          <Col md={6}>
-            <div className="accordion mb-5">
+          
+            <div className="col-12 col-md-6 w-full mb-5">
               <AccordionAll
                 sortFlight={sortFlight}
                 loading={loading}
@@ -206,7 +206,7 @@ function Search() {
                 departureFlightId={departureFlightId}
               />
             </div>
-          </Col>
+          
         </Row>
       </Container>
     </Container>

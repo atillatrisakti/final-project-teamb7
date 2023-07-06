@@ -94,7 +94,7 @@ function Accordion(props) {
     } else {
       return (
         <div className="d-flex justify-content-center text-secondary">
-          <NoResult />
+          <NoResult text="Maaf, pencarian anda tidak ditemukan" />
         </div>
       );
     }

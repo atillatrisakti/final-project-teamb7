@@ -36,6 +36,8 @@ function Home() {
   const [idDeptAirport, setIdDeptAirport] = useState(0);
   const [idDestAirport, setIdDestAirport] = useState(0);
 
+  const [filteredCategory, setFilteredCategory] = useState(null);
+
   useEffect(() => {
     async function getBanners() {
       try {
@@ -115,12 +117,15 @@ function Home() {
           ))}
       </Carousel>
 
-      <div>
+      <div style={{ width: "100%" }}>
         <Container>
           <Row style={{ marginTop: "19.3rem" }}>
             <Col>
               <Form onSubmit={onSubmit}>
-                <Card className="mx-auto mb-4" style={{ width: "75rem" }}>
+                <Card
+                  className="mx-auto mb-4 card-home"
+                  style={{ width: "75rem" }}
+                >
                   <Card.Body>
                     <Card.Title
                       className="px-3 pt-2 mb-3"

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../styles/Login.css";
 import logo from "../assets/navbar/logo-name.svg";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import axios from "axios";
@@ -12,6 +12,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -33,14 +35,22 @@ function Login() {
       };
 
       const response = await axios.request(config);
-      const { token } = response.data.data;
 
-      console.log(response);
-      localStorage.setItem("token", token);
+      if (response.status === 200 && response.data.data.url) {
+        navigate(`${response.data.data.url}`);
+      } else if (response.status === 200) {
+        const { token } = response.data.data;
 
-      window.location.href = "/";
+        localStorage.setItem("token", token);
+        // navigate("/");
+        window.location.href = "/";
+        toast.success(response.data.message);
+      }
     } catch (error) {
-      toast.error(error.message);
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response.data.message);
+        return;
+      }
     }
   };
 
@@ -68,22 +78,23 @@ function Login() {
                     Lupa Kata Sandi
                   </Link>
                 </div>
-
-                <Form.Control type={showPassword ? "text" : "password"} value={password} placeholder="Masukkan password" style={{ height: "50px" }} onChange={(e) => setPassword(e.target.value)} required />
-                <span
-                  className=" position-absolute  translate-middle-y"
-                  style={{
-                    // height: "30px",
-                    border: "none",
-                    backgroundColor: "transparent",
-                    cursor: "pointer",
-                    right: "125px",
-                    top: "460px",
-                  }}
-                  onClick={() => setShowPassword((showPassword) => !showPassword)}
-                >
-                  <IconContext.Provider value={{ size: "20px" }}>{showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
-                </span>
+                <div className="position-relative">
+                  <Form.Control type={showPassword ? "text" : "password"} value={password} placeholder="Masukkan password" style={{ height: "50px" }} onChange={(e) => setPassword(e.target.value)} required />
+                  <span
+                    className=" position-absolute  translate-middle-y"
+                    style={{
+                      // height: "30px",
+                      border: "none",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                      right: "16px",
+                      top: "50%",
+                    }}
+                    onClick={() => setShowPassword((showPassword) => !showPassword)}
+                  >
+                    <IconContext.Provider value={{ size: "20px" }}>{showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
+                  </span>
+                </div>
               </Form.Group>
               <button type="submit" className="w-100 login-button">
                 Masuk

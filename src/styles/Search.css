@@ -72,6 +72,18 @@
   color: white;
 }
 
-.btn.date:active {
-  background-color: #ffffff;
+.card-flight {
+  width: 100%;
+  border: 1px solid red;
+}
+
+@media screen and (max-width: 600px) {
+  .filter {
+    display: none;
+  }
+
+  .change-search {
+    margin-top: 10px;
+    margin-left: 4rem;
+  }
 }

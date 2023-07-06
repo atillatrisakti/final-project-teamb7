@@ -18,7 +18,6 @@ function History() {
   const hasOrderHistory = true;
   const [transaction, setTransaction] = useState([]);
   const [detailTransaction, setDetailTransaction] = useState([]);
-  const [users, setUsers] = useState("");
   const [number_passenger, setNumber_passenger] = useState([]);
   const [selectedTransactionId, setSelectedTransactionId] = useState("");
 
@@ -37,7 +36,6 @@ function History() {
         );
         const transaction = response.data.data;
         setTransaction(transaction);
-        console.log(transaction);
 
         const detailPromises = transaction.map(async (transaction) => {
           const detailResponse = await axios.get(
@@ -54,7 +52,7 @@ function History() {
 
         const detailResults = await Promise.all(detailPromises);
         setDetailTransaction(detailResults);
-        // console.log(detailResults);
+
         const passengerCounts = detailResults.map(
           (detailData) => detailData.passengers.length
         );
@@ -71,44 +69,6 @@ function History() {
 
     getTransactionData();
   }, []);
-
-  //protected
-  useEffect(() => {
-    const getMe = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        const response = await axios.get(
-          `${process.env.REACT_APP_API}/customer/users`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = response.data.data;
-
-        setUsers(data);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          // If not valid token
-          if (error.response.status === 401) {
-            localStorage.removeItem("token");
-            // Temporary solution
-            return (window.location.href = "/");
-          }
-
-          toast.error(error.response.data.message);
-          return;
-        }
-        toast.error(error.message);
-      }
-    };
-
-    getMe();
-  }, []);
-  
 
   //handle card
   const handleCardClick = (transactionId, index) => {
@@ -129,16 +89,13 @@ function History() {
     <Container>
       <div className="header">
         <Link to={"/"} style={{ textDecoration: "none" }}>
-          <div
-            className="list mx-4 mt-3"
-            style={{ backgroundColor: "#315bb0" }}
-          >
+          <div className="list mx-4 mt-3" style={{ backgroundColor: "#1b3260" }}>
             <img src={arrow} alt="left-arrow" />
             Beranda
           </div>
         </Link>
       </div>
-      {hasOrderHistory ? (
+      {hasOrderHistory && transaction.length > 0 ? (
         transaction.map((transaction, index) => {
           const passengerCounts = detailTransaction[index]?.passengers.length;
           const discountPrice =
@@ -146,9 +103,7 @@ function History() {
             detailTransaction[index]?.flight.price *
               (detailTransaction[index]?.flight.discount / 100);
 
-          const totalPrice =
-            (passengerCounts * (discountPrice +
-            discountPrice * (detailTransaction[index]?.flight.tax / 100)));
+          const totalPrice = passengerCounts * (discountPrice + discountPrice * (detailTransaction[index]?.flight.tax / 100));
           return (
             <Row key={transaction.id}>
               <Col md={6}>

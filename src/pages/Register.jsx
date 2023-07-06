@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../styles/Register.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import logo from "../assets/navbar/logo-name.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
@@ -18,6 +18,8 @@ function Register() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [validate, setValidate] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
@@ -26,6 +28,14 @@ function Register() {
     e.preventDefault();
 
     setValidate(true);
+
+    if (password !== password_confirmation) {
+      toast.warning("Password dan konfirmasi password harus sama!");
+    }
+
+    if (password.length < 8) {
+      toast.warning("Password minimal terdiri dari 8 karakter!");
+    }
 
     try {
       let data = JSON.stringify({
@@ -46,13 +56,18 @@ function Register() {
         data: data,
       };
 
-      await axios.request(config).then((response) => {
-        console.log(response.data);
-      });
+      const response = await axios.request(config);
 
-      window.location.href = "/login";
+      if (response.status === 200) {
+        // redirect(response.data.data.url);
+        navigate(`${response.data.data.url}`);
+        // <Navigate to=response.data.data.url replace={true} />;
+      }
     } catch (error) {
-      toast.error("Email have already registered!");
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response.data.data);
+        return;
+      }
     }
   };
 
@@ -85,40 +100,44 @@ function Register() {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Buat Password</Form.Label>
-                <Form.Control type={showPassword ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} required />
-                <span
-                  className=" position-absolute  translate-middle-y"
-                  style={{
-                    // height: "30px",
-                    border: "none",
-                    backgroundColor: "transparent",
-                    cursor: "pointer",
-                    right: "120px",
-                    top: " 448px",
-                  }}
-                  onClick={() => setShowPassword((showPassword) => !showPassword)}
-                >
-                  <IconContext.Provider value={{ size: "20px" }}>{showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
-                </span>
+                <div className="position-relative">
+                  <Form.Control type={showPassword ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} required />
+                  <Form.Control.Feedback type="invalid">Silahkan Masukkan Password Anda</Form.Control.Feedback>
+                  <span
+                    className=" position-absolute  translate-middle-y "
+                    style={{
+                      // height: "30px",
+                      border: "none",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                      right: "16px",
+                      top: " 50%",
+                    }}
+                    onClick={() => setShowPassword((showPassword) => !showPassword)}
+                  >
+                    <IconContext.Provider value={{ size: "20px" }}>{showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
+                  </span>
+                </div>
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label>Konfirmasi Password</Form.Label>
-                <Form.Control type="password" placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} required />
-                <span
-                  className=" position-absolute  translate-middle-y"
-                  style={{
-                    // height: "30px",
-                    border: "none",
-                    backgroundColor: "transparent",
-                    cursor: "pointer",
-                    right: "120px",
-                    top: "564px",
-                  }}
-                  onClick={() => setShowConfirm((showConfirm) => !showConfirm)}
-                >
-                  <IconContext.Provider value={{ size: "20px" }}>{showConfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
-                </span>
-                <p className="text-warning mt-1">{password_confirmation !== password ? "Password tidak sama!" : null}</p>
+                <div className="position-relative">
+                  <Form.Control type={showConfirm ? "text" : "password"} placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} required />
+                  <span
+                    className=" position-absolute  translate-middle-y "
+                    style={{
+                      // height: "30px",
+                      border: "none",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                      right: "16px",
+                      top: "50%",
+                    }}
+                    onClick={() => setShowConfirm((showConfirm) => !showConfirm)}
+                  >
+                    <IconContext.Provider value={{ size: "20px" }}>{showConfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
+                  </span>
+                </div>
               </Form.Group>
               <button type="submit" className="w-100 regis-button">
                 Daftar
