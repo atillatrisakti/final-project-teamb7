@@ -194,9 +194,10 @@ function Booking() {
         const response = await axios.get(
           `${process.env.REACT_APP_API}/web/flights/${params.departure_id}`
         );
-
         setDetailFlight(response.data.data);
+        // console.log(setDetailFlight)
         setFlight_id(response.data.data[0].id);
+        // console.log(setFlight_id);
         setSeats_id(response.data.data[0].seats[0].id);
 
         if (params.return_id) {
@@ -235,7 +236,6 @@ function Booking() {
             },
           }
         );
-
         const dataCustomer = response.data.data;
         const user = dataCustomer[0];
         setName(user.customer_name);
