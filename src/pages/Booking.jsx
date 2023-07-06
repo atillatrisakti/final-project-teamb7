@@ -246,7 +246,7 @@ function Booking() {
           </Col>
         </Row> */}
         {/* ========== Data Pemesan ========== */}
-        <Col md={6} style={{ marginTop: "30px" }}>
+        <Col xs={12} md={6} style={{ marginTop: "30px" }}>
           <Card className="card-1" style={{ borderRadius: "0" }}>
             <Card.Body>
               <Card.Title>Isi Data Pemesan</Card.Title>
@@ -522,8 +522,11 @@ function Booking() {
           </button>
         </Col>
         {/* ========== Detail Penerbangan ========== */}
-        <Col md={6}>
-          <Card className="booking" style={{ border: "none", boxShadow: "none" }}>
+        <Col xs={12} md={6}>
+          <Card
+            className="booking"
+            style={{ border: "none", boxShadow: "none" }}
+          >
             <Card.Title
               // className="detail-booking"
               style={{ border: "none", boxShadow: "none", fontWeight: "bold" }}

@@ -1,18 +1,3 @@
-/* .payment {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0px;
-  gap: 10px;
-  position: absolute;
-  width: 936px;
-  height: 654px;
-  left: 200px;
-  right: 200px;
-  top: 248px;
-  justify-content: center;
-} */
-
 .payment-success {
   display: flex;
   flex-direction: column;
@@ -29,10 +14,6 @@
   height: 568px;
   filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.15));
   border-radius: 4px;
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
 }
 
 .detail {
@@ -45,24 +26,18 @@
   height: 800px;
   margin-left: 150px;
   background: #ffffff;
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
   margin-bottom: 20px;
 }
 
 .container section {
   width: 600px;
   margin: 5px;
-  /* box-shadow: 0 5px 10px #3334; */
 }
 
 .container section details summary {
   padding: 15px;
   background: #3c3c3c;
   color: #fff;
-  /* border: 1px solid #444; */
   position: relative;
   list-style: none;
   outline: none;
