@@ -7,6 +7,7 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import axios from "axios";
 import { toast } from "react-toastify";
+import oauth2 from "../utils/OAuth2";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -104,6 +105,13 @@ function Login() {
                   Belum punya Akun?
                   <Link to="/register" className="ms-1 text-color fw-bold">
                     Daftar di sini
+                  </Link>
+                </Form.Text>
+              </div>
+              <div className="d-flex justify-content-center mt-3">
+                <Form.Text>
+                  <Link to={process.env.REACT_APP_API + "/web/customer-auth/oauth"} className="ms-1 text-color fw-bold">
+                    login pake google
                   </Link>
                 </Form.Text>
               </div>

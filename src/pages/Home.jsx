@@ -8,7 +8,7 @@ import {
   Form,
   Row,
 } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/Home.css";
 import { Icon } from "@iconify/react";
 import DepartureAirports from "../components/search-flights-home/DepartureAirports";
@@ -36,7 +36,31 @@ function Home() {
   const [idDeptAirport, setIdDeptAirport] = useState(0);
   const [idDestAirport, setIdDestAirport] = useState(0);
 
-  const [filteredCategory, setFilteredCategory] = useState(null);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  
+  useEffect(() => {
+    async function redirectToBooking() {
+      try {
+        const token = queryParams.get("token");
+
+        if(token){
+          localStorage.setItem('token', token);
+        }
+
+        // console.log("home path: " + localStorage.getItem("path"));
+        // console.log("home flow: " + localStorage.getItem("flow"));
+        // console.log("home token: " + localStorage.getItem("token"));
+
+        // if(localStorage.getItem("flow") === "booking" && localStorage.getItem("path")){
+        //   navigate(`${localStorage.getItem("path")}`);
+        // }
+      } catch (error) {
+        toast.error(error?.message);
+      }
+    }
+    redirectToBooking();
+  }, []);
 
   useEffect(() => {
     async function getBanners() {
