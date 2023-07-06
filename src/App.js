@@ -10,12 +10,11 @@ import Booking from "./pages/Booking";
 import Payment from "./pages/Payment";
 import History from "./pages/History";
 // import { Provider } from "react-redux";
-import store from "./redux/store";
+// import store from "./redux/store";
 import Account from "./pages/Account";
 import SendEmailReset from "./pages/SendEmailReset";
 import ResetPass from "./pages/ResetPass";
 import Otp from "./pages/Otp";
-
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Protected from "./components/Protected";

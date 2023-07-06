@@ -25,7 +25,6 @@ function DetailHistory({ selectedTransactionId }) {
         );
         const transaction = response.data.data;
         setTransaction(transaction);
-        // console.log(transaction);
 
         const detailPromises = transaction.map(async (flight) => {
           const detailResponse = await axios.get(
@@ -42,7 +41,6 @@ function DetailHistory({ selectedTransactionId }) {
 
         const detailResults = await Promise.all(detailPromises);
         setDetailTransaction(detailResults);
-        // console.log(detailResults);
         const passengerCounts = detailResults.reduce(
           (acc, detailData, index) => {
             const transactionId = transaction[index].id;
@@ -363,7 +361,6 @@ function DetailHistory({ selectedTransactionId }) {
             <Row>
               <Col md={6}>
                 <div>{number_passenger[selectedTransactionId]} Penumpang</div>
-                {/* <div>1 Baby</div> */}
                 <div>Tax</div>
               </Col>
               <Col>
@@ -375,7 +372,6 @@ function DetailHistory({ selectedTransactionId }) {
                     maximumFractionDigits: 0,
                   })}
                 </div>
-                {/* <div>IDR 0</div> */}
                 <div>
                   {detailTransaction[selectedTransactionId]?.flight.tax.toFixed(
                     0
@@ -398,7 +394,6 @@ function DetailHistory({ selectedTransactionId }) {
             </Col>
           </Row>
           {renderActionButton()}
-          {/* </Card.Body> */}
         </Card.Body>
       </Card>
     </>

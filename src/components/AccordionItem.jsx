@@ -51,9 +51,10 @@ const AccordionItem = (props) => {
               // console.log("if departureDate = ", departureDate);
               // console.log("if departureFlightId = ", departureFlightId);
 
-              navigate(
-                `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${endDate}&end_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}&departure_flight_id=${item?.id}`
-              );
+              // navigate(
+              //   `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${endDate}&end_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}&departure_flight_id=${item?.id}`
+              // );
+              window.location.href = `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${endDate}&end_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}&departure_flight_id=${item?.id}`;
             } else {
               navigate(`/booking/${item?.id}/${numberPassenger}`);
             }
@@ -72,7 +73,7 @@ const AccordionItem = (props) => {
           style={{ float: "right" }}
           className="btn-pilih"
           onClick={() => {
-            navigate(`/booking/${departureFlightId}/${numberPassenger}?return_flight_id=${item?.id}`);
+            navigate(`/booking/${departureFlightId}/${numberPassenger}/${item?.id}/${endDate}`);
           }}
         >
           Pilih
@@ -143,9 +144,18 @@ const AccordionItem = (props) => {
                 </div>
                 <div className="">
                   <span className="d-flex justify-content-center font-count-time">
-                    {Math.floor((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60 * 24)) + "d "}
-                    {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60)) % 24) + "h "}
-                    {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60)) % 60) + "m"}
+                    {Math.floor((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60 * 24)) > 0 ? (
+                      <span>
+                        {Math.floor((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60 * 24)) + "d "}
+                        {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60)) % 24) + "h "}
+                        {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60)) % 60) + "m"}
+                      </span>
+                    ) : (
+                      <span>
+                        {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60)) % 24) + "h "}
+                        {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60)) % 60) + "m"}
+                      </span>
+                    )}
                   </span>
                   <div className="divider">
                     <IoIosArrowForward className="arrow-divider" />
@@ -170,13 +180,47 @@ const AccordionItem = (props) => {
                   <Icon icon="icon-park-outline:baggage-delay" color="#1b3260" width="25" height="25" />
                 </div>
                 <div className="ms-1 pe-0">
-                  <div className="d-flex justify-content-end fw-bold ">
-                    {(item?.price).toLocaleString("en-ID", {
-                      style: "currency",
-                      currency: "IDR",
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    })}
+                  <div className="d-flex justify-content-end fw-bold">
+                    {item?.discount > 0 ? (
+                      <>
+                        <span
+                          style={{
+                            textDecoration: "line-through",
+                            fontSize: "13px",
+                            color: "gray",
+                            position: "absolute",
+                          }}
+                        >
+                          {(item?.price).toLocaleString("en-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          })}
+                        </span>
+                        <h6 className="mt-3 mb-1">
+                          <b>
+                            {(item?.price - (item?.discount / 100) * item?.price).toLocaleString("en-ID", {
+                              style: "currency",
+                              currency: "IDR",
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 0,
+                            })}
+                          </b>
+                        </h6>
+                      </>
+                    ) : (
+                      <h6 className="mb-2 mt-1">
+                        <b>
+                          {(item?.price).toLocaleString("en-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          })}
+                        </b>
+                      </h6>
+                    )}
                   </div>
 
                   {handleButtonPilih()}
@@ -208,7 +252,13 @@ const AccordionItem = (props) => {
                     </b>
                   </h5>
                 </div>
-                <div>{new Date(item?.departure_date).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })}</div>
+                <div>
+                  {new Date(item?.departure_date).toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </div>
                 <div className="fw-bold mb-1">{item?.departure_airport}</div>
               </Col>
               <Col md={6} className="d-flex justify-content-end">
@@ -258,7 +308,9 @@ const AccordionItem = (props) => {
                     </div>
                     <p style={{ margin: 0, fontWeight: "bold" }}>Informasi:</p>
                     {flightFacilities.map((facil) => (
-                      <p style={{ margin: 0, fontWeight: "normal" }}>{facil.name}</p>
+                      <p style={{ margin: 0, fontWeight: "normal" }} key={facil?.id}>
+                        {facil.name}
+                      </p>
                     ))}
                   </div>
                 </div>
@@ -284,7 +336,13 @@ const AccordionItem = (props) => {
                     minute: "2-digit",
                   })}
                 </div>
-                <div>{new Date(item?.arrival_date).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })}</div>
+                <div>
+                  {new Date(item?.arrival_date).toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </div>
                 <div className="fw-bold mb-1">{item?.arrival_airport} </div>
               </Col>
               <Col md={6} className="d-flex justify-content-end">

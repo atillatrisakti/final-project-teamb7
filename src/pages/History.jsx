@@ -26,29 +26,36 @@ function History() {
     const getTransactionData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`${process.env.REACT_APP_API}/customer/transactions`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const transaction = response.data.data;
-        setTransaction(transaction);
-        console.log(transaction);
-
-        const detailPromises = transaction.map(async (transaction) => {
-          const detailResponse = await axios.get(`${process.env.REACT_APP_API}/customer/transactions/${transaction.id}`, {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/customer/transactions`,
+          {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          });
+          }
+        );
+        const transaction = response.data.data;
+        setTransaction(transaction);
+
+        const detailPromises = transaction.map(async (transaction) => {
+          const detailResponse = await axios.get(
+            `${process.env.REACT_APP_API}/customer/transactions/${transaction.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
           const detailData = detailResponse.data.data;
           return detailData;
         });
 
         const detailResults = await Promise.all(detailPromises);
         setDetailTransaction(detailResults);
-        // console.log(detailResults);
-        const passengerCounts = detailResults.map((detailData) => detailData.passengers.length);
+
+        const passengerCounts = detailResults.map(
+          (detailData) => detailData.passengers.length
+        );
         const totalPassengers = passengerCounts.reduce((a, b) => a + b, 0);
         setNumber_passenger(totalPassengers);
       } catch (error) {
@@ -88,10 +95,13 @@ function History() {
           </div>
         </Link>
       </div>
-      {hasOrderHistory ? (
+      {hasOrderHistory && transaction.length > 0 ? (
         transaction.map((transaction, index) => {
           const passengerCounts = detailTransaction[index]?.passengers.length;
-          const discountPrice = detailTransaction[index]?.flight.price - detailTransaction[index]?.flight.price * (detailTransaction[index]?.flight.discount / 100);
+          const discountPrice =
+            detailTransaction[index]?.flight.price -
+            detailTransaction[index]?.flight.price *
+              (detailTransaction[index]?.flight.discount / 100);
 
           const totalPrice = passengerCounts * (discountPrice + discountPrice * (detailTransaction[index]?.flight.tax / 100));
           return (
@@ -106,11 +116,26 @@ function History() {
                   }}
                 >
                   <Card.Body>
-                    <Card className={`history-month ${isCardActive[index] && showOrderDetails[index] ? "active" : ""}`} onClick={() => handleCardClick(transaction.id, index)}>
+                    <Card
+                      className={`history-month ${
+                        isCardActive[index] && showOrderDetails[index]
+                          ? "active"
+                          : ""
+                      }`}
+                      onClick={() => handleCardClick(transaction.id, index)}
+                    >
                       <button
                         className="btn-status"
                         style={{
-                          backgroundColor: transaction?.status === "unpaid" ? "#FF0000" : transaction?.status === "paid" ? "#73CA5C" : transaction?.status === "expired" || transaction?.status === "cancelled" ? "#73706F" : null,
+                          backgroundColor:
+                            transaction?.status === "unpaid"
+                              ? "#FF0000"
+                              : transaction?.status === "paid"
+                              ? "#73CA5C"
+                              : transaction?.status === "expired" ||
+                                transaction?.status === "cancelled"
+                              ? "#73706F"
+                              : null,
                           color: "#FFFFFF",
                           borderRadius: "20px",
                           border: "none",
@@ -131,7 +156,13 @@ function History() {
                           <Col md={4}>
                             <div style={{ display: "flex", alignItems: "top" }}>
                               <div style={{ marginRight: "8px" }}>
-                                <img src={loc} alt="loc" fluid width="24" height="24" />
+                                <img
+                                  src={loc}
+                                  alt="loc"
+                                  fluid
+                                  width="24"
+                                  height="24"
+                                />
                               </div>
                               <div>
                                 <p
@@ -141,7 +172,10 @@ function History() {
                                     fontSize: "16px",
                                   }}
                                 >
-                                  {detailTransaction[index]?.flight.departure_city}
+                                  {
+                                    detailTransaction[index]?.flight
+                                      .departure_city
+                                  }
                                 </p>
                                 <p
                                   style={{
@@ -150,7 +184,11 @@ function History() {
                                     fontSize: "14px",
                                   }}
                                 >
-                                  {new Date(detailTransaction[index]?.flight.departure_date).toLocaleDateString("en-GB", {
+                                  {new Date(
+                                    detailTransaction[
+                                      index
+                                    ]?.flight.departure_date
+                                  ).toLocaleDateString("en-GB", {
                                     day: "numeric",
                                     month: "long",
                                     year: "numeric",
@@ -163,8 +201,14 @@ function History() {
                                     fontSize: "14px",
                                   }}
                                 >
-                                  {new Date(detailTransaction[index]?.flight.departure_date).toLocaleTimeString("id", {
-                                    timeZone: detailTransaction[index]?.flight.departure_city_time_zone,
+                                  {new Date(
+                                    detailTransaction[
+                                      index
+                                    ]?.flight.departure_date
+                                  ).toLocaleTimeString("id", {
+                                    timeZone:
+                                      detailTransaction[index]?.flight
+                                        .departure_city_time_zone,
                                     hour: "2-digit",
                                     minute: "2-digit",
                                   })}
@@ -181,19 +225,70 @@ function History() {
                             >
                               <div>
                                 <span className="d-flex justify-content-center font-count-time">
-                                  {Math.floor((new Date(detailTransaction[index]?.flight.arrival_date).getTime() - new Date(detailTransaction[index]?.flight.departure_date).getTime()) / (1000 * 60 * 60 * 24)) + "d "}
-                                  {Math.floor(((new Date(detailTransaction[index]?.flight.arrival_date).getTime() - new Date(detailTransaction[index]?.flight.departure_date).getTime()) / (1000 * 60 * 60)) % 24) + "h "}
-                                  {Math.floor(((new Date(detailTransaction[index]?.flight.arrival_date).getTime() - new Date(detailTransaction[index]?.flight.departure_date).getTime()) / (1000 * 60)) % 60) + "m"}
+                                  {Math.floor(
+                                    (new Date(
+                                      detailTransaction[
+                                        index
+                                      ]?.flight.arrival_date
+                                    ).getTime() -
+                                      new Date(
+                                        detailTransaction[
+                                          index
+                                        ]?.flight.departure_date
+                                      ).getTime()) /
+                                      (1000 * 60 * 60 * 24)
+                                  ) + "d "}
+                                  {Math.floor(
+                                    ((new Date(
+                                      detailTransaction[
+                                        index
+                                      ]?.flight.arrival_date
+                                    ).getTime() -
+                                      new Date(
+                                        detailTransaction[
+                                          index
+                                        ]?.flight.departure_date
+                                      ).getTime()) /
+                                      (1000 * 60 * 60)) %
+                                      24
+                                  ) + "h "}
+                                  {Math.floor(
+                                    ((new Date(
+                                      detailTransaction[
+                                        index
+                                      ]?.flight.arrival_date
+                                    ).getTime() -
+                                      new Date(
+                                        detailTransaction[
+                                          index
+                                        ]?.flight.departure_date
+                                      ).getTime()) /
+                                      (1000 * 60)) %
+                                      60
+                                  ) + "m"}
                                 </span>
-                                <img src={thinarrow} alt="arrow" className="d-flex justify-content-center" style={{ width: "120px", height: "auto" }} />
-                                <span className="d-flex justify-content-center font-count-time">Direct</span>
+                                <img
+                                  src={thinarrow}
+                                  alt="arrow"
+                                  className="d-flex justify-content-center"
+                                  style={{ width: "120px", height: "auto" }}
+                                />
+                                <span className="d-flex justify-content-center font-count-time">
+                                  Direct
+                                </span>
                               </div>
                             </div>
                           </Col>
                           <Col>
                             <div style={{ display: "flex", alignItems: "top" }}>
                               <div style={{ marginRight: "8px" }}>
-                                <img src={loc} alt="loc" fluid width="24" height="24" />
+                                <img
+                                  src={loc}
+                                  alt="loc"
+                                  fluid
+                                  width="24"
+                                  height="24"
+                                />
                               </div>
                               <div>
                                 <p
@@ -203,7 +298,10 @@ function History() {
                                     fontSize: "16px",
                                   }}
                                 >
-                                  {detailTransaction[index]?.flight.arrival_city}
+                                  {
+                                    detailTransaction[index]?.flight
+                                      .arrival_city
+                                  }
                                 </p>
                                 <p
                                   style={{
@@ -212,7 +310,11 @@ function History() {
                                     fontSize: "14px",
                                   }}
                                 >
-                                  {new Date(detailTransaction[index]?.flight.arrival_date).toLocaleDateString("en-GB", {
+                                  {new Date(
+                                    detailTransaction[
+                                      index
+                                    ]?.flight.arrival_date
+                                  ).toLocaleDateString("en-GB", {
                                     day: "numeric",
                                     month: "long",
                                     year: "numeric",
@@ -225,8 +327,14 @@ function History() {
                                     fontSize: "14px",
                                   }}
                                 >
-                                  {new Date(detailTransaction[index]?.flight.arrival_date).toLocaleTimeString("id", {
-                                    timeZone: detailTransaction[0]?.flight.arrival_city_time_zone,
+                                  {new Date(
+                                    detailTransaction[
+                                      index
+                                    ]?.flight.arrival_date
+                                  ).toLocaleTimeString("id", {
+                                    timeZone:
+                                      detailTransaction[0]?.flight
+                                        .arrival_city_time_zone,
                                     hour: "2-digit",
                                     minute: "2-digit",
                                   })}
@@ -278,7 +386,10 @@ function History() {
                                   fontSize: "14px",
                                 }}
                               >
-                                {detailTransaction[index]?.flight?.airplane_class}
+                                {
+                                  detailTransaction[index]?.flight
+                                    ?.airplane_class
+                                }
                               </p>
                             </div>
                           </Col>
@@ -297,7 +408,14 @@ function History() {
                 </Card>
               </Col>
               {/* ========== Detail Pesanan ========== */}
-              <Col md={6}>{showOrderDetails[index] && <DetailHistory key={transaction.id} selectedTransactionId={selectedTransactionId} />}</Col>
+              <Col md={6}>
+                {showOrderDetails[index] && (
+                  <DetailHistory
+                    key={transaction.id}
+                    selectedTransactionId={selectedTransactionId}
+                  />
+                )}
+              </Col>
             </Row>
           );
         })
