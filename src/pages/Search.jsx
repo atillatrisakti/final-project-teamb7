@@ -12,6 +12,7 @@ import ModalSort from "../components/ModalSort";
 import AccordionAll from "../components/AccordionAll";
 import "../styles/Accordion.css";
 import useWindowSize from "../hooks/useWindowSize";
+import Accordion from "../components/Accordion";
 
 function Search() {
   const size = useWindowSize();
@@ -56,7 +57,7 @@ function Search() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
         );
 
         setFlight(response.data.data);
@@ -67,7 +68,6 @@ function Search() {
       } catch (error) {
         setLoading(false);
         // toast.error(error?.message);
-        console.log(error);
       }
     }
     fetchPost();

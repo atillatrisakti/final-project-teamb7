@@ -69,7 +69,7 @@ const Notification = () => {
       </Container>
       <div style={{ border: "1px solid #D0D0D0", boxShadow: "0px 0px 1px rgba(0, 0, 0, 0.10)" }} />
       <Container className="mt-5 d-flex justify-content-center">
-        <Container className="mx-2 d-flex align-items-center flex-column" style={{ maxWidth: "900px", marginInline: "auto" }}>
+        <Container className="mx-2 " style={{ maxWidth: "900px" }}>
           {detailNotification && detailNotification.length > 0 ? (
             detailNotification.map((item, index) => (
               <div className="notif my-2 w-100" style={{ border: "1px solid #D0D0D0", height: "90px", borderRadius: "12px", padding: "0px 3px" }} key={index}>

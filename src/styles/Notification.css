@@ -16,6 +16,6 @@
 
 @media screen and (max-width: 600px) {
   .notif {
-    margin-left: 10px;
+    height: 100%;
   }
 }

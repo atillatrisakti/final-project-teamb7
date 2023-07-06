@@ -7,6 +7,7 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FcGoogle } from "react-icons/fc";
 import oauth2 from "../utils/OAuth2";
 
 function Login() {
@@ -100,6 +101,20 @@ function Login() {
               <button type="submit" className="w-100 login-button">
                 Masuk
               </button>
+            </Form>
+            <div className=" d-flex justify-content-center">
+              <Form.Text className="text-or my-2">
+                <h6 className="text-muted">
+                  <span>Atau Login Dengan</span>
+                </h6>
+              </Form.Text>
+            </div>
+            <div className="">
+              <Link to={process.env.REACT_APP_API + "/web/customer-auth/oauth"} className="ms-1 text-color fw-bold">
+                <button className="w-100 btn-google ">
+                  <FcGoogle size="20" style={{ marginBottom: "5px" }} /> <b>Google</b>
+                </button>
+              </Link>
               <div className="d-flex justify-content-center mt-3">
                 <Form.Text>
                   Belum punya Akun?
@@ -108,14 +123,7 @@ function Login() {
                   </Link>
                 </Form.Text>
               </div>
-              <div className="d-flex justify-content-center mt-3">
-                <Form.Text>
-                  <Link to={process.env.REACT_APP_API + "/web/customer-auth/oauth"} className="ms-1 text-color fw-bold">
-                    login pake google
-                  </Link>
-                </Form.Text>
-              </div>
-            </Form>
+            </div>
           </div>
         </Col>
       </Row>

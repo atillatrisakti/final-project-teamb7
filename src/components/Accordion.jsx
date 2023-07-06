@@ -8,11 +8,7 @@ function Accordion(props) {
 
   const renderData = () => {
     if (props.loading) {
-      <img
-        src={loadingImg}
-        alt="loading-img"
-        className="d-flex justify-content-center"
-      />;
+      <img src={loadingImg} alt="loading-img" className="d-flex justify-content-center" />;
     } else if (props.flight && props.flight.length > 0) {
       if (props.sortFlight === "Termurah") {
         return props.flight
