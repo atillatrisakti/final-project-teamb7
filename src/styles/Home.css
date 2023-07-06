@@ -2,6 +2,17 @@
   height: 3.1rem;
 }
 
+.carousel-banner {
+  position: "absolute";
+  top: "5.2rem";
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: "center";
+  align-items: "center";
+  border: 1px solid red;
+}
+
 .icon-switch {
   width: 35px;
   height: 35px;
@@ -28,14 +39,30 @@
   color: gray;
 }
 
-/* .button-category {
-  display: "flex";
-  align-items: "center";
-  gap: "10px";
-  padding: "15px";
-  border-radius: "25px";
-} */
+.input-home {
+  width: 100%;
+}
 
-/* .modal {
-  --bs-modal-width: fit-content !important;
-} */
+.card-home {
+  width: 100%;
+}
+
+.card-title-input {
+  display: block;
+}
+
+@media screen and (max-width: 600px) {
+  .input-home {
+    max-width: 100%;
+  }
+
+  .card-title-input {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .input-home {
+    width: 100%;
+  }
+}

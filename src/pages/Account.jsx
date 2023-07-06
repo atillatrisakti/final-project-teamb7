@@ -40,9 +40,9 @@ function Account(props) {
 
       const response = await axios.request(config);
       if (response.status === 200) {
-        toast.success("Berhasil edit profil!");
         // navigate("/");
         window.location.href = "/";
+        toast.success("Berhasil edit profil!");
       }
 
       console.log(response);
@@ -67,25 +67,27 @@ function Account(props) {
       <div style={{ border: "1px solid #D0D0D0", boxShadow: "0px 0px 1px rgba(0, 0, 0, 0.10)" }} />
       <Container className="mt-4">
         <Row>
-          <Col md={6} className="">
-            <div className="mb-3">
-              <img src={edit} alt="edit" className="me-2" />
-              <span>Ubah Profil</span>
-            </div>
-            <div className="mb-3">
-              <img src={settings} alt="setting" className="me-2" />
-              <span>Pengaturan</span>
-            </div>
-            <div
-              onClick={() => {
-                localStorage.removeItem("token");
-                props.isLoggedIn(false);
-                return navigate("/");
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              <img src={logout} alt="logout" className="me-2" />
-              <span>Keluar</span>
+          <Col md={6} className="d-flex justify-content-center">
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div className="mb-3">
+                <img src={edit} alt="edit" className="me-2" />
+                <span>Ubah Profil</span>
+              </div>
+              <div className="mb-3">
+                <img src={settings} alt="setting" className="me-2" />
+                <span>Pengaturan</span>
+              </div>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  props.isLoggedIn(false);
+                  return navigate("/");
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <img src={logout} alt="logout" className="me-2" />
+                <span>Keluar</span>
+              </div>
             </div>
           </Col>
 

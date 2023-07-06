@@ -33,7 +33,7 @@ function Register() {
       toast.warning("Password dan konfirmasi password harus sama!");
     }
 
-    if (password.length <= 8) {
+    if (password.length < 8) {
       toast.warning("Password minimal terdiri dari 8 karakter!");
     }
 
@@ -59,8 +59,9 @@ function Register() {
       const response = await axios.request(config);
 
       if (response.status === 200) {
-        toast.success("Registrasi Berhasil!");
-        navigate("/login");
+        // redirect(response.data.data.url);
+        navigate(`${response.data.data.url}`);
+        // <Navigate to=response.data.data.url replace={true} />;
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -99,40 +100,44 @@ function Register() {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Buat Password</Form.Label>
-                <Form.Control type={showPassword ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} required />
-                <Form.Control.Feedback type="invalid">Silahkan Masukkan Password Anda</Form.Control.Feedback>
-                <span
-                  className=" position-absolute  translate-middle-y"
-                  style={{
-                    // height: "30px",
-                    border: "none",
-                    backgroundColor: "transparent",
-                    cursor: "pointer",
-                    right: "120px",
-                    top: " 448px",
-                  }}
-                  onClick={() => setShowPassword((showPassword) => !showPassword)}
-                >
-                  <IconContext.Provider value={{ size: "20px" }}>{showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
-                </span>
+                <div className="position-relative">
+                  <Form.Control type={showPassword ? "text" : "password"} placeholder="Buat Password" style={{ height: "50px" }} value={password} onChange={(e) => setPassword(e.target.value)} required />
+                  <Form.Control.Feedback type="invalid">Silahkan Masukkan Password Anda</Form.Control.Feedback>
+                  <span
+                    className=" position-absolute  translate-middle-y "
+                    style={{
+                      // height: "30px",
+                      border: "none",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                      right: "16px",
+                      top: " 50%",
+                    }}
+                    onClick={() => setShowPassword((showPassword) => !showPassword)}
+                  >
+                    <IconContext.Provider value={{ size: "20px" }}>{showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
+                  </span>
+                </div>
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label>Konfirmasi Password</Form.Label>
-                <Form.Control type="password" placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} required />
-                <span
-                  className=" position-absolute  translate-middle-y"
-                  style={{
-                    // height: "30px",
-                    border: "none",
-                    backgroundColor: "transparent",
-                    cursor: "pointer",
-                    right: "120px",
-                    top: "564px",
-                  }}
-                  onClick={() => setShowConfirm((showConfirm) => !showConfirm)}
-                >
-                  <IconContext.Provider value={{ size: "20px" }}>{showConfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
-                </span>
+                <div className="position-relative">
+                  <Form.Control type={showConfirm ? "text" : "password"} placeholder="Konfirmasi Password" style={{ height: "50px" }} value={password_confirmation} onChange={(e) => setPassword_Confirmation(e.target.value)} required />
+                  <span
+                    className=" position-absolute  translate-middle-y "
+                    style={{
+                      // height: "30px",
+                      border: "none",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                      right: "16px",
+                      top: "50%",
+                    }}
+                    onClick={() => setShowConfirm((showConfirm) => !showConfirm)}
+                  >
+                    <IconContext.Provider value={{ size: "20px" }}>{showConfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}</IconContext.Provider>
+                  </span>
+                </div>
               </Form.Group>
               <button type="submit" className="w-100 regis-button">
                 Daftar

@@ -122,7 +122,7 @@ function DatePicker({ isDisabled, setIsDisabled }) {
             className="form-input"
           />
         </Col>
-        <Col md={1} className="ps-0">
+        <Col xs={2} md={1} className="ps-0">
           <Form.Check // prettier-ignore
             type="switch"
             id="custom-switch"
@@ -140,9 +140,10 @@ function DatePicker({ isDisabled, setIsDisabled }) {
         onHide={handleCloseDate}
         style={{
           display: "block",
-          marginLeft: "18.8%",
-          marginTop: "13.5%",
-          width: "fit-content",
+          // marginLeft: "18.8%",
+          // marginTop: "13.5%",
+          width: "max-content",
+          background: "red",
         }}
         size="lg"
       >

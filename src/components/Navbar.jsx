@@ -23,7 +23,7 @@ function Navbarr(props) {
         </Navbar.Brand>
 
         {isLoggedIn ? (
-          <Navbar.Collapse id="navbarScroll" className="d-flex justify-content-end gap-2">
+          <Navbar id="navbarScroll" className="d-flex justify-content-end gap-2">
             <Link to={"/history"} style={{ textDecoration: "none" }}>
               <button style={{ border: "none", background: "none" }}>
                 <img src={list} alt="list" />
@@ -39,15 +39,15 @@ function Navbarr(props) {
                 <img src={user} alt="user" />
               </Link>
             </button>
-          </Navbar.Collapse>
+          </Navbar>
         ) : (
-          <Navbar.Collapse id="navbarScroll" className="d-flex justify-content-end">
+          <Navbar id="navbarScroll" className="d-flex justify-content-end">
             <Link to={"/login"} style={{ textDecoration: "none" }}>
               <button className="login_button">
                 <img src={login} alt="login-logo" /> Masuk
               </button>
             </Link>
-          </Navbar.Collapse>
+          </Navbar>
         )}
       </Container>
     </Navbar>
