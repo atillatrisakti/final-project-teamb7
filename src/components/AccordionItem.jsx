@@ -259,7 +259,6 @@ const AccordionItem = (props) => {
                   {handleButtonPilih()}
                 </div>
               </div>
-                        
             </div>
           </Container>
         </Card>
