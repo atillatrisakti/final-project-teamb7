@@ -27,7 +27,7 @@
 
 .arrow-divider {
   position: absolute;
-  right: 0px;
+  right: -6px;
   top: 50%;
   transform: translateY(-50%);
 }
