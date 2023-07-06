@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Search.css";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-function ModalSort({ sort, setSort }) {
+function ModalSort({ sortFlight, setSortFlight }) {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
@@ -14,7 +14,7 @@ function ModalSort({ sort, setSort }) {
   const departureAirportId = queryParams.get("departure_airport_id");
   const destinationAirportId = queryParams.get("destination_airport_id");
   const departureDate = queryParams.get("departure_date");
-  const endDate = queryParams.get("end_date");
+  const returnDate = queryParams.get("return_date");
   const numberPassenger = queryParams.get("number_passenger");
   const seatClass = queryParams.get("class_id");
   const isPromo = queryParams.get("is_promo");
@@ -27,7 +27,6 @@ function ModalSort({ sort, setSort }) {
           `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
         );
         setFlight(response.data.data);
-        // console.log(response.data.data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -36,16 +35,17 @@ function ModalSort({ sort, setSort }) {
     }
     getListFlight();
   }, []);
-  // console.log("flighttter", flight);
 
   function handleChange(e) {
-    setSort(e.target.value);
+    setSortFlight(e.target.value);
   }
 
   return (
-    <select value={sort} onChange={handleChange}>
+    <select value={sortFlight} onChange={handleChange}>
       <option value="Termurah">Termurah</option>
       <option value="Termahal">Termahal</option>
+      <option value="Awal">Keberangkatan Paling Awal</option>
+      <option value="Akhir">Keberangkatan Paling Akhir</option>
     </select>
   );
 }

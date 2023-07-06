@@ -12,7 +12,7 @@
 }
 
 .change-search {
-  width: 220px;
+  width: 250px;
   height: 47px;
   background: #388822;
   border: none;
@@ -23,12 +23,13 @@
 }
 
 .date-css {
-  border-right: 1px solid rgb(184, 184, 184);
-  border-left: 1px solid rgb(184, 184, 184);
-  gap: 20px;
+  /* border-right: 1px solid rgb(184, 184, 184);
+  border-left: 1px solid rgb(184, 184, 184); */
+  gap: 10px;
   align-items: flex-start;
   cursor: pointer;
   margin-bottom: 20px;
+  /* background: #1b3260; */
 }
 
 .sort-btn {
@@ -69,4 +70,8 @@
   border-radius: 12px;
   background: #1b3260;
   color: white;
+}
+
+.btn.date:active {
+  background-color: #ffffff;
 }

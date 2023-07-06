@@ -18,7 +18,6 @@ function SeatClasses() {
         `${process.env.REACT_APP_API}/web/classes`
       );
       const data = response.data.data;
-      console.log(data);
       setSeatClass(data);
       setIdSeatClass(data[0].id);
       setSelectedClass(data[0].name);
@@ -47,7 +46,6 @@ function SeatClasses() {
           data-id={idSeatClass}
           placeholder="Kelas Kabin"
           value={selectedClass}
-          // ? selectedClass : seatClass[0]?.name}
           name="seat_class"
           className="form-input"
           onClick={handleShowClass}
