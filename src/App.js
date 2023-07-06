@@ -90,10 +90,7 @@ function App() {
             </Protected>
           }
         />
-        <Route
-          path="/account"
-          element={<Account isLoggedIn={setIsLoggedIn} />}
-        />
+        <Route path="/account" element={<Account isLoggedIn={setIsLoggedIn} />} />
         <Route
           path="/notification"
           element={

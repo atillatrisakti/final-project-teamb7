@@ -17,9 +17,7 @@ const AccordionItem = (props) => {
   useEffect(() => {
     async function getFlightFacilities() {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/facilities`
-        );
+        const response = await axios.get(`${process.env.REACT_APP_API}/web/facilities`);
         setFlightFacilities(response.data.data);
       } catch (error) {
         toast.error(error?.message);
@@ -51,9 +49,7 @@ const AccordionItem = (props) => {
           style={{ float: "right" }}
           className="btn-pilih"
           onClick={() => {
-            navigate(
-              `/booking/${props.departureFlightId}/${props.numberPassenger}/${item?.id}/${props.returnDate}`
-            );
+            navigate(`/booking/${props.departureFlightId}/${props.numberPassenger}/${item?.id}/${props.returnDate}`);
           }}
         >
           Pilih
@@ -76,21 +72,12 @@ const AccordionItem = (props) => {
               }}
             >
               <div>
-                <img
-                  src={item?.airplane_logo}
-                  alt="plane-logo"
-                  fluid
-                  width="35"
-                  className="ms-1"
-                  style={{ float: "left" }}
-                />
+                <img src={item?.airplane_logo} alt="plane-logo" fluid width="35" className="ms-1" style={{ float: "left" }} />
                 <p className="mt-1 ms-5">
                   {item?.airplane_name} - {item?.airplane_class}
                 </p>
               </div>
-              <div
-                style={{ display: "flex", gap: "4px", alignItems: "center" }}
-              >
+              <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
                 {item?.discount > 0 ? (
                   <span
                     className="discont-flight"
@@ -139,53 +126,23 @@ const AccordionItem = (props) => {
                 </div>
                 <div className="">
                   <span className="d-flex justify-content-center font-count-time">
-                    {Math.floor(
-                      (new Date(item?.arrival_date).getTime() -
-                        new Date(item?.departure_date).getTime()) /
-                        (1000 * 60 * 60 * 24)
-                    ) > 0 ? (
+                    {Math.floor((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60 * 24)) > 0 ? (
                       <span>
-                        {Math.floor(
-                          (new Date(item?.arrival_date).getTime() -
-                            new Date(item?.departure_date).getTime()) /
-                            (1000 * 60 * 60 * 24)
-                        ) + "d "}
-                        {Math.floor(
-                          ((new Date(item?.arrival_date).getTime() -
-                            new Date(item?.departure_date).getTime()) /
-                            (1000 * 60 * 60)) %
-                            24
-                        ) + "h "}
-                        {Math.floor(
-                          ((new Date(item?.arrival_date).getTime() -
-                            new Date(item?.departure_date).getTime()) /
-                            (1000 * 60)) %
-                            60
-                        ) + "m"}
+                        {Math.floor((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60 * 24)) + "d "}
+                        {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60)) % 24) + "h "}
+                        {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60)) % 60) + "m"}
                       </span>
                     ) : (
                       <span>
-                        {Math.floor(
-                          ((new Date(item?.arrival_date).getTime() -
-                            new Date(item?.departure_date).getTime()) /
-                            (1000 * 60 * 60)) %
-                            24
-                        ) + "h "}
-                        {Math.floor(
-                          ((new Date(item?.arrival_date).getTime() -
-                            new Date(item?.departure_date).getTime()) /
-                            (1000 * 60)) %
-                            60
-                        ) + "m"}
+                        {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60)) % 24) + "h "}
+                        {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60)) % 60) + "m"}
                       </span>
                     )}
                   </span>
                   <div className="divider">
                     <IoIosArrowForward className="arrow-divider" />
                   </div>
-                  <span className="d-flex justify-content-center font-count-time">
-                    Direct
-                  </span>
+                  <span className="d-flex justify-content-center font-count-time">Direct</span>
                 </div>
                 <div className="d-flex align-items-center font-title">
                   <div className="fw-bold">
@@ -202,12 +159,7 @@ const AccordionItem = (props) => {
               {/* right */}
               <div className=" gap-2 accordion-below-right">
                 <div md="auto" className="d-flex align-items-center ps-0">
-                  <Icon
-                    icon="icon-park-outline:baggage-delay"
-                    color="#1b3260"
-                    width="25"
-                    height="25"
-                  />
+                  <Icon icon="icon-park-outline:baggage-delay" color="#1b3260" width="25" height="25" />
                 </div>
                 <div className="ms-1 pe-0">
                   <div className="d-flex justify-content-end fw-bold">
@@ -230,10 +182,7 @@ const AccordionItem = (props) => {
                         </span>
                         <h6 className="mt-3 mb-1">
                           <b>
-                            {(
-                              item?.price -
-                              (item?.discount / 100) * item?.price
-                            ).toLocaleString("en-ID", {
+                            {(item?.price - (item?.discount / 100) * item?.price).toLocaleString("en-ID", {
                               style: "currency",
                               currency: "IDR",
                               minimumFractionDigits: 0,
@@ -296,9 +245,7 @@ const AccordionItem = (props) => {
               </Col>
               <Col md={6} className="d-flex justify-content-end">
                 <div>
-                  <p style={{ color: "#315bb0", fontWeight: "700" }}>
-                    Keberangkatan
-                  </p>
+                  <p style={{ color: "#315bb0", fontWeight: "700" }}>Keberangkatan</p>
                 </div>
               </Col>
             </Row>
@@ -317,12 +264,7 @@ const AccordionItem = (props) => {
               <div>
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <div style={{ marginRight: "18px", marginBottom: "20px" }}>
-                    <img
-                      src={item?.airplane_logo}
-                      alt="info"
-                      fluid
-                      width="30"
-                    />
+                    <img src={item?.airplane_logo} alt="info" fluid width="30" />
                   </div>
                   <div>
                     <p
@@ -348,10 +290,7 @@ const AccordionItem = (props) => {
                     </div>
                     <p style={{ margin: 0, fontWeight: "bold" }}>Informasi:</p>
                     {flightFacilities.map((facil) => (
-                      <p
-                        style={{ margin: 0, fontWeight: "normal" }}
-                        key={facil?.id}
-                      >
+                      <p style={{ margin: 0, fontWeight: "normal" }} key={facil?.id}>
                         {facil.name}
                       </p>
                     ))}
@@ -390,9 +329,7 @@ const AccordionItem = (props) => {
               </Col>
               <Col md={6} className="d-flex justify-content-end">
                 <div>
-                  <p style={{ color: "#315bb0", fontWeight: "700" }}>
-                    Kedatangan
-                  </p>
+                  <p style={{ color: "#315bb0", fontWeight: "700" }}>Kedatangan</p>
                 </div>
               </Col>
             </Row>

@@ -78,6 +78,19 @@ function Booking() {
     return `${year}-${month}-${day}`;
   };
 
+  // remove localStorage item flow and path
+  useEffect(() => {
+    const removeLocalStorage = async () => {
+      try {
+       localStorage.removeItem('flow');
+       localStorage.removeItem('path');
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    removeLocalStorage();
+  }, []);
+
   //get countries
   useEffect(() => {
     const getcountries = async () => {

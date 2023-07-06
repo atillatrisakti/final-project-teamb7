@@ -11,6 +11,7 @@ import ModalSort from "../components/ModalSort";
 import AccordionAll from "../components/AccordionAll";
 import "../styles/Accordion.css";
 import useWindowSize from "../hooks/useWindowSize";
+import Accordion from "../components/Accordion";
 
 function Search() {
   const size = useWindowSize();
@@ -79,17 +80,12 @@ function Search() {
       <Container className="mt-4">
         <Row className="d-flex justify-content-center">
           <Col md={9} xs={12} lg={9}>
-            <div
-              className="flight-desc"
-              onClick={() => {}}
-              style={{ cursor: "pointer" }}
-            >
+            <div className="flight-desc" onClick={() => {}} style={{ cursor: "pointer" }}>
               <Link to={"/"}>
                 <img src={arrow} alt="left-arrow" className="mb-1" />
               </Link>
               <span>
-                {departureAirportCode} - {arrivalAirportCode} -{" "}
-                {numberPassenger} Penumpang - {airplaneClass}
+                {departureAirportCode} - {arrivalAirportCode} - {numberPassenger} Penumpang - {airplaneClass}
               </span>
             </div>
           </Col>
@@ -101,14 +97,10 @@ function Search() {
         </Row>
 
         {/* DATE ON TOP */}
-        {getThisWeekDates(new Date(departureDate)).length > 0 &&
-        size.width > 600 ? (
+        {getThisWeekDates(new Date(departureDate)).length > 0 && size.width > 600 ? (
           <Row className="my-4 d-flex align-items-center bg-dark rounded-4 me-5">
             {getThisWeekDates(new Date(departureDate)).map((item) => (
-              <Col
-                md="auto"
-                className="d-flex justify-content-center date-css mx-auto mb-2 my-1"
-              >
+              <Col md="auto" className="d-flex justify-content-center date-css mx-auto mb-2 my-1">
                 <Button
                   variant="dark"
                   onClick={() => {
@@ -118,9 +110,7 @@ function Search() {
                       year: "numeric",
                     });
 
-                    navigate(
-                      `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${dateTop}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
-                    );
+                    navigate(`/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${dateTop}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`);
                   }}
                   className="btn-date"
                   style={{
@@ -148,11 +138,7 @@ function Search() {
               {getThisWeekDates(new Date(departureDate))
                 .slice(0, 3)
                 .map((item) => (
-                  <Col
-                    xs={3}
-                    md="auto"
-                    className="d-flex justify-content-center date-css mx-auto mb-2 my-1"
-                  >
+                  <Col xs={3} md="auto" className="d-flex justify-content-center date-css mx-auto mb-2 my-1">
                     <Button
                       variant="dark"
                       onClick={(e) => {
@@ -162,9 +148,7 @@ function Search() {
                           year: "numeric",
                         });
 
-                        navigate(
-                          `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${dateTop}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
-                        );
+                        navigate(`/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${dateTop}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`);
                       }}
                       className="btn-date"
                       style={{
@@ -197,46 +181,22 @@ function Search() {
           <Col sm={12} md={4}>
             <div className="filter">
               <h5 className="mb-4">Filter</h5>
-              <div
-                className="transit"
-                onClick={() => {}}
-                style={{ cursor: "pointer" }}
-              >
+              <div className="transit" onClick={() => {}} style={{ cursor: "pointer" }}>
                 <img src={box} alt="transit" className="me-2" />
                 Transit
-                <img
-                  src={rightarrow}
-                  alt="right-arrow"
-                  style={{ float: "right" }}
-                />
+                <img src={rightarrow} alt="right-arrow" style={{ float: "right" }} />
               </div>
               <hr />
-              <div
-                className="facility"
-                onClick={() => {}}
-                style={{ cursor: "pointer" }}
-              >
+              <div className="facility" onClick={() => {}} style={{ cursor: "pointer" }}>
                 <img src={love} alt="facility" className="me-2" />
                 Fasilitas
-                <img
-                  src={rightarrow}
-                  alt="right-arrow"
-                  style={{ float: "right" }}
-                />
+                <img src={rightarrow} alt="right-arrow" style={{ float: "right" }} />
               </div>
               <hr />
-              <div
-                className="price"
-                onClick={() => {}}
-                style={{ cursor: "pointer" }}
-              >
+              <div className="price" onClick={() => {}} style={{ cursor: "pointer" }}>
                 <img src={dollar} alt="price" className="me-2" />
                 Harga
-                <img
-                  src={rightarrow}
-                  alt="right-arrow"
-                  style={{ float: "right" }}
-                />
+                <img src={rightarrow} alt="right-arrow" style={{ float: "right" }} />
               </div>
             </div>
           </Col>

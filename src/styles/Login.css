@@ -9,6 +9,14 @@
   color: white;
 }
 
+.btn-google {
+  border: none;
+  border-radius: 12px;
+  height: 45px;
+  background-color: #e5edfe;
+  color: black;
+}
+
 .text-color {
   text-decoration: none;
   color: #6e76e2;

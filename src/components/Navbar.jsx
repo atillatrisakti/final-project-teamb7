@@ -23,7 +23,7 @@ function Navbarr(props) {
         </Navbar.Brand>
 
         {isLoggedIn ? (
-          <Navbar id="navbarScroll" className="d-flex justify-content-end gap-2">
+          <Navbar id="navbarScroll" className="d-flex justify-content-end gap-1">
             <Link to={"/history"} style={{ textDecoration: "none" }}>
               <button style={{ border: "none", background: "none" }}>
                 <img src={list} alt="list" />
