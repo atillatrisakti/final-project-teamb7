@@ -13,3 +13,9 @@
   gap: 8px;
   cursor: pointer;
 }
+
+@media screen and (max-width: 600px) {
+  .notif {
+    margin-left: 10px;
+  }
+}

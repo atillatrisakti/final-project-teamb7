@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../styles/Search.css";
 import arrow from "../assets/search/fi_arrow-left.svg";
@@ -16,6 +16,7 @@ import "../styles/Accordion.css";
 import axios from "axios";
 
 function Search() {
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   // console.log(queryParams.get("departure_airport_id"));
@@ -60,6 +61,7 @@ function Search() {
       } catch (error) {
         setLoading(false);
         // toast.error(error?.message);
+        console.log(error);
       }
     }
     fetchPost();
