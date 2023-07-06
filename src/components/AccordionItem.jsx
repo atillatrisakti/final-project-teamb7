@@ -84,102 +84,105 @@ const AccordionItem = (props) => {
 
   return (
     <>
-      <div className="accordion-title" key={props.index}>
-        <Card style={{ height: "127px", width: "750px" }} className="mt-2">
+      <div className="accordion-title" style={{ width: "100%" }} key={props.index}>
+        <Card className="mt-2 card-flight">
           <Row>
-            <Col md={6}>
-              <div className="list-flight">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
                 <img src={item?.airplane_logo} alt="plane-logo" fluid width="35" className="ms-1" style={{ float: "left" }} />
                 <p className="mt-1 ms-5">
                   {item?.airplane_name} - {item?.airplane_class}
                 </p>
               </div>
-            </Col>
-            <Col md={5} className="d-flex justify-content-end align-items-center pe-0 text-light">
-              {item?.discount > 0 ? (
-                <span
-                  style={{
-                    borderRadius: "30px",
-                    padding: "4px",
-                    paddingRight: "8px",
-                    paddingLeft: "8px",
-                    fontWeight: "bold",
-                    background: "red",
+              <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                {item?.discount > 0 ? (
+                  <span
+                    className="discont-flight"
+                    style={{
+                      borderRadius: "30px",
+                      padding: "4px",
+                      paddingRight: "8px",
+                      paddingLeft: "8px",
+                      fontWeight: "bold",
+                      background: "red",
+                    }}
+                  >
+                    <b>{item?.discount + "% OFF"}</b>
+                  </span>
+                ) : null}
+                <img
+                  src={arrowAccor}
+                  alt="arrowaccor"
+                  fluid
+                  width="30"
+                  style={{ float: "right", cursor: "pointer" }}
+                  className=""
+                  onClick={(e) => {
+                    // e.preventDefault();
+                    // e.target.value();
+                    setIsActive(!isActive);
                   }}
-                >
-                  <b>{item?.discount + "% OFF"}</b>
-                </span>
-              ) : (
-                <div></div>
-              )}
-            </Col>
-            <Col md={1}>
-              <img
-                src={arrowAccor}
-                alt="arrowaccor"
-                fluid
-                width="30"
-                style={{ float: "right", cursor: "pointer" }}
-                className="me-2 mt-2"
-                onClick={(e) => {
-                  // e.preventDefault();
-                  // e.target.value();
-                  setIsActive(!isActive);
-                }}
-              />
-            </Col>
+                />
+              </div>
+            </div>
           </Row>
           <Container>
-            <Row>
-              <Col md={2} className="d-flex align-items-center">
-                <div className="ms-4 fw-bold">
-                  {new Date(item?.departure_date).toLocaleTimeString("id", {
-                    timeZone: item?.departure_city_time_zone,
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                  <br />
-                  {item?.departure_airport_code}
+            <div className="accordion-below">
+              {/* left */}
+              <div className="accordion-below-left gap-3">
+                <div className="d-flex align-items-center">
+                  <div className="ms-4 fw-bold">
+                    {new Date(item?.departure_date).toLocaleTimeString("id", {
+                      timeZone: item?.departure_city_time_zone,
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                    <br />
+                    {item?.departure_airport_code}
+                  </div>
                 </div>
-              </Col>
-              <Col md={4} className="d-flex justify-content-center align-items-center">
                 <div>
                   <span className="d-flex justify-content-center font-count-time">
                     {Math.floor((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60 * 24)) + "d "}
                     {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60 * 60)) % 24) + "h "}
                     {Math.floor(((new Date(item?.arrival_date).getTime() - new Date(item?.departure_date).getTime()) / (1000 * 60)) % 60) + "m"}
                   </span>
-                  <img src={arrow} alt="arrow" className="d-flex justify-content-center" />
+                  <div className="divider">
+                    <div className="arrow-divider" />
+                  </div>
                   <span className="d-flex justify-content-center font-count-time">Direct</span>
                 </div>
-              </Col>
-              <Col md={2} className="ps-5 pe-0 ms-1 d-flex align-items-center">
-                <div className="fw-bold">
-                  {new Date(item?.arrival_date).toLocaleTimeString("id", {
-                    timeZone: item?.arrival_city_time_zone,
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                  <br />
-                  {item?.arrival_airport_code}
+                <div className="d-flex align-items-center">
+                  <div className="fw-bold">
+                    {new Date(item?.arrival_date).toLocaleTimeString("id", {
+                      timeZone: item?.arrival_city_time_zone,
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                    <br />
+                    {item?.arrival_airport_code}
+                  </div>
                 </div>
-              </Col>
-              <Col md="auto" className="d-flex align-items-center ps-0">
-                <Icon icon="icon-park-outline:baggage-delay" color="#1b3260" width="25" height="25" />
-              </Col>
-              <Col md={3} className="ms-1 pe-0">
-                <div className="d-flex justify-content-end fw-bold">
-                  {(item?.price).toLocaleString("en-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  })}
+              </div>
+              {/* right */}
+              <div className=" gap-2 accordion-below-right">
+                <div md="auto" className="d-flex align-items-center ps-0">
+                  <Icon icon="icon-park-outline:baggage-delay" color="#1b3260" width="25" height="25" />
                 </div>
+                <div className="ms-1 pe-0">
+                  <div className="d-flex justify-content-end fw-bold">
+                    {(item?.price).toLocaleString("en-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    })}
+                  </div>
 
-                {handleButtonPilih()}
-              </Col>
-            </Row>
+                  {handleButtonPilih()}
+                </div>
+              </div>
+            </div>
           </Container>
         </Card>
       </div>

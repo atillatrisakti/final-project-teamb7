@@ -40,9 +40,9 @@ function Account(props) {
 
       const response = await axios.request(config);
       if (response.status === 200) {
-        toast.success("Berhasil edit profil!");
         // navigate("/");
         window.location.href = "/";
+        toast.success("Berhasil edit profil!");
       }
 
       console.log(response);
@@ -69,11 +69,11 @@ function Account(props) {
         <Row>
           <Col md={6} className="d-flex justify-content-center">
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <div className="mb-3" style={{ borderBottom: "1px solid #D0D0D0" }}>
+              <div className="mb-3">
                 <img src={edit} alt="edit" className="me-2" />
                 <span>Ubah Profil</span>
               </div>
-              <div className="mb-3" style={{ borderBottom: "1px solid #D0D0D0" }}>
+              <div className="mb-3">
                 <img src={settings} alt="setting" className="me-2" />
                 <span>Pengaturan</span>
               </div>
@@ -83,7 +83,7 @@ function Account(props) {
                   props.isLoggedIn(false);
                   return navigate("/");
                 }}
-                style={{ cursor: "pointer", borderBottom: "1px solid #D0D0D0" }}
+                style={{ cursor: "pointer" }}
               >
                 <img src={logout} alt="logout" className="me-2" />
                 <span>Keluar</span>

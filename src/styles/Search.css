@@ -70,3 +70,22 @@
   background: #1b3260;
   color: white;
 }
+
+.card-flight {
+  width: 100%;
+  border: 1px solid red;
+}
+
+/* Styles for mobile devices */
+/* @media screen and (max-width: 767px) {
+  .card-flight {
+    width: 100%;
+  }
+}
+
+/* Styles for tablet devices */
+/* @media screen and (min-width: 768px) and (max-width: 1023px) {
+  .card-flight {
+    max-width: 500px;
+  }
+} */

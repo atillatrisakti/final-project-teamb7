@@ -47,7 +47,7 @@ function Search() {
         // console.log("endDate = ", endDate);
         // console.log("departureDate = ", departureDate);
         const response = await axios.get(
-          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
+          `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}}`
         );
         // console.log(response.data.data);
 
@@ -71,7 +71,7 @@ function Search() {
 
       <Container className="mt-4">
         <Row className="d-flex justify-content-center">
-          <Col sm={9}>
+          <Col md={9} xs={12} lg={9}>
             <div className="flight-desc" onClick={() => {}} style={{ cursor: "pointer" }}>
               <Link to={"/"}>
                 <img src={arrow} alt="left-arrow" className="mb-1" />
@@ -81,7 +81,7 @@ function Search() {
               </span>
             </div>
           </Col>
-          <Col sm={2}>
+          <Col md={2} xs={12} lg={3}>
             <Link to={"/"}>
               <button className="change-search">Ubah Pencarian</button>
             </Link>
@@ -120,7 +120,7 @@ function Search() {
           </Col>
         </Row>
         <Row className="mt-4">
-          <Col md={4}>
+          <Col sm={12} md={4}>
             <div className="filter">
               <h5 className="mb-4">Filter</h5>
               <div className="transit" onClick={() => {}} style={{ cursor: "pointer" }}>
@@ -142,19 +142,19 @@ function Search() {
               </div>
             </div>
           </Col>
-          <Col md={6}>
-            <div className="accordion mb-5">
-              <Accordion
-                sort={sort}
-                // departureAirportId={departureAirportId}
-                // destinationAirportId={destinationAirportId}
-                // departureDate={departureDate}
-                // numberPassenger={numberPassenger}
-                // seatClass={seatClass}
-                // isPromo={isPromo}
-              />
-            </div>
-          </Col>
+          {/* <Col sm={12} md={6}> */}
+          <div className="col-12 col-md-6 w-full mb-5">
+            <Accordion
+              sort={sort}
+              // departureAirportId={departureAirportId}
+              // destinationAirportId={destinationAirportId}
+              // departureDate={departureDate}
+              // numberPassenger={numberPassenger}
+              // seatClass={seatClass}
+              // isPromo={isPromo}
+            />
+          </div>
+          {/* </Col> */}
         </Row>
       </Container>
     </Container>
