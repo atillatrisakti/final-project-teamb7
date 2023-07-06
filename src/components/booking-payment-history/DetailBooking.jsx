@@ -8,7 +8,7 @@ function DetailBooking() {
   const [detailDepartureFlight, setDetailDepartureFlight] = useState([]);
   const [detailReturnFlight, setDetailReturnFlight] = useState([]);
   const [depature_id, setDeparture_id] = useState();
-  const [return_id, setReturn_id] = useState(); 
+  const [return_id, setReturn_id] = useState();
   const [seats_id, setSeats_id] = useState();
   const [facilities, setFacilities] = useState([]);
   const params = useParams();

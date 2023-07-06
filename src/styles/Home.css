@@ -3,14 +3,14 @@
 }
 
 .carousel-banner {
-  position: "absolute";
-  top: "5.2rem";
-  left: 0;
-  right: 0;
-  bottom: 0;
-  justify-content: "center";
-  align-items: "center";
-  border: 1px solid red;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-flight-form {
+  width: 100%;
+  margin-top: -160px;
 }
 
 .icon-switch {
@@ -43,12 +43,24 @@
   width: 100%;
 }
 
+.date-modal {
+  width: max-content;
+  top: 800px;
+  left: 0;
+  /* transform: translateX(-50%); */
+}
+
 .card-home {
   width: 100%;
 }
 
 .card-title-input {
   display: block;
+}
+
+.card-promo {
+  border-radius: 10px;
+  width: 228px;
 }
 
 @media screen and (max-width: 600px) {
@@ -58,6 +70,16 @@
 
   .card-title-input {
     display: none;
+  }
+
+  .search-flight-form {
+    width: 100%;
+    margin-top: 0px;
+  }
+
+  .card-promo {
+    border-radius: 10px;
+    width: 100%;
   }
 }
 

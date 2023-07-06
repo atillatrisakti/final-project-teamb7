@@ -110,7 +110,7 @@ function Home() {
           ))}
       </Carousel>
 
-      <div style={{ width: "100%", marginTop: "-160px" }}>
+      <div className="search-flight-form">
         <Container>
           <Row>
             <Col>
@@ -253,7 +253,7 @@ function Home() {
             </Col>
             {destinationPromos &&
               destinationPromos.map((promo) => (
-                <Col sm="auto" md="auto" lg="auto" className="px-2" key={promo?.id}>
+                <Col xs={12} md="auto" lg="auto" className="px-2" key={promo?.id}>
                   <Link
                     to={`/search?departure_airport_id=${promo?.departure_airport_id}&destination_airport_id=${promo?.arrival_airport_id}&departure_date=${new Date(promo?.departure_date).toLocaleDateString("en-CA", {
                       day: "2-digit",
@@ -262,7 +262,7 @@ function Home() {
                     })}&number_passenger=1&class_id=1&is_promo=${!isPromo}`}
                     style={{ textDecoration: "none", borderColor: "black" }}
                   >
-                    <Card className="mb-3 shadow" style={{ borderRadius: "10px", width: "228px" }}>
+                    <Card className="mb-3 shadow card-promo">
                       <img
                         src={promo?.arrival_city_image}
                         alt="destination"

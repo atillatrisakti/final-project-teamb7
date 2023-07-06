@@ -34,11 +34,6 @@ const AccordionItem = (props) => {
           className="btn-pilih"
           onClick={() => {
             if (props.returnDate) {
-              // console.log("else item_is = ", item?.id);
-              // console.log("if endDate = ", endDate);
-              // console.log("if departureDate = ", departureDate);
-              // console.log("if departureFlightId = ", departureFlightId);
-
               window.location.href = `/search?departure_airport_id=${props.departureAirportId}&destination_airport_id=${props.destinationAirportId}&departure_date=${props.returnDate}&return_date=${props.returnDate}&number_passenger=${props.numberPassenger}&class_id=${props.seatClass}&is_promo=${props.isPromo}&departure_flight_id=${item?.id}`;
             } else {
               navigate(`/booking/${item?.id}/${props.numberPassenger}`);
@@ -49,14 +44,6 @@ const AccordionItem = (props) => {
         </button>
       );
     } else {
-      // console.log("else item_is = ", item?.id);
-      // console.log("else endDate = ", endDate);
-      // console.log("else departureDate = ", departureDate);
-      // console.log("else departureFlightId = ", departureFlightId);
-      // console.log("else item_is = ", item?.id);
-      // console.log("else endDate = ", endDate);
-      // console.log("else departureDate = ", departureDate);
-      // console.log("else departureFlightId = ", departureFlightId);
       return (
         <button
           style={{ float: "right" }}

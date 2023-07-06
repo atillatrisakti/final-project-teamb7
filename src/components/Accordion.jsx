@@ -4,45 +4,7 @@ import loadingImg from "../assets/search/🦆 illustration _Loading_.svg";
 import AccordionItem from "./AccordionItem";
 
 function Accordion(props) {
-  console.log(props)
-  // const location = useLocation();
-  // const queryParams = new URLSearchParams(location.search);
-  // // const params = queryParams.toString();
-  // // console.log(queryParams.get("departure_airport_id"));
-
-  // const [flight, setFlight] = useState([]);
-  // const [flightReturn, setFlightReturn] = useState([]);
-  // const [loading, setLoading] = useState(true);
-
-  // const departureAirportId = queryParams.get("departure_airport_id");
-  // const destinationAirportId = queryParams.get("destination_airport_id");
-  // const departureDate = queryParams.get("departure_date");
-  // const returnDate = queryParams.get("return_date");
-  // const numberPassenger = queryParams.get("number_passenger");
-  // const seatClass = queryParams.get("class_id");
-  // const isPromo = queryParams.get("is_promo");
-  // const departureFlightId = queryParams.get("departure_flight_id");
-
-  // useEffect(() => {
-  //   // if (departureDate !== undefined) {
-  //   async function getListFlight() {
-  //     try {
-  //       setLoading(true);
-  //       const response = await axios.get(
-  //         `${process.env.REACT_APP_API}/web/flights?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${departureDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`
-  //       );
-  //       setFlight(response.data.data);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       setLoading(false);
-  //       toast.error(error?.message);
-  //     }
-  //   }
-  //   getListFlight();
-  //   // } else {
-  //   //   return "";
-  //   // }
-  // }, []);
+  // console.log(props)
 
   const renderData = () => {
     if (props.loading) {
