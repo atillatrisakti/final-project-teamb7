@@ -14,9 +14,10 @@ function SeatClasses() {
 
   const getSeatClass = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API}/web/classes`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API}/web/classes`
+      );
       const data = response.data.data;
-      console.log(data);
       setSeatClass(data);
       setIdSeatClass(data[0].id);
       setSelectedClass(data[0].name);
@@ -37,7 +38,7 @@ function SeatClasses() {
   };
 
   return (
-    <Col xs={3} md={2}>
+    <Col xs={6} md={2}>
       <Form.Group>
         <Form.Label>Seat Class</Form.Label>
         <Form.Control
@@ -45,7 +46,6 @@ function SeatClasses() {
           data-id={idSeatClass}
           placeholder="Kelas Kabin"
           value={selectedClass}
-          // ? selectedClass : seatClass[0]?.name}
           name="seat_class"
           className="form-input"
           onClick={handleShowClass}
@@ -58,9 +58,9 @@ function SeatClasses() {
         show={showClass}
         onHide={handleCloseClass}
         style={{
-          marginLeft: "72.8%",
-          marginTop: "15%",
-          width: "24%",
+          // marginLeft: "72.8%",
+          // marginTop: "15%",
+          width: "100%",
         }}
       >
         <Modal.Header closeButton></Modal.Header>

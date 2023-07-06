@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -8,11 +8,17 @@ function DetailBooking() {
   const [detailDepartureFlight, setDetailDepartureFlight] = useState([]);
   const [detailReturnFlight, setDetailReturnFlight] = useState([]);
   const [depature_id, setDeparture_id] = useState();
-  const [return_id, setReturn_id] = useState(); 
+  const [return_id, setReturn_id] = useState();
   const [seats_id, setSeats_id] = useState();
   const [facilities, setFacilities] = useState([]);
   const params = useParams();
   const number_passenger = params.number_passenger;
+
+  const location = useLocation();
+
+  const locationDetail = location.state;
+  // const queryParams = new URLSearchParams(location.pathname);
+  // console.log(location);
 
   //count discount & price
   const discountDeparturePrice =
