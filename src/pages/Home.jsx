@@ -108,7 +108,7 @@ function Home() {
           ))}
       </Carousel>
 
-      <div style={{ width: "100%", marginTop: "-160px" }}>
+      <div className="search-flight-form">
         <Container>
           <Row>
             <Col>
@@ -323,7 +323,7 @@ function Home() {
             {destinationPromos &&
               destinationPromos.map((promo) => (
                 <Col
-                  sm="auto"
+                  xs={12}
                   md="auto"
                   lg="auto"
                   className="px-2"
@@ -343,10 +343,7 @@ function Home() {
                     })}&number_passenger=1&class_id=1&is_promo=${!isPromo}`}
                     style={{ textDecoration: "none", borderColor: "black" }}
                   >
-                    <Card
-                      className="mb-3 shadow"
-                      style={{ borderRadius: "10px", width: "228px" }}
-                    >
+                    <Card className="mb-3 shadow card-promo">
                       <img
                         src={promo?.arrival_city_image}
                         alt="destination"

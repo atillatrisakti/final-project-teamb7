@@ -58,9 +58,9 @@ function SeatClasses() {
         show={showClass}
         onHide={handleCloseClass}
         style={{
-          marginLeft: "72.8%",
-          marginTop: "15%",
-          width: "24%",
+          // marginLeft: "72.8%",
+          // marginTop: "15%",
+          width: "100%",
         }}
       >
         <Modal.Header closeButton></Modal.Header>

@@ -11,8 +11,10 @@ import {
 } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import useWindowSize from "../../hooks/useWindowSize";
 
 function DatePicker({ isDisabled, setIsDisabled }) {
+  const size = useWindowSize();
   const [selectedSingleDate, setSelectedSingleDate] = useState(new Date()); // only start date
   const [selectedRange, setSelectedRange] = useState(new Date()); // start date and end date
   const [fromValue, setFromValue] = useState("");
@@ -138,13 +140,7 @@ function DatePicker({ isDisabled, setIsDisabled }) {
         centered
         show={showDate}
         onHide={handleCloseDate}
-        style={{
-          display: "block",
-          // marginLeft: "18.8%",
-          // marginTop: "13.5%",
-          width: "max-content",
-          background: "red",
-        }}
+        className="d-flex justify-content-center date-modal"
         size="lg"
       >
         <Modal.Body>
@@ -157,7 +153,7 @@ function DatePicker({ isDisabled, setIsDisabled }) {
                     mode="single"
                     selected={selectedSingleDate}
                     onSelect={handleDaySelect}
-                    numberOfMonths={2}
+                    numberOfMonths={size.width > 600 ? 2 : 1}
                     pagedNavigation
                     showOutsideDays
                     fixedWeeks
@@ -170,7 +166,7 @@ function DatePicker({ isDisabled, setIsDisabled }) {
                     mode="range"
                     selected={selectedRange}
                     onSelect={handleRangeSelect}
-                    numberOfMonths={2}
+                    numberOfMonths={size.width > 600 ? 2 : 1}
                     pagedNavigation
                     showOutsideDays
                     fixedWeeks
