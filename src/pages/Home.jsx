@@ -8,7 +8,7 @@ import {
   Form,
   Row,
 } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/Home.css";
 import { Icon } from "@iconify/react";
 import DepartureAirports from "../components/search-flights-home/DepartureAirports";
