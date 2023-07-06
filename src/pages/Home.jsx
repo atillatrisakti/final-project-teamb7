@@ -110,11 +110,13 @@ function Home() {
 
       <div className="search-flight-form">
         <Container>
+
           <Row>
             <Col>
               <Form onSubmit={onSubmit}>
                 <Card className="mx-auto mb-4 card-home">
                   <Card.Body>
+                    
                     <Card.Title
                       className="px-3 pt-2 mb-3"
                       style={{
