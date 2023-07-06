@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import arrowAccor from "../assets/accordion/Suffix.svg";
-import { Row, Col, Container, Card, Button } from "react-bootstrap";
+import { Row, Col, Container, Card } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import arrowAccor from "../assets/accordion/Suffix.svg";
+import arrow from "../assets/search/Arrow.svg";
 import { IoIosArrowForward } from "react-icons/io";
 
 const AccordionItem = (props) => {
@@ -12,19 +13,6 @@ const AccordionItem = (props) => {
   const [item, setItem] = useState(props.item);
   const [isActive, setIsActive] = useState(false);
   const [flightFacilities, setFlightFacilities] = useState([]);
-
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-
-  const departureAirportId = queryParams.get("departure_airport_id");
-  const destinationAirportId = queryParams.get("destination_airport_id");
-  const departureDate = queryParams.get("departure_date");
-  const endDate = queryParams.get("end_date");
-  const numberPassenger = queryParams.get("number_passenger");
-  const seatClass = queryParams.get("class_id");
-  const isPromo = queryParams.get("is_promo");
-  const departureFlightId = queryParams.get("departure_flight_id");
-  // const returnFlightId = queryParams.get("return_flight_id");
 
   useEffect(() => {
     async function getFlightFacilities() {
@@ -39,24 +27,21 @@ const AccordionItem = (props) => {
   }, []);
 
   const handleButtonPilih = () => {
-    if (!departureFlightId) {
+    if (!props.departureFlightId) {
       return (
         <button
           style={{ float: "right" }}
           className="btn-pilih"
           onClick={() => {
-            if (endDate) {
+            if (props.returnDate) {
               // console.log("else item_is = ", item?.id);
               // console.log("if endDate = ", endDate);
               // console.log("if departureDate = ", departureDate);
               // console.log("if departureFlightId = ", departureFlightId);
 
-              // navigate(
-              //   `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${endDate}&end_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}&departure_flight_id=${item?.id}`
-              // );
-              window.location.href = `/search?departure_airport_id=${departureAirportId}&destination_airport_id=${destinationAirportId}&departure_date=${endDate}&end_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}&departure_flight_id=${item?.id}`;
+              window.location.href = `/search?departure_airport_id=${props.departureAirportId}&destination_airport_id=${props.destinationAirportId}&departure_date=${props.returnDate}&return_date=${props.returnDate}&number_passenger=${props.numberPassenger}&class_id=${props.seatClass}&is_promo=${props.isPromo}&departure_flight_id=${item?.id}`;
             } else {
-              navigate(`/booking/${item?.id}/${numberPassenger}`);
+              navigate(`/booking/${item?.id}/${props.numberPassenger}`);
             }
           }}
         >
@@ -68,12 +53,16 @@ const AccordionItem = (props) => {
       // console.log("else endDate = ", endDate);
       // console.log("else departureDate = ", departureDate);
       // console.log("else departureFlightId = ", departureFlightId);
+      // console.log("else item_is = ", item?.id);
+      // console.log("else endDate = ", endDate);
+      // console.log("else departureDate = ", departureDate);
+      // console.log("else departureFlightId = ", departureFlightId);
       return (
         <button
           style={{ float: "right" }}
           className="btn-pilih"
           onClick={() => {
-            navigate(`/booking/${departureFlightId}/${numberPassenger}/${item?.id}/${endDate}`);
+            navigate(`/booking/${props.departureFlightId}/${props.numberPassenger}/${item?.id}/${props.returnDate}`);
           }}
         >
           Pilih
@@ -85,10 +74,16 @@ const AccordionItem = (props) => {
 
   return (
     <>
-      <div className="accordion-title" style={{ width: "100%" }} key={props.index}>
+      <div className="accordion-title" style={{ width: "100%" }} key={props.id}>
         <Card className="mt-2 card-flight">
           <Row>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <div>
                 <img src={item?.airplane_logo} alt="plane-logo" fluid width="35" className="ms-1" style={{ float: "left" }} />
                 <p className="mt-1 ms-5">
@@ -226,6 +221,7 @@ const AccordionItem = (props) => {
                   {handleButtonPilih()}
                 </div>
               </div>
+                        
             </div>
           </Container>
         </Card>

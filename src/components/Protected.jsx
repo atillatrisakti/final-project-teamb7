@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 function Protected({ children }) {
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     const getMe = async (token) => {
       try {
@@ -33,6 +33,8 @@ function Protected({ children }) {
     const token = localStorage.getItem("token");
 
     if (!token) {
+      localStorage.setItem("flow", "booking");
+      console.log("protected flow:" + localStorage.getItem('flow'));
       toast.warn(`Please Login Now!`);
       return navigate(`/login`);
     }

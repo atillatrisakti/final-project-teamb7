@@ -5,63 +5,6 @@
 
 .accordion-item2 {
   border: none;
-  width: 770px;
-}
-
-.accordion-content {
-  width: 770px;
-  margin-bottom: 1rem;
-}
-
-.discont-flight {
-  font-size: 1rem;
-  color: white;
-}
-
-.divider {
-  width: 300px;
-  height: 1px;
-  background-color: gray;
-  position: relative;
-}
-
-.arrow-divider {
-  position: absolute;
-  right: -6px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.card-flight {
-  height: "135px";
-  width: "100%";
-  padding: 1rem;
-}
-
-.accordion-below,
-.accordion-below-left,
-.accordion-below-right {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-}
-
-/* tablet */
-@media (max-width: 1023px) {
-  .accordion-item2,
-  .accordion-content {
-    width: 600px;
-  }
-  .accordion-below {
-    flex-direction: column;
-    align-items: start;
-  }
-
-  .accordion-below-right {
-    margin-left: auto;
-    width: 100%;
-  }
 }
 
 /*  */

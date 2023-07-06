@@ -24,7 +24,7 @@ function Passengers() {
   const count = options.dewasa + options.anak + options.bayi;
 
   return (
-    <Col xs={3} md={2}>
+    <Col xs={6} md={2}>
       <Form.Group>
         <Form.Label>Passengers</Form.Label>
         <Form.Control required data-count={`${count}`} placeholder="Jumlah" value={`${count} Penumpang`} name="number_passenger" className="form-input" onClick={handleShowPassenger} />

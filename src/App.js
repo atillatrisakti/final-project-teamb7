@@ -67,7 +67,7 @@ function App() {
           }
         />
         <Route
-          path="/booking/:departure_id/:number_passenger"
+          path="/booking/:departure_id/:number_passenger/:return_id?/:return_date?"
           element={
             <Protected>
               <Booking />
@@ -75,7 +75,7 @@ function App() {
           }
         />
         <Route
-          path="/payment/:id/:number_passenger"
+          path="/payment/:departure_id/:number_passenger/:return_id?/:return_date?"
           element={
             <Protected>
               <Payment />

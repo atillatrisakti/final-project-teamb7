@@ -74,7 +74,7 @@ function DestinationAirports({
   };
 
   return (
-    <Col xs={5} md={4}>
+    <Col xs={10} md={4}>
       <Form.Group>
         <Form.Control
           required
@@ -98,7 +98,7 @@ function DestinationAirports({
           <Form>
             <Row>
               <Col>
-                <InputGroup className="mb-3 my-1" style={{ width: "42.8rem" }}>
+                <InputGroup className="mb-3 my-1" style={{ minWidth: "280px" }}>
                   <Form.Control
                     type="search"
                     name="search"

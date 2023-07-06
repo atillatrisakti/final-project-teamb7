@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Carousel, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/Home.css";
-
 import { Icon } from "@iconify/react";
 import DepartureAirports from "../components/search-flights-home/DepartureAirports";
 import DestinationAirports from "../components/search-flights-home/DestinationAirports";
@@ -11,26 +10,49 @@ import SeatClasses from "../components/search-flights-home/SeatClasses";
 import DatePicker from "../components/search-flights-home/DatePicker";
 import axios from "axios";
 import { toast } from "react-toastify";
+import banner from "../assets/banner.svg";
 
 function Home() {
   const navigate = useNavigate();
 
-  const [destinationPromos, setDestinationPromos] = useState([]);
+  const [isPromo, setIsPromo] = useState(false);
   const [banner, setBanner] = useState([]);
+  const [destinationPromos, setDestinationPromos] = useState([]);
 
-  // BUTTON FLIP
-  const [flipValue, setFlipValue] = useState(false);
-  const [arrival, setArrival] = useState("");
-
+  // DATE PICKER
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const [filteredCategory, setFilteredCategory] = useState(null);
-  const [isPromo, setIsPromo] = useState(false);
-
+  // BUTTON FLIP
   const [departureValue, setDepartureValue] = useState("");
   const [destinationValue, setDestinationValue] = useState("");
   const [idDeptAirport, setIdDeptAirport] = useState(0);
   const [idDestAirport, setIdDestAirport] = useState(0);
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  useEffect(() => {
+    async function redirectToBooking() {
+      try {
+        const token = queryParams.get("token");
+
+        if (token) {
+          localStorage.setItem("token", token);
+        }
+
+        // console.log("home path: " + localStorage.getItem("path"));
+        // console.log("home flow: " + localStorage.getItem("flow"));
+        // console.log("home token: " + localStorage.getItem("token"));
+
+        // if(localStorage.getItem("flow") === "booking" && localStorage.getItem("path")){
+        //   navigate(`${localStorage.getItem("path")}`);
+        // }
+      } catch (error) {
+        toast.error(error?.message);
+      }
+    }
+    redirectToBooking();
+  }, []);
 
   useEffect(() => {
     async function getBanners() {
@@ -49,7 +71,6 @@ function Home() {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API}/web/promos`);
         setDestinationPromos(response.data.data);
-        // console.log(destinationPromos);
       } catch (error) {
         toast.error(error?.message);
       }
@@ -62,48 +83,17 @@ function Home() {
     const form = e.target;
     const departure = form.departure_airport.attributes.getNamedItem("data-id").value;
     const destination = form.destination_airport.attributes.getNamedItem("data-id").value;
-    const startDate = form.start_date.value;
-    const endDate = form.end_date.value;
+    const departureDate = form.start_date.value;
+    const returnDate = form.end_date.value;
     const numberPassenger = form.number_passenger.attributes.getNamedItem("data-count").value;
     const seatClass = form.seat_class.attributes.getNamedItem("data-id").value;
 
-    navigate(`/search?departure_airport_id=${departure}&destination_airport_id=${destination}&departure_date=${startDate}&end_date=${endDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`);
+    return navigate(`/search?departure_airport_id=${departure}&destination_airport_id=${destination}&departure_date=${departureDate}&return_date=${returnDate}&number_passenger=${numberPassenger}&class_id=${seatClass}&is_promo=${isPromo}`);
   };
-
-  // const handleFlipButton = (e) => {
-  //   const destination =
-  //     e.target.destination_airport.attributes.getNamedItem("data-id").value;
-
-  //   setArrival(destination);
-  //   console.log(destination);
-  // };
-
-  useEffect(() => {
-    setFilteredCategory(destinationPromos);
-  }, [destinationPromos]);
-
-  function handleCategoryClick(e) {
-    let buttonCategory = e.target.value;
-    buttonCategory !== "all" ? setFilteredCategory(destinationPromos.filter((items) => items?.arrival_city === buttonCategory)) : setFilteredCategory(destinationPromos);
-  }
 
   return (
     <>
-      <Carousel
-        controls={true}
-        indicators={false}
-        touch={true}
-        // interval={5000}
-        style={{
-          position: "absolute",
-          top: "5.2rem",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Carousel controls={true} indicators={false} touch={true} className="carousel-banner">
         {banner &&
           banner.map((item) => (
             <Carousel.Item key={item.id}>
@@ -120,18 +110,24 @@ function Home() {
           ))}
       </Carousel>
 
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", marginTop: "-160px" }}>
         <Container>
-          <Row style={{ marginTop: "19.3rem" }}>
+          <Row>
             <Col>
               <Form onSubmit={onSubmit}>
-                <Card className="mx-auto mb-4 card-home" style={{ width: "75rem" }}>
+                <Card className="mx-auto mb-4 card-home">
                   <Card.Body>
-                    <Card.Title className="px-3 pt-2 mb-3" style={{ textShadow: "2px 2px 8px #e3ecff" }}>
+                    <Card.Title
+                      className="px-3 pt-2 mb-3"
+                      style={{
+                        textShadow: "2px 2px 8px #e3ecff",
+                        maxWidth: "",
+                      }}
+                    >
                       <b>Pilih Jadwal Penerbangan spesial di</b> <b style={{ color: "#4076E2" }}>SyuraTrip!</b>
                     </Card.Title>
                     <Row className="px-3 pt-2 d-flex align-items-center">
-                      <Col xs={2} md={1}>
+                      <Col xs={2} md={1} className="card-title-input">
                         <Icon icon="material-symbols:flight-takeoff" color="gray" className="icon-input" />
                         <Form.Label className="font-input">From</Form.Label>
                       </Col>
@@ -154,27 +150,30 @@ function Home() {
                           }}
                         />
                       </Col>
-                      <Col xs={2} md={1}>
+                      <Col xs={2} md={1} className="card-title-input">
                         <Icon icon="material-symbols:flight-land" color="gray" className="icon-input" />
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
+
                       {/* ================Kota Tujuan================= */}
                       <DestinationAirports selectDestinatAirport={destinationValue} setSelectDestinatAirport={setDestinationValue} idDestAirport={idDestAirport} setIdDestAirport={setIdDestAirport} />
                     </Row>
                     <Row className="px-3 pt-2 my-3 d-flex align-items-center">
-                      <Col xs={2} md={1}>
+                      <Col xs={6} md={1} className="card-title-input">
                         <Icon icon="material-symbols:date-range-outline" color="gray" className="icon-input" />
                         <Form.Label className="font-input">Date</Form.Label>
                       </Col>
+
                       {/* ================DatePicker================= */}
-                      <Col xs={4} md={5}>
+                      <Col xs={12} md={5}>
                         <DatePicker isDisabled={isDisabled} setIsDisabled={setIsDisabled} />
                       </Col>
-                      <Col xs={2} md={1}></Col>
-                      <Col xs={2} md={1}>
+                      <Col xs={0} md={1}></Col>
+                      <Col xs={1} md={1} className="card-title-input">
                         <Icon icon="material-symbols:airline-seat-recline-normal" color="gray" className="icon-input" />
                         <Form.Label className="font-input">To</Form.Label>
                       </Col>
+
                       {/* ==========Jumlah Passangers dan Seat Classes========== */}
                       <Passengers />
                       <SeatClasses />
@@ -213,23 +212,6 @@ function Home() {
             }}
             className="d-flex justify-content-center"
           >
-            {/* <Col className="mb-1 me-0">
-              <Button
-                value="all"
-                variant="outline-dark"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "9px",
-                  padding: "15px",
-                  borderRadius: "25px",
-                }}
-                onClick={handleCategoryClick}
-              >
-                <Icon icon="iconamoon:search-bold" className="icon-input" />
-                All
-              </Button>
-            </Col> */}
             {destinationPromos &&
               destinationPromos.slice(4, 10).map((promo) => (
                 <Col sm="12" md="6" lg="4" key={promo?.id} className="mb-1 me-0 px-2">
@@ -251,7 +233,6 @@ function Home() {
                           height: "150px",
                           borderTopRightRadius: "10px",
                         }}
-                        onClick={handleCategoryClick}
                       />
                       <Card.ImgOverlay>
                         <Card.Title>{promo?.arrival_city}</Card.Title>
@@ -259,41 +240,19 @@ function Home() {
                       </Card.ImgOverlay>
                     </Card>
                   </Link>
-                  {/* <Button
-                    value={promo?.arrival_city}
-                    variant="outline-dark"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "9px",
-                      padding: "15px",
-                      borderRadius: "25px",
-                      marginBottom: "0.5rem",
-                      background: `${promo?.arrival_city_image}`,
-                    }}
-                    onClick={handleCategoryClick}
-                    onClick={handleCategoryClick}
-                  >
-                    <Icon icon="iconamoon:search-bold" className="icon-input" />
-                    {promo?.arrival_city}
-                  </Button> */}
                 </Col>
               ))}
           </Row>
 
-          <Row
-            className="mt-2 mb-4"
-            // className="mt-2 d-flex justify-content-center"
-            style={{ marginLeft: "2.8%", marginRight: "2.8%" }}
-          >
+          <Row className="mt-2 mb-4" style={{ marginLeft: "2.8%", marginRight: "2.8%" }}>
             <Col sm={10} className="mb-3">
               <h5 className="text-dark text-popular mt-3" style={{ textShadow: "2px 2px 8px #e3ecff" }}>
                 <b>Pengen ke Luar Negeri? Nih promo buat kamu!</b>
               </h5>
               <span>Terbang ke berbagai destinasi Internasional, tapi takut mahal? Ssstt.. tenang aja, banyak promonya loh!</span>
             </Col>
-            {filteredCategory &&
-              filteredCategory.map((promo) => (
+            {destinationPromos &&
+              destinationPromos.map((promo) => (
                 <Col sm="auto" md="auto" lg="auto" className="px-2" key={promo?.id}>
                   <Link
                     to={`/search?departure_airport_id=${promo?.departure_airport_id}&destination_airport_id=${promo?.arrival_airport_id}&departure_date=${new Date(promo?.departure_date).toLocaleDateString("en-CA", {
