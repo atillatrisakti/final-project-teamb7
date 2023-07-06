@@ -15,7 +15,6 @@ import Account from "./pages/Account";
 import SendEmailReset from "./pages/SendEmailReset";
 import ResetPass from "./pages/ResetPass";
 import Otp from "./pages/Otp";
-
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Protected from "./components/Protected";
@@ -60,7 +59,7 @@ function App() {
             }
           />
           <Route
-            path="/booking/:departure_id/:number_passenger"
+            path="/booking/:departure_id/:number_passenger/:return_id?/:return_date?"
             element={
               <Protected>
                 <Booking />
@@ -68,7 +67,7 @@ function App() {
             }
           />
           <Route
-            path="/payment/:id/:number_passenger"
+            path="/payment/:departure_id/:number_passenger/:return_id?/:return_date?"
             element={
               <Protected>
                 <Payment />
@@ -83,7 +82,10 @@ function App() {
               </Protected>
             }
           />
-          <Route path="/account" element={<Account isLoggedIn={setIsLoggedIn} />} />
+          <Route
+            path="/account"
+            element={<Account isLoggedIn={setIsLoggedIn} />}
+          />
           <Route
             path="/notification"
             element={
